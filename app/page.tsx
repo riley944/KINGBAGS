@@ -2,74 +2,75 @@ import Link from "next/link";
 import { PRODUCTS } from "@/lib/products";
 
 const STEPS = [
-  { n: "01", t: "Design From Scratch", d: "Pick your format, then make it yours: full-color edge-to-edge artwork, custom dimensions, handles, pockets, and hardware. This is cut and sew, not a blank with a logo." },
-  { n: "02", t: "Get Instant Pricing", d: "See your exact per-unit and total price the moment you set quantity. Premium product, transparent pricing — no email chains, no three-day quote turnarounds." },
-  { n: "03", t: "Delivered in 4–6 Weeks", d: "Produced at the same factories that run programs for national brands. Every run is QC checked before it ships to your door." },
+  { n: "1", t: "Design it", d: "Pick your format. Upload your art. Full-color, edge-to-edge, custom cut and sew — your bag, exactly how you imagine it." },
+  { n: "2", t: "Price it instantly", d: "Set your quantity and watch the price update in real time. No sales calls. No three-day quote emails." },
+  { n: "3", t: "Carry it in weeks", d: "Made at the same factories behind national brand programs. QC checked, shipped to your door in 4–6 weeks." },
 ];
 
 const VERTICALS = [
-  { name: "Restaurants", d: "Takeout bags that make your food look as good leaving as it does on the plate." },
-  { name: "Gyms & Studios", d: "Member bags your community actually wants to carry." },
-  { name: "Breweries & Wineries", d: "Bottle carriers and taproom totes fans take home." },
-  { name: "Retail & Boutiques", d: "The carry-out bag that keeps advertising after checkout." },
-  { name: "Events & Weddings", d: "Welcome bags and swag people keep, not toss." },
+  { name: "Restaurants", emoji: "🍽️" },
+  { name: "Gyms & Studios", emoji: "💪" },
+  { name: "Breweries & Wineries", emoji: "🍺" },
+  { name: "Retail & Boutiques", emoji: "🛍️" },
+  { name: "Events & Weddings", emoji: "🎉" },
 ];
 
 export default function Home() {
   const featured = PRODUCTS.filter((p) => p.featured);
   return (
     <>
-      {/* HERO */}
-      <section className="bg-navy text-cream">
-        <div className="mx-auto max-w-7xl px-5 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="section-label mb-4 !text-gold">From the team behind bags for America's most loved brands</p>
-            <h1 className="font-serif font-black text-4xl md:text-6xl leading-[1.05] mb-6">
-              Your brand.<br />Carried <span className="text-gold">everywhere.</span>
-            </h1>
-            <p className="text-lg text-cream/70 mb-8 max-w-md leading-relaxed">
-              Fully custom cut-and-sew bags with full-color, edge-to-edge printing. No blanks, no templates — your bag, built from scratch. From 500 units.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/design" className="btn-gold">Design Your Bag</Link>
-              <Link href="/products" className="inline-block border-2 border-cream/30 text-cream font-semibold px-7 py-3 rounded-md hover:border-gold hover:text-gold transition-colors">
-                Browse Styles
-              </Link>
-            </div>
+      {/* HERO — centered, product-first, CTA front and center */}
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-4xl px-5 pt-24 pb-16 md:pt-32 md:pb-20 text-center">
+          <p className="section-label mb-6">Custom cut & sew · Full-color printing · From 500 units</p>
+          <h1 className="font-serif font-black text-5xl md:text-7xl leading-[1.02] text-ink mb-6">
+            A bag this good,<br />they'll <span className="text-clay italic">never</span> put it down.
+          </h1>
+          <p className="text-lg md:text-xl text-ink-soft max-w-xl mx-auto mb-10 leading-relaxed">
+            Fully custom reusable bags, built from scratch for your brand. No blanks. No templates. Just your bag, done right.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <Link href="/design" className="btn-clay text-lg !px-12 !py-5">Design Your Bag</Link>
+            <Link href="/products" className="btn-ghost">See the lineup →</Link>
           </div>
-          <div className="hidden md:flex items-center justify-center">
-            <div className="w-full aspect-square max-w-md rounded-2xl bg-navy-light border border-cream/10 flex items-center justify-center">
-              <span className="font-serif text-cream/20 text-xl italic">[ hero bag photography ]</span>
-            </div>
-          </div>
+          <p className="text-sm text-ink-soft/60">Instant pricing · No account needed</p>
         </div>
-        {/* Trust bar */}
-        <div className="border-t border-cream/10">
-          <div className="mx-auto max-w-7xl px-5 py-5 flex flex-wrap justify-center gap-x-10 gap-y-2 text-sm text-cream/50">
-            <span>✓ Full-color edge-to-edge printing</span>
-            <span>✓ Custom cut &amp; sew — no blanks</span>
-            <span>✓ 500 unit minimums</span>
-            <span>✓ Recycled materials available</span>
-            <span>✓ US-based team</span>
-            <span>✓ 13+ global factories</span>
-            <span>✓ Decade-long brand relationships</span>
+
+        {/* Product hero visual */}
+        <div className="mx-auto max-w-5xl px-5 pb-20">
+          <div className="aspect-[16/8] rounded-4xl bg-sand shadow-soft flex items-center justify-center">
+            <span className="font-serif italic text-ink/20 text-xl">[ hero: one beautiful bag, centered, studio light ]</span>
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-5">
-          <p className="section-label mb-3 text-center">How It Works</p>
-          <h2 className="font-serif font-bold text-3xl md:text-4xl text-center text-navy mb-14">
-            From art file to delivered bags in three steps.
+      {/* TRUST STRIP */}
+      <section className="border-y border-ink/5 bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-5 flex flex-wrap justify-center gap-x-10 gap-y-2 text-sm text-ink-soft">
+          <span>Full-color edge-to-edge printing</span>
+          <span>·</span>
+          <span>Custom cut & sew</span>
+          <span>·</span>
+          <span>500 unit minimums</span>
+          <span>·</span>
+          <span>Recycled materials</span>
+          <span>·</span>
+          <span>The team behind national brand programs</span>
+        </div>
+      </section>
+
+      {/* THREE STEPS */}
+      <section className="py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <h2 className="font-serif font-bold text-4xl md:text-5xl text-center text-ink mb-16">
+            Three steps. That's the whole thing.
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {STEPS.map((s) => (
-              <div key={s.n} className="bg-white rounded-xl p-8 shadow-sm border border-navy/5">
-                <div className="font-serif font-black text-4xl text-gold mb-4">{s.n}</div>
-                <h3 className="font-bold text-lg text-navy mb-2">{s.t}</h3>
-                <p className="text-sm text-ink/60 leading-relaxed">{s.d}</p>
+              <div key={s.n} className="bg-white rounded-2.5xl p-9 shadow-soft">
+                <div className="w-11 h-11 rounded-full bg-clay-tint text-clay font-serif font-black text-xl flex items-center justify-center mb-5">{s.n}</div>
+                <h3 className="font-bold text-xl text-ink mb-2">{s.t}</h3>
+                <p className="text-ink-soft leading-relaxed">{s.d}</p>
               </div>
             ))}
           </div>
@@ -77,65 +78,67 @@ export default function Home() {
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-7xl px-5">
-          <p className="section-label mb-3 text-center">The Lineup</p>
-          <h2 className="font-serif font-bold text-3xl md:text-4xl text-center text-navy mb-14">
-            Six formats. Every one fully custom.
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8 mb-10">
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="text-center mb-16">
+            <p className="section-label mb-3">The Lineup</p>
+            <h2 className="font-serif font-bold text-4xl md:text-5xl text-ink">
+              Six formats. Infinitely yours.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {featured.map((p) => (
-              <Link key={p.slug} href={`/products/${p.slug}`} className="group bg-cream rounded-xl overflow-hidden border border-navy/5 hover:shadow-lg transition-shadow">
-                <div className="aspect-[4/3] bg-navy/5 flex items-center justify-center">
-                  <span className="font-serif italic text-navy/20">[ {p.shortName} photo ]</span>
+              <Link key={p.slug} href={`/products/${p.slug}`} className="group bg-bone rounded-2.5xl overflow-hidden hover:shadow-lift transition-all hover:-translate-y-1">
+                <div className="aspect-square bg-sand flex items-center justify-center">
+                  <span className="font-serif italic text-ink/15">[ {p.shortName} ]</span>
                 </div>
-                <div className="p-6">
-                  <h3 className="font-bold text-navy text-lg group-hover:text-gold-dark transition-colors">{p.name}</h3>
-                  <p className="text-sm text-ink/60 mt-1 mb-3">{p.tagline}</p>
-                  <p className="text-sm font-semibold text-gold-dark">
-                    From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/unit
+                <div className="p-7">
+                  <h3 className="font-bold text-ink text-lg group-hover:text-clay transition-colors">{p.name}</h3>
+                  <p className="text-sm text-ink-soft mt-1 mb-4">{p.tagline}</p>
+                  <p className="text-sm font-bold text-clay">
+                    From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/bag
                   </p>
                 </div>
               </Link>
             ))}
           </div>
           <div className="text-center">
-            <Link href="/products" className="btn-outline">View All Six Styles</Link>
+            <Link href="/products" className="btn-primary">See all six formats</Link>
           </div>
         </div>
       </section>
 
-      {/* VERTICALS */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-5">
-          <p className="section-label mb-3 text-center">Built For Your Business</p>
-          <h2 className="font-serif font-bold text-3xl md:text-4xl text-center text-navy mb-14">
-            Whatever you do, your bag should do it too.
+      {/* VERTICALS — playful strip */}
+      <section className="py-24">
+        <div className="mx-auto max-w-6xl px-5 text-center">
+          <h2 className="font-serif font-bold text-4xl md:text-5xl text-ink mb-4">
+            Made for whatever you make.
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <p className="text-ink-soft max-w-lg mx-auto mb-14">
+            Restaurants, gyms, taprooms, boutiques, big days — if your customers carry it, it should carry your brand.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
             {VERTICALS.map((v) => (
-              <div key={v.name} className="bg-white rounded-xl p-6 border border-navy/5 text-center">
-                <h3 className="font-bold text-navy mb-2">{v.name}</h3>
-                <p className="text-xs text-ink/60 leading-relaxed">{v.d}</p>
+              <div key={v.name} className="bg-white rounded-full px-7 py-3.5 shadow-soft flex items-center gap-2.5 hover:shadow-lift hover:-translate-y-0.5 transition-all">
+                <span className="text-xl">{v.emoji}</span>
+                <span className="font-semibold text-ink">{v.name}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CREDIBILITY */}
-      <section className="py-20 bg-navy text-cream">
-        <div className="mx-auto max-w-4xl px-5 text-center">
-          <p className="section-label mb-4 !text-gold">Why KINGBAGS</p>
-          <h2 className="font-serif font-bold text-3xl md:text-4xl mb-6">
-            The same team. The same factories.<br />Now available to every business.
+      {/* CREDIBILITY + FINAL CTA */}
+      <section className="py-24 bg-ink text-bone">
+        <div className="mx-auto max-w-3xl px-5 text-center">
+          <p className="section-label mb-5 !text-clay-light">Why KINGBAGS</p>
+          <h2 className="font-serif font-bold text-4xl md:text-5xl mb-6 leading-tight">
+            The team behind the bags at America's most loved brands.
           </h2>
-          <p className="text-cream/70 leading-relaxed max-w-2xl mx-auto mb-8">
-            For over a decade, our parent company King Universal has designed and produced bags and branded merchandise
-            for some of the most demanding retail brands in America — theme parks, destination retailers, and national
-            chains. KINGBAGS brings that exact infrastructure to orders starting at just 500 units.
+          <p className="text-bone/60 leading-relaxed max-w-xl mx-auto mb-10">
+            For over a decade, our parent company King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS brings that exact craft to your business — starting at just 500 units.
           </p>
-          <Link href="/design" className="btn-gold">Start Designing</Link>
+          <Link href="/design" className="btn-clay text-lg !px-12 !py-5">Design Your Bag</Link>
         </div>
       </section>
     </>
