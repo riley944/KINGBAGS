@@ -4,14 +4,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        navy: { DEFAULT: "#0B1F3A", light: "#14325C", dark: "#060F1F" },
-        gold: { DEFAULT: "#C9A84C", light: "#E5CE8A", dark: "#A6873A" },
-        cream: "#FAF8F3",
-        ink: "#1A1A1A",
+        bone: "#FAF7F2",
+        sand: "#F1EBE1",
+        ink: { DEFAULT: "#1C1917", soft: "#57534E" },
+        clay: { DEFAULT: "#D95D39", dark: "#B8482A", light: "#F0805C", tint: "#FBEDE7" },
+        moss: "#8A9B8E",
       },
       fontFamily: {
         serif: ["Fraunces", "Georgia", "serif"],
         sans: ["DM Sans", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        soft: "0 2px 20px rgba(28,25,23,0.05)",
+        lift: "0 16px 48px rgba(28,25,23,0.10)",
+      },
+      borderRadius: {
+        "2.5xl": "1.25rem",
+        "4xl": "2rem",
       },
     },
   },
