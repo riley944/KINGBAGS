@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const NAV = [
-  { href: "/products", label: "Products" },
+  { href: "/products", label: "Bags" },
   { href: "/pricing", label: "Pricing" },
   { href: "/gallery", label: "Our Work" },
   { href: "/about", label: "About" },
@@ -12,34 +12,36 @@ const NAV = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 bg-navy text-cream shadow-lg">
-      <div className="mx-auto max-w-7xl px-5 flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 bg-bone/85 backdrop-blur-md border-b border-ink/5">
+      <div className="mx-auto max-w-6xl px-5 flex items-center justify-between h-16">
         <Link href="/" className="flex items-baseline gap-0.5">
-          <span className="font-serif font-black text-2xl tracking-tight">KING</span>
-          <span className="font-serif font-black text-2xl tracking-tight text-gold">BAGS</span>
+          <span className="font-serif font-black text-xl tracking-tight text-ink">KING</span>
+          <span className="font-serif font-black text-xl tracking-tight text-clay">BAGS</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="text-sm font-medium text-cream/80 hover:text-gold transition-colors">
+            <Link key={n.href} href={n.href} className="text-sm font-medium text-ink-soft hover:text-ink transition-colors">
               {n.label}
             </Link>
           ))}
-          <Link href="/design" className="bg-gold text-navy text-sm font-bold px-5 py-2.5 rounded-md hover:bg-gold-light transition-colors">
+        </nav>
+        <div className="hidden md:block">
+          <Link href="/design" className="bg-clay text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-clay-dark transition-all hover:scale-[1.03]">
             Design Your Bag
           </Link>
-        </nav>
-        <button className="md:hidden text-cream text-2xl" onClick={() => setOpen(!open)} aria-label="Menu">
+        </div>
+        <button className="md:hidden text-ink text-2xl" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? "✕" : "☰"}
         </button>
       </div>
       {open && (
-        <nav className="md:hidden bg-navy-dark px-5 pb-5 flex flex-col gap-4">
+        <nav className="md:hidden bg-bone border-t border-ink/5 px-5 py-5 flex flex-col gap-4">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="text-cream/90 font-medium" onClick={() => setOpen(false)}>
+            <Link key={n.href} href={n.href} className="text-ink-soft font-medium" onClick={() => setOpen(false)}>
               {n.label}
             </Link>
           ))}
-          <Link href="/design" className="bg-gold text-navy font-bold px-5 py-3 rounded-md text-center" onClick={() => setOpen(false)}>
+          <Link href="/design" className="bg-clay text-white font-bold px-6 py-3.5 rounded-full text-center" onClick={() => setOpen(false)}>
             Design Your Bag
           </Link>
         </nav>
