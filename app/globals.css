@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-cream text-ink font-sans antialiased; }
+
+.btn-gold { @apply inline-block bg-gold text-navy font-semibold px-7 py-3.5 rounded-md hover:bg-gold-light transition-colors; }
+.btn-outline { @apply inline-block border-2 border-navy text-navy font-semibold px-7 py-3 rounded-md hover:bg-navy hover:text-cream transition-colors; }
+.section-label { @apply text-xs font-bold tracking-[0.2em] uppercase text-gold-dark; }
