@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/products";
+import SpinHero from "@/components/SpinHero";
 
 const STEPS = [
   { n: "1", t: "Design it", d: "Pick your format. Upload your art. Full-color, edge-to-edge, custom cut and sew — your bag, exactly how you imagine it." },
@@ -19,9 +20,9 @@ export default function Home() {
   const featured = PRODUCTS.filter((p) => p.featured);
   return (
     <>
-      {/* HERO — centered, product-first, CTA front and center */}
+      {/* HERO — spin bag behind/below centered type, CTA front and center */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-5 pt-24 pb-16 md:pt-32 md:pb-20 text-center">
+        <div className="mx-auto max-w-4xl px-5 pt-20 pb-8 md:pt-28 text-center relative z-10">
           <p className="section-label mb-6">Custom cut & sew · Full-color printing · From 500 units</p>
           <h1 className="font-serif font-black text-5xl md:text-7xl leading-[1.02] text-ink mb-6">
             A bag this good,<br />they'll <span className="text-clay italic">never</span> put it down.
@@ -29,17 +30,17 @@ export default function Home() {
           <p className="text-lg md:text-xl text-ink-soft max-w-xl mx-auto mb-10 leading-relaxed">
             Fully custom reusable bags, built from scratch for your brand. No blanks. No templates. Just your bag, done right.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
             <Link href="/design" className="btn-clay text-lg !px-12 !py-5">Design Your Bag</Link>
             <Link href="/products" className="btn-ghost">See the lineup →</Link>
           </div>
           <p className="text-sm text-ink-soft/60">Instant pricing · No account needed</p>
         </div>
 
-        {/* Product hero visual */}
-        <div className="mx-auto max-w-5xl px-5 pb-20">
-          <div className="aspect-[16/8] rounded-4xl bg-sand shadow-soft flex items-center justify-center">
-            <span className="font-serif italic text-ink/20 text-xl">[ hero: one beautiful bag, centered, studio light ]</span>
+        {/* THE SPIN — one full rotation on load, re-spins on scroll return */}
+        <div className="mx-auto max-w-4xl px-5 pb-20 -mt-2">
+          <div className="aspect-[16/9] md:aspect-[16/8]">
+            <SpinHero />
           </div>
         </div>
       </section>
@@ -108,7 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* VERTICALS — playful strip */}
+      {/* VERTICALS */}
       <section className="py-24">
         <div className="mx-auto max-w-6xl px-5 text-center">
           <h2 className="font-serif font-bold text-4xl md:text-5xl text-ink mb-4">
