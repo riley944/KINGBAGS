@@ -1,4 +1,5 @@
 export type PricingTier = { minQty: number; unitPrice: number };
+export type SizeOption = { code: string; label: string; dims: string };
 
 export type Product = {
   slug: string;
@@ -6,138 +7,98 @@ export type Product = {
   shortName: string;
   tagline: string;
   description: string;
-  materials: string[];
-  colors: string[];
+  sizes: SizeOption[];
   minOrder: number;
   leadTime: string;
-  bestFor: string[];
   tiers: PricingTier[];
   featured?: boolean;
 };
 
+export const MIN_ORDER = 2000;
+
 export const PRODUCTS: Product[] = [
   {
     slug: "grocery-tote",
-    name: "Signature Grocery Tote",
+    name: "The Grocery Tote",
     shortName: "Grocery Tote",
-    tagline: "Full-color, edge-to-edge print. Built like the national programs we run.",
+    tagline: "Edge-to-edge print. Your art is the entire bag.",
     description:
-      "Fully custom cut and sew — not a blank with a logo slapped on. Full-color edge-to-edge printing, reinforced handles built to your spec, custom gussets and structured base. This is the same construction we produce for national grocery and destination retail programs, made to your exact design.",
-    materials: ["Laminated Non-Woven PP (full-color)", "RPET (Recycled Bottles)", "Non-Woven Polypropylene"],
-    colors: ["Full-Color Custom Print", "Any PMS Match", "Edge-to-Edge Artwork"],
-    minOrder: 500,
-    leadTime: "4–5 weeks",
-    bestFor: ["Grocery & Markets", "Retail", "Events"],
-    tiers: [
-      { minQty: 500, unitPrice: 2.29 },
-      { minQty: 1000, unitPrice: 1.89 },
-      { minQty: 2500, unitPrice: 1.49 },
-      { minQty: 5000, unitPrice: 1.25 },
-      { minQty: 10000, unitPrice: 1.05 },
+      "Fully custom cut and sew. Your artwork covers every panel — front, back, gussets, base. Reinforced handles, structured bottom, built to the same spec as the national programs we run.",
+    sizes: [
+      { code: "S", label: "Small", dims: '12" × 13" × 7"' },
+      { code: "M", label: "Medium", dims: '14" × 15" × 8"' },
+      { code: "L", label: "Large", dims: '16" × 16" × 9"' },
+      { code: "XL", label: "X-Large", dims: '19" × 17" × 10"' },
     ],
-    featured: true,
-  },
-  {
-    slug: "insulated-cooler",
-    name: "Premium Insulated Cooler",
-    shortName: "Cooler Bag",
-    tagline: "Custom-built insulation. Full-color exterior. Zero shortcuts.",
-    description:
-      "Fully custom cut and sew insulated bag — zippered, foil-lined, with your exterior printed in full color across every panel. Custom sizing, custom handle configurations, custom interior layouts. The format destination retailers sell at checkout by the hundreds of thousands, built to your brand's spec.",
-    materials: ["Insulated Foil-Lined with Full-Color Laminated Exterior", "Custom Interior Configurations"],
-    colors: ["Full-Color Custom Print", "Any PMS Match"],
-    minOrder: 500,
-    leadTime: "5–6 weeks",
-    bestFor: ["Grocery", "Delivery", "Outdoor Brands"],
+    minOrder: MIN_ORDER,
+    leadTime: "4–6 weeks",
     tiers: [
-      { minQty: 500, unitPrice: 4.29 },
-      { minQty: 1000, unitPrice: 3.59 },
-      { minQty: 2500, unitPrice: 2.95 },
-      { minQty: 5000, unitPrice: 2.49 },
-      { minQty: 10000, unitPrice: 2.15 },
+      { minQty: 2000, unitPrice: 1.35 },
+      { minQty: 2500, unitPrice: 1.25 },
+      { minQty: 5000, unitPrice: 1.05 },
+      { minQty: 10000, unitPrice: 0.92 },
+      { minQty: 25000, unitPrice: 0.79 },
     ],
     featured: true,
   },
   {
     slug: "canvas-tote",
-    name: "Bespoke Canvas Tote",
+    name: "The Canvas Tote",
     shortName: "Canvas Tote",
-    tagline: "Cut and sewn to your spec. The tote people keep for years.",
+    tagline: "Heavyweight canvas, cut and sewn to your design.",
     description:
-      "Heavyweight canvas, fully custom: your dimensions, your handle length, your pocket layout, your hardware. Full-color printing or classic screen print. This is the boutique and lifestyle-brand format done at the level your brand deserves — no catalog blanks, ever.",
-    materials: ["10oz Natural Canvas", "12oz Heavy Canvas", "Organic Cotton", "Custom Dyed Fabric"],
-    colors: ["Full-Color Print", "Custom Dyed Body", "Any PMS Match"],
-    minOrder: 500,
-    leadTime: "5–6 weeks",
-    bestFor: ["Boutiques", "Bookstores", "Lifestyle Brands"],
+      "Real canvas construction — your dimensions, your handles, your art across the full surface. The tote people keep for years, built at the quality level of the best retail brands.",
+    sizes: [
+      { code: "S", label: "Small", dims: '13" × 13" × 5"' },
+      { code: "M", label: "Medium", dims: '15" × 15" × 6"' },
+      { code: "L", label: "Large", dims: '18" × 16" × 7"' },
+    ],
+    minOrder: MIN_ORDER,
+    leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 500, unitPrice: 3.95 },
-      { minQty: 1000, unitPrice: 3.29 },
-      { minQty: 2500, unitPrice: 2.69 },
-      { minQty: 5000, unitPrice: 2.29 },
-      { minQty: 10000, unitPrice: 1.99 },
+      { minQty: 2000, unitPrice: 2.45 },
+      { minQty: 2500, unitPrice: 2.25 },
+      { minQty: 5000, unitPrice: 1.95 },
+      { minQty: 10000, unitPrice: 1.72 },
+      { minQty: 25000, unitPrice: 1.55 },
     ],
     featured: true,
   },
   {
-    slug: "drawstring",
-    name: "Custom Drawstring Bag",
-    shortName: "Drawstring",
-    tagline: "Full-surface print. Your art is the entire bag.",
+    slug: "beach-bag",
+    name: "The Beach Bag",
+    shortName: "Beach Bag",
+    tagline: "Heavy-duty, flat-bottom, made for the long haul.",
     description:
-      "Edge-to-edge full-color printing across the entire surface — front, back, everything. Custom cord colors, custom sizing, reinforced corners. Built for fitness studios, teams, schools, and events that want a bag that looks designed, not decorated.",
-    materials: ["210D Polyester (full-color sublimation)", "RPET", "Non-Woven PP"],
-    colors: ["Full-Surface Custom Print", "Any PMS Match Cords"],
-    minOrder: 500,
-    leadTime: "4–5 weeks",
-    bestFor: ["Gyms & Fitness", "Teams & Schools", "Events"],
+      "One size, seriously built. Extra-heavy canvas, wide flat bottom that stands on its own, rope-grade handles, and your art edge to edge. The oversized carryall your customers will use every weekend for a decade.",
+    sizes: [{ code: "OS", label: "One Size", dims: '22" × 15" × 8"' }],
+    minOrder: MIN_ORDER,
+    leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 500, unitPrice: 1.99 },
-      { minQty: 1000, unitPrice: 1.65 },
-      { minQty: 2500, unitPrice: 1.35 },
-      { minQty: 5000, unitPrice: 1.15 },
-      { minQty: 10000, unitPrice: 0.95 },
+      { minQty: 2000, unitPrice: 3.15 },
+      { minQty: 2500, unitPrice: 2.95 },
+      { minQty: 5000, unitPrice: 2.55 },
+      { minQty: 10000, unitPrice: 2.25 },
+      { minQty: 25000, unitPrice: 1.98 },
     ],
+    featured: true,
   },
-  {
-    slug: "wine-bag",
-    name: "Custom Wine & Bottle Carrier",
-    shortName: "Wine Bag",
-    tagline: "1 to 6 bottles. Custom dividers. Full-color everything.",
-    description:
-      "Custom cut and sew bottle carriers with reinforced dividers built for full bottles. Full-color exterior printing, custom formats from single-bottle gift bags to six-bottle carriers, and premium material options including jute and laminated finishes.",
-    materials: ["Laminated Non-Woven (full-color)", "Jute with Custom Panels", "Non-Woven PP with Dividers"],
-    colors: ["Full-Color Custom Print", "Any PMS Match"],
-    minOrder: 500,
-    leadTime: "4–5 weeks",
-    bestFor: ["Wineries & Breweries", "Liquor Retail", "Gifting"],
-    tiers: [
-      { minQty: 500, unitPrice: 2.69 },
-      { minQty: 1000, unitPrice: 2.25 },
-      { minQty: 2500, unitPrice: 1.85 },
-      { minQty: 5000, unitPrice: 1.55 },
-      { minQty: 10000, unitPrice: 1.35 },
-    ],
-  },
-  {
-    slug: "produce-bag",
-    name: "Custom Mesh Produce Set",
-    shortName: "Produce Bags",
-    tagline: "The premium plastic-replacement your customers are asking for.",
-    description:
-      "Washable mesh produce bags in branded multi-pack sets with full-color printed carry pouches. Custom set configurations, custom sizing, RPET or organic cotton mesh. The zero-waste retail item natural grocers can't keep in stock.",
-    materials: ["RPET Mesh", "Organic Cotton Mesh", "Full-Color Printed Pouch"],
-    colors: ["Natural", "White", "Custom Trim & Pouch Print"],
-    minOrder: 1000,
-    leadTime: "4–5 weeks",
-    bestFor: ["Grocery & Markets", "Natural Foods", "Zero-Waste Retail"],
-    tiers: [
-      { minQty: 1000, unitPrice: 1.25 },
-      { minQty: 2500, unitPrice: 0.99 },
-      { minQty: 5000, unitPrice: 0.82 },
-      { minQty: 10000, unitPrice: 0.69 },
-    ],
-  },
+  // Cooler bag — ready to enable when you decide:
+  // {
+  //   slug: "cooler-bag",
+  //   name: "The Cooler Bag",
+  //   shortName: "Cooler Bag",
+  //   tagline: "Insulated, zippered, printed edge to edge.",
+  //   description: "One size, foil-lined, full-color exterior.",
+  //   sizes: [{ code: "OS", label: "One Size", dims: '13" × 15" × 9"' }],
+  //   minOrder: MIN_ORDER,
+  //   leadTime: "5–7 weeks",
+  //   tiers: [
+  //     { minQty: 2000, unitPrice: 2.85 },
+  //     { minQty: 5000, unitPrice: 2.35 },
+  //     { minQty: 10000, unitPrice: 2.05 },
+  //   ],
+  // },
 ];
 
 export function getProduct(slug: string): Product | undefined {
