@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,8 +6,8 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: #FAFAF7;
-  color: #1D1C1A;
+  background-color: #FBFAF7;
+  color: #2A2825;
   font-family: Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -16,52 +16,50 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #1D1C1A;
-  color: #FAFAF7;
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 1.05rem 2.4rem;
+  background-color: #2A2825;
+  color: #FBFAF7;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 2.3rem;
   border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-primary:hover { background-color: #0A6CFF; transform: scale(1.02); }
-.btn-primary:active { transform: scale(0.98); }
+.btn-primary:hover { background-color: #2D62E8; transform: scale(1.02); }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-.btn-cobalt {
+.btn-royal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #0A6CFF;
+  background-color: #2D62E8;
   color: #FFFFFF;
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 1.05rem 2.4rem;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 2.3rem;
   border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-cobalt:hover { background-color: #0554D6; transform: scale(1.02); }
-.btn-cobalt:active { transform: scale(0.98); }
-.btn-cobalt:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-royal:hover { background-color: #1F4BC4; transform: scale(1.02); }
+.btn-royal:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #1D1C1A;
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 1.05rem 1.9rem;
+  color: #2A2825;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 1.8rem;
   border-radius: 9999px;
-  border: 2px solid #1D1C1A;
+  border: 1.5px solid #2A2825;
   transition: all 0.15s ease;
 }
-.btn-ghost:hover { background-color: #1D1C1A; color: #FAFAF7; }
+.btn-ghost:hover { background-color: #2A2825; color: #FBFAF7; }
 
 .section-label {
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #0A6CFF;
+  color: #2D62E8;
 }
