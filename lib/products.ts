@@ -15,6 +15,7 @@ export type Product = {
 };
 
 export const MIN_ORDER = 2000;
+export const MAX_SLIDER = 50000;
 
 export const PRODUCTS: Product[] = [
   {
@@ -33,11 +34,12 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "4–6 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 1.35 },
-      { minQty: 2500, unitPrice: 1.25 },
-      { minQty: 5000, unitPrice: 1.05 },
-      { minQty: 10000, unitPrice: 0.92 },
-      { minQty: 25000, unitPrice: 0.79 },
+      { minQty: 2000, unitPrice: 1.85 },
+      { minQty: 2500, unitPrice: 1.72 },
+      { minQty: 5000, unitPrice: 1.52 },
+      { minQty: 10000, unitPrice: 1.35 },
+      { minQty: 25000, unitPrice: 1.20 },
+      { minQty: 50000, unitPrice: 1.10 },
     ],
     featured: true,
   },
@@ -56,11 +58,12 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 2.45 },
-      { minQty: 2500, unitPrice: 2.25 },
-      { minQty: 5000, unitPrice: 1.95 },
-      { minQty: 10000, unitPrice: 1.72 },
-      { minQty: 25000, unitPrice: 1.55 },
+      { minQty: 2000, unitPrice: 2.95 },
+      { minQty: 2500, unitPrice: 2.78 },
+      { minQty: 5000, unitPrice: 2.48 },
+      { minQty: 10000, unitPrice: 2.22 },
+      { minQty: 25000, unitPrice: 2.02 },
+      { minQty: 50000, unitPrice: 1.88 },
     ],
     featured: true,
   },
@@ -75,30 +78,15 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 3.15 },
-      { minQty: 2500, unitPrice: 2.95 },
-      { minQty: 5000, unitPrice: 2.55 },
-      { minQty: 10000, unitPrice: 2.25 },
-      { minQty: 25000, unitPrice: 1.98 },
+      { minQty: 2000, unitPrice: 3.65 },
+      { minQty: 2500, unitPrice: 3.45 },
+      { minQty: 5000, unitPrice: 3.10 },
+      { minQty: 10000, unitPrice: 2.80 },
+      { minQty: 25000, unitPrice: 2.55 },
+      { minQty: 50000, unitPrice: 2.35 },
     ],
     featured: true,
   },
-  // Cooler bag — ready to enable when you decide:
-  // {
-  //   slug: "cooler-bag",
-  //   name: "The Cooler Bag",
-  //   shortName: "Cooler Bag",
-  //   tagline: "Insulated, zippered, printed edge to edge.",
-  //   description: "One size, foil-lined, full-color exterior.",
-  //   sizes: [{ code: "OS", label: "One Size", dims: '13" × 15" × 9"' }],
-  //   minOrder: MIN_ORDER,
-  //   leadTime: "5–7 weeks",
-  //   tiers: [
-  //     { minQty: 2000, unitPrice: 2.85 },
-  //     { minQty: 5000, unitPrice: 2.35 },
-  //     { minQty: 10000, unitPrice: 2.05 },
-  //   ],
-  // },
 ];
 
 export function getProduct(slug: string): Product | undefined {
