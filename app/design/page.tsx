@@ -1,10 +1,12 @@
 "use client";
 import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { PRODUCTS, priceFor, Product, MIN_ORDER, MAX_SLIDER } from "@/lib/products";
+import { PRODUCTS, priceFor, Product, MIN_ORDER } from "@/lib/products";
 import { DIELINES, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
 import { saveQuote, uploadArt } from "@/lib/supabase";
+
+const QTY_PRESETS = [2000, 2500, 5000, 10000, 25000, 50000];
 
 function Configurator() {
   const params = useSearchParams();
@@ -14,6 +16,7 @@ function Configurator() {
   const [art, setArt] = useState<ArtState>({ img: null, x: 0.5, y: 0.5, scale: 1 });
   const [artFile, setArtFile] = useState<File | null>(null);
   const [qty, setQty] = useState(MIN_ORDER);
+  const [customQty, setCustomQty] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
@@ -27,6 +30,7 @@ function Configurator() {
   const unit = priceFor(product, qty);
   const total = unit * qty;
   const qtyValid = qty >= MIN_ORDER;
+  const isPreset = QTY_PRESETS.includes(qty) && customQty === "";
 
   const redraw = useCallback(() => {
     if (previewRef.current) drawDieline(previewRef.current, dieline, art, 1.1, true);
@@ -51,6 +55,13 @@ function Configurator() {
     a.download = `KINGBAGS-template-${product.slug}-${sizeCode}.png`;
     a.href = c.toDataURL("image/png");
     a.click();
+  };
+
+  const handleCustomQty = (v: string) => {
+    const digits = v.replace(/[^0-9]/g, "");
+    setCustomQty(digits);
+    const n = parseInt(digits, 10);
+    if (!isNaN(n)) setQty(n);
   };
 
   const handleSubmit = async () => {
@@ -80,25 +91,22 @@ function Configurator() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 md:py-20">
-      {/* Page head */}
       <div className="max-w-2xl mb-14">
         <p className="section-label mb-4">The Studio</p>
         <h1 className="font-serif font-black text-4xl md:text-6xl text-ink leading-[1.05] mb-5">
           Design your bag.
         </h1>
         <p className="text-ink-soft text-lg leading-relaxed">
-          Every KINGBAGS bag is printed edge to edge from a real production template — the same file our factories cut and sew from. Place your art here, and what you see is what gets made.
+          Every KINGBAGS bag prints from a real production template — the same file our factories cut and sew from. Place your art here, and what you see is what gets made.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_380px] gap-12">
-        {/* MAIN FLOW */}
         <div className="space-y-14">
-
-          {/* Step 1 */}
+          {/* 01 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-royal/25">01</span>
+              <span className="font-serif font-black text-5xl text-ember/25">01</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Choose your bag</h2>
             </div>
             <div className="flex flex-wrap gap-2.5 mb-4">
@@ -112,7 +120,7 @@ function Configurator() {
             <div className="flex flex-wrap gap-2.5">
               {product.sizes.map((s) => (
                 <button key={s.code} onClick={() => setSizeCode(s.code)}
-                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-royal-tint text-royal font-semibold ring-1 ring-royal/30" : "bg-white text-ink-soft shadow-soft hover:text-ink"}`}>
+                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-ember-tint text-ember font-semibold ring-1 ring-ember/30" : "bg-white text-ink-soft shadow-soft hover:text-ink"}`}>
                   <span className="font-semibold">{s.label}</span>
                   <span className="ml-2 opacity-70">{s.dims}</span>
                 </button>
@@ -120,10 +128,10 @@ function Configurator() {
             </div>
           </div>
 
-          {/* Step 2 */}
+          {/* 02 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-royal/25">02</span>
+              <span className="font-serif font-black text-5xl text-ember/25">02</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Get the template</h2>
             </div>
             <div className="bg-white rounded-2.5xl shadow-soft p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
@@ -135,20 +143,20 @@ function Configurator() {
                   {Math.round(tw)}mm × {Math.round(th)}mm flat dieline — front, back, sides, and base, exactly as it prints. Build your art to this file in any design tool.
                 </p>
               </div>
-              <button onClick={downloadTemplate} className="btn-ghost shrink-0 !py-3 !px-6 !text-sm">
+              <button onClick={downloadTemplate} className="btn-outline shrink-0 !py-3 !px-6 !text-sm">
                 Download template
               </button>
             </div>
           </div>
 
-          {/* Step 3 */}
+          {/* 03 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-royal/25">03</span>
+              <span className="font-serif font-black text-5xl text-ember/25">03</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Place your art</h2>
             </div>
             {!art.img && (
-              <label className="block bg-white rounded-2.5xl p-10 shadow-soft text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/15 hover:border-royal/40 mb-5">
+              <label className="block bg-white rounded-2.5xl p-10 shadow-soft text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/15 hover:border-ember/40 mb-5">
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
                 <span className="font-semibold text-ink block mb-1.5 text-lg">Upload your artwork</span>
                 <span className="text-sm text-ink-soft">Formatted to the template, or full-bleed art we'll position together. PNG or JPG, high resolution.</span>
@@ -180,46 +188,42 @@ function Configurator() {
                   <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-2">Art size</label>
                   <input type="range" min={0.3} max={3} step={0.01} value={art.scale}
                     onChange={(e) => setArt((a) => ({ ...a, scale: Number(e.target.value) }))}
-                    className="w-full accent-royal" />
+                    className="w-full accent-ember" />
                 </div>
-                <label className="text-sm font-semibold text-royal cursor-pointer hover:underline shrink-0">
+                <label className="text-sm font-semibold text-ember cursor-pointer hover:underline shrink-0">
                   <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
                   Replace art
                 </label>
               </div>
             )}
             <p className="text-sm text-ink-soft mt-5 leading-relaxed">
-              This flat proof is how your bag prints. Once you submit, our design team builds a photoreal rendering of the finished bag and sends it with your sample — so you approve the real thing, not a guess.
+              This flat proof is how your bag prints. After you submit, our design team builds a photoreal rendering of the finished bag and sends it with your sample — you approve the real thing, not a guess.
             </p>
           </div>
         </div>
 
-        {/* SIDE RAIL: pricing + submit (sticky) */}
+        {/* SIDE RAIL */}
         <div className="lg:sticky lg:top-24 h-fit space-y-5">
           <div className="bg-white rounded-2.5xl shadow-soft p-7">
             <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Quantity</label>
-            <div className="flex items-center gap-3 mb-4">
-              <input
-                type="text" inputMode="numeric" value={qty.toLocaleString()}
-                onChange={(e) => {
-                  const n = parseInt(e.target.value.replace(/[^0-9]/g, ""), 10);
-                  if (!isNaN(n)) setQty(n);
-                }}
-                className={`w-32 rounded-xl px-4 py-3 text-lg font-bold text-ink bg-smoke border focus:outline-none ${qtyValid ? "border-transparent focus:border-royal" : "border-red-400"}`}
-              />
-              <span className="text-sm text-ink-soft">bags</span>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {QTY_PRESETS.map((q) => (
+                <button key={q} onClick={() => { setQty(q); setCustomQty(""); }}
+                  className={`rounded-xl px-2 py-2.5 text-sm font-semibold transition-all ${qty === q && isPreset ? "bg-ember text-white" : "bg-smoke text-ink-soft hover:text-ink"}`}>
+                  {q.toLocaleString()}
+                </button>
+              ))}
             </div>
-            <input type="range" min={MIN_ORDER} max={MAX_SLIDER} step={500}
-              value={Math.min(Math.max(qty, MIN_ORDER), MAX_SLIDER)}
-              onChange={(e) => setQty(Number(e.target.value))}
-              className="w-full accent-royal" />
-            <div className="flex justify-between text-[11px] text-ink-soft mt-1 mb-5">
-              <span>{MIN_ORDER.toLocaleString()}</span><span>{MAX_SLIDER.toLocaleString()}+</span>
-            </div>
-            {!qtyValid && (
-              <p className="text-xs text-red-500 mb-4">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
+            <input
+              type="text" inputMode="numeric" placeholder="Custom quantity"
+              value={customQty ? Number(customQty).toLocaleString() : ""}
+              onChange={(e) => handleCustomQty(e.target.value)}
+              className={`w-full rounded-xl px-4 py-3 text-base font-semibold text-ink bg-smoke border placeholder:font-normal placeholder:text-ink-soft/60 focus:outline-none ${qtyValid || customQty === "" ? "border-transparent focus:border-ember" : "border-red-400"}`}
+            />
+            {!qtyValid && customQty !== "" && (
+              <p className="text-xs text-red-500 mt-2">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
             )}
-            <div className="border-t border-ink/10 pt-5">
+            <div className="border-t border-ink/10 pt-5 mt-5">
               <div className="text-sm text-ink-soft mb-1">{qty.toLocaleString()} × ${unit.toFixed(2)}</div>
               <div className="font-serif font-black text-[40px] text-ink leading-none mb-2">
                 ${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -229,7 +233,7 @@ function Configurator() {
           </div>
 
           {submitted ? (
-            <div className="bg-royal-tint rounded-2.5xl p-8 text-center">
+            <div className="bg-ember-tint rounded-2.5xl p-8 text-center">
               <h3 className="font-serif font-bold text-2xl text-ink mb-2">You're in.</h3>
               <p className="text-ink-soft text-sm leading-relaxed">Our team reviews your art and calls within one business day — photoreal rendering, final specs, and your sample plan.</p>
             </div>
@@ -237,13 +241,13 @@ function Configurator() {
             <div className="bg-white rounded-2.5xl shadow-soft p-7">
               <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Get your bags</label>
               <input type="email" placeholder="Work email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-royal focus:outline-none" />
+                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
               <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-royal focus:outline-none" />
+                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
               <input type="text" placeholder="Company (optional)" value={company} onChange={(e) => setCompany(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-royal focus:outline-none" />
+                className="w-full rounded-xl px-4 py-3.5 mb-5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
               <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
-                className="w-full btn-royal !py-4">
+                className="w-full btn-ember !py-4">
                 {submitting ? "Saving…" : "Get My Bags"}
               </button>
               <p className="text-[11px] text-ink-soft mt-3 text-center">A real person reviews every design. No spam, ever.</p>
