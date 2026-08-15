@@ -1,35 +1,40 @@
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
 import { PRODUCTS } from "@/lib/products";
 
 export const metadata = {
-  title: "Custom Bag Styles | KINGBAGS",
+  title: "The Bags | KINGBAGS",
   description:
-    "Fully custom cut-and-sew bags with edge-to-edge printing. Grocery totes, canvas totes, and beach bags. 2,000 unit minimums with instant pricing.",
+    "Three fully custom cut-and-sew bags with edge-to-edge printing: the Grocery Tote, the Canvas Tote, and the Beach Bag. From 2,000 bags.",
 };
 
 export default function ProductsPage() {
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16">
-      <p className="section-label mb-3">The Lineup</p>
-      <h1 className="font-serif font-black text-4xl md:text-5xl text-ink mb-3">Three formats. Fully yours.</h1>
-      <p className="text-ink-soft max-w-2xl mb-12">
-        Every bag is cut and sewn from scratch with your art edge to edge — the same construction we run for national brand programs.
-      </p>
+    <div className="mx-auto max-w-6xl px-5 py-16 md:py-20">
+      <Reveal>
+        <p className="section-label mb-4">The Lineup</p>
+        <h1 className="font-serif font-black text-4xl md:text-6xl text-ink leading-[1.05] mb-4">Three bags. Fully yours.</h1>
+        <p className="text-ink-soft text-lg max-w-2xl mb-14">
+          Every bag is cut and sewn from scratch with your art edge to edge — the same construction we run for national brand programs.
+        </p>
+      </Reveal>
       <div className="grid md:grid-cols-3 gap-6">
-        {PRODUCTS.map((p) => (
-          <Link key={p.slug} href={`/products/${p.slug}`} className="group bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1">
-            <div className="aspect-square bg-sand flex items-center justify-center">
-              <span className="font-serif italic text-ink/15">[ {p.shortName} ]</span>
-            </div>
-            <div className="p-7">
-              <h2 className="font-bold text-ink text-lg group-hover:text-forest transition-colors">{p.name}</h2>
-              <p className="text-sm text-ink-soft mt-1 mb-4">{p.tagline}</p>
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-forest">From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/bag</span>
-                <span className="text-ink-soft/60">{p.sizes.length} {p.sizes.length === 1 ? "size" : "sizes"}</span>
+        {PRODUCTS.map((p, i) => (
+          <Reveal key={p.slug} delay={i * 100}>
+            <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
+              <div className="aspect-square bg-smoke flex items-center justify-center">
+                <span className="font-serif italic text-ink/20 text-lg">[ {p.shortName} ]</span>
               </div>
-            </div>
-          </Link>
+              <div className="p-7">
+                <h2 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h2>
+                <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
+                <div className="flex justify-between items-center text-[15px]">
+                  <span className="font-bold text-ember">From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/bag</span>
+                  <span className="text-ink-soft/70">{p.sizes.length} {p.sizes.length === 1 ? "size" : "sizes"}</span>
+                </div>
+              </div>
+            </Link>
+          </Reveal>
         ))}
       </div>
     </div>
