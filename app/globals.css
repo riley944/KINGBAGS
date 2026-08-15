@@ -6,60 +6,55 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: #FBFAF7;
-  color: #2A2825;
+  background-color: #FAF8F4;
+  color: #211F1C;
   font-family: Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #2A2825;
-  color: #FBFAF7;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1rem 2.3rem;
-  border-radius: 9999px;
+/* Buttons — every variant guaranteed visible on every background used in the site */
+.btn-ember {
+  display: inline-flex; align-items: center; justify-content: center;
+  background-color: #D9561F; color: #FFFFFF;
+  font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-primary:hover { background-color: #2D62E8; transform: scale(1.02); }
-.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-ember:hover { background-color: #B03F10; transform: scale(1.02); }
+.btn-ember:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-.btn-royal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #2D62E8;
-  color: #FFFFFF;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1rem 2.3rem;
-  border-radius: 9999px;
+.btn-ink {
+  display: inline-flex; align-items: center; justify-content: center;
+  background-color: #211F1C; color: #FAF8F4;
+  font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-royal:hover { background-color: #1F4BC4; transform: scale(1.02); }
-.btn-royal:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-ink:hover { background-color: #D9561F; color: #FFFFFF; transform: scale(1.02); }
+.btn-ink:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #2A2825;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1rem 1.8rem;
-  border-radius: 9999px;
-  border: 1.5px solid #2A2825;
+/* On dark sections use btn-light */
+.btn-light {
+  display: inline-flex; align-items: center; justify-content: center;
+  background-color: #FAF8F4; color: #211F1C;
+  font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-ghost:hover { background-color: #2A2825; color: #FBFAF7; }
+.btn-light:hover { background-color: #D9561F; color: #FFFFFF; transform: scale(1.02); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #211F1C; background-color: transparent;
+  font-weight: 600; font-size: 1rem; padding: 1rem 1.8rem; border-radius: 9999px;
+  border: 1.5px solid #211F1C;
+  transition: all 0.15s ease;
+}
+.btn-outline:hover { background-color: #211F1C; color: #FAF8F4; }
 
 .section-label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #2D62E8;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #D9561F;
 }
+
+/* Reveal-on-scroll animation */
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.reveal { opacity: 0; }
+.reveal.in { animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
