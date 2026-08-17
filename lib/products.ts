@@ -14,7 +14,7 @@ export type Product = {
   featured?: boolean;
 };
 
-export const MIN_ORDER = 2000;
+export const MIN_ORDER = 1500;
 export const MAX_SLIDER = 50000;
 
 export const PRODUCTS: Product[] = [
@@ -34,7 +34,7 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "4–6 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 1.85 },
+      { minQty: 1500, unitPrice: 1.85 },
       { minQty: 2500, unitPrice: 1.72 },
       { minQty: 5000, unitPrice: 1.52 },
       { minQty: 10000, unitPrice: 1.35 },
@@ -58,7 +58,7 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 2.95 },
+      { minQty: 1500, unitPrice: 2.95 },
       { minQty: 2500, unitPrice: 2.78 },
       { minQty: 5000, unitPrice: 2.48 },
       { minQty: 10000, unitPrice: 2.22 },
@@ -78,7 +78,7 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [
-      { minQty: 2000, unitPrice: 3.65 },
+      { minQty: 1500, unitPrice: 3.65 },
       { minQty: 2500, unitPrice: 3.45 },
       { minQty: 5000, unitPrice: 3.10 },
       { minQty: 10000, unitPrice: 2.80 },

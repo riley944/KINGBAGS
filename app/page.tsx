@@ -5,8 +5,8 @@ import Reveal from "@/components/Reveal";
 
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
-  { n: "2", t: "Price it instantly", d: "Pick your quantity and the price is right there. No sales calls, no quote emails, no waiting around." },
-  { n: "3", t: "Carry it in weeks", d: "Cut and sewn at the same factories behind national brand programs. QC checked, shipped to your door." },
+  { n: "2", t: "Price it yourself", d: "Pick your quantity and the price is right there — no quote emails, no waiting around. A real person reviews every order before production." },
+  { n: "3", t: "Carry it in weeks", d: "Cut and sewn at the same factories behind national brand programs, then air-freighted to your door in as little as 4–6 weeks — not the industry's 60–90 days." },
 ];
 
 const VERTICALS = ["DTC Brands", "Restaurants", "Gyms & Studios", "Breweries", "Retail", "Events"];
@@ -18,7 +18,7 @@ export default function Home() {
       {/* HERO — copy superimposes over the spin once frames exist */}
       <section className="relative">
         <div className="mx-auto max-w-4xl px-5 pt-20 pb-8 md:pt-28 text-center relative z-10">
-          <p className="section-label mb-6">Custom cut & sew · Edge-to-edge print · From 2,000 bags</p>
+          <p className="section-label mb-6">Custom cut & sew · Edge-to-edge print · From 1,500 bags</p>
           <h1 className="font-serif font-black text-[44px] md:text-[74px] leading-[1.0] text-ink mb-7">
             A bag this good,<br />they'll <span className="text-ember italic">never</span> put it down.
           </h1>
@@ -41,13 +41,13 @@ export default function Home() {
       {/* TRUST STRIP */}
       <section className="bg-charcoal text-white">
         <div className="mx-auto max-w-6xl px-5 py-5 flex flex-wrap justify-center gap-x-10 gap-y-2 text-[15px] font-medium">
-          <span>Edge-to-edge printing</span>
+          <span>10+ years building national brand programs</span>
           <span className="text-white/25">·</span>
-          <span>Custom cut & sew</span>
+          <span>13+ partner factories</span>
           <span className="text-white/25">·</span>
-          <span>2,000 bag minimums</span>
+          <span>Importer of record on 95% of orders</span>
           <span className="text-white/25">·</span>
-          <span>The team behind national brand programs</span>
+          <span>From 1,500 bags</span>
         </div>
       </section>
 
@@ -95,7 +95,7 @@ export default function Home() {
                     <h3 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h3>
                     <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
                     <p className="text-[15px] font-bold text-ember">
-                      From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/bag
+                      ${p.tiers[0].unitPrice.toFixed(2)}/bag at {p.minOrder.toLocaleString()}
                     </p>
                   </div>
                 </Link>
@@ -140,7 +140,7 @@ export default function Home() {
               The team behind the bags at America's most loved brands.
             </h2>
             <p className="text-white/65 text-lg leading-relaxed max-w-xl mx-auto mb-10">
-              For over a decade, King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS brings that exact craft to your business.
+              For over a decade, King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS brings that exact craft to your business — not the cheapest bag you can buy, the best one your customers will ever carry, at a factory-direct price that makes sense.
             </p>
             <Link href="/design" className="btn-light text-lg !px-12 !py-5">Design Your Bag</Link>
           </Reveal>

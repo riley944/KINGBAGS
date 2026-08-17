@@ -23,6 +23,17 @@ export async function saveQuote(q: {
   return { ok: !error, error: error?.message };
 }
 
+export async function saveLead(l: {
+  email: string;
+  company?: string;
+  message?: string;
+  product_slug?: string;
+}) {
+  if (!supabase) return { ok: false, error: "Supabase not configured" };
+  const { error } = await supabase.from("leads").insert(l);
+  return { ok: !error, error: error?.message };
+}
+
 export async function uploadArt(file: File): Promise<string | null> {
   if (!supabase) return null;
   const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;

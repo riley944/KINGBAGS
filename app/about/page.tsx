@@ -83,7 +83,7 @@ export default function AboutPage() {
                 In those rooms, a bag is never just a bag. It's the thing a guest carries through the park all day, the souvenir that rides home in the back seat, the tote that shows up at the farmers market three years later. We learned to build for that standard — because our clients' brands demanded it.
               </p>
               <p>
-                KINGBAGS exists because we kept meeting brands who wanted that exact quality and couldn't get it. Too small for the big factory minimums. Too serious for logo-on-a-blank promo junk. So we opened our own front door: the same factories, the same construction, the same team — now from 2,000 bags.
+                KINGBAGS exists because we kept meeting brands who wanted that exact quality and couldn't get it. Too small for the big factory minimums. Too serious for logo-on-a-blank promo junk. So we opened our own front door: the same factories, the same construction, the same team — now from 1,500 bags.
               </p>
             </div>
           </Reveal>

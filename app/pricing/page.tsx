@@ -4,7 +4,7 @@ import { PRODUCTS } from "@/lib/products";
 
 export const metadata = {
   title: "Pricing | KINGBAGS",
-  description: "Transparent quantity pricing for fully custom cut-and-sew bags. From 2,000 bags. No hidden fees, no distributor markup.",
+  description: "Transparent quantity pricing for fully custom cut-and-sew bags. From 1,500 bags. No hidden fees, no distributor markup.",
 };
 
 export default function PricingPage() {
@@ -18,7 +18,7 @@ export default function PricingPage() {
               Honest numbers, right up front.
             </h1>
             <p className="text-lg text-ink-soft leading-relaxed">
-              Every price below is for a fully custom, edge-to-edge printed, cut-and-sewn bag — not a blank with a logo. Prices include your art across every panel. Freight and duties quoted at order confirmation.
+              Every price below is for a fully custom, edge-to-edge printed, cut-and-sewn bag — not a blank with a logo. Prices include your art across every panel. Most orders air-freight to your door in as little as 4–6 weeks; we&apos;re the importer of record, so customs, duties, and freight arrive on one invoice with your final quote — no surprises at the port.
             </p>
           </Reveal>
         </div>
@@ -72,7 +72,7 @@ export default function PricingPage() {
                 Over 50,000 bags?
               </h2>
               <p className="text-white/65 text-lg mb-8 max-w-md mx-auto">
-                Volume programs get dedicated pricing, custom construction options, and a direct line to our team.
+                Volume programs get dedicated pricing, custom construction options, ocean-freight economics, and a direct line to our team.
               </p>
               <a href="mailto:hello@kingbags.com" className="btn-light">hello@kingbags.com</a>
             </div>

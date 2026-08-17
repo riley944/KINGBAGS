@@ -6,7 +6,7 @@ import { DIELINES, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
 import { saveQuote, uploadArt } from "@/lib/supabase";
 
-const QTY_PRESETS = [2000, 2500, 5000, 10000, 25000, 50000];
+const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
 
 function Configurator() {
   const params = useSearchParams();
@@ -240,8 +240,8 @@ function Configurator() {
 
           {submitted ? (
             <div className="bg-ember-tint rounded-2.5xl p-8 text-center">
-              <h3 className="font-serif font-bold text-2xl text-ink mb-2">You're in.</h3>
-              <p className="text-ink-soft text-sm leading-relaxed">Our team reviews your art and calls within one business day — photoreal rendering, final specs, and your sample plan.</p>
+              <h3 className="font-serif font-bold text-2xl text-ink mb-2">Your proof is on the way.</h3>
+              <p className="text-ink-soft text-sm leading-relaxed">Within one business day you&apos;ll get a photoreal rendering of your bag, final specs, and a sample plan — reviewed by a real person on our team. Nothing is produced and nothing is charged until you approve it.</p>
             </div>
           ) : (
             <div className="bg-white rounded-2.5xl shadow-soft p-7">
@@ -254,7 +254,7 @@ function Configurator() {
                 className="w-full rounded-xl px-4 py-3.5 mb-5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
               <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
                 className="w-full btn-ember !py-4">
-                {submitting ? "Saving…" : "Get My Bags"}
+                {submitting ? "Saving…" : "Lock In My Quote"}
               </button>
               {submitError && (
                 <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
@@ -262,6 +262,15 @@ function Configurator() {
                   <a href="mailto:hello@kingbags.com" className="font-semibold underline">hello@kingbags.com</a>.
                 </p>
               )}
+              <ul className="mt-5 space-y-2 text-[13px] text-ink-soft">
+                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Free photoreal proof before anything is produced</li>
+                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited revisions until you love it</li>
+                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve your proof</li>
+              </ul>
+              <p className="text-[13px] text-ink-soft mt-4 pt-4 border-t border-ink/10">
+                Want to hold the quality first?{" "}
+                <a href="/samples" className="text-ember font-semibold hover:underline">Order a sample kit</a> — fully credited toward your order.
+              </p>
               <p className="text-[11px] text-ink-soft mt-3 text-center">A real person reviews every design. No spam, ever.</p>
             </div>
           )}

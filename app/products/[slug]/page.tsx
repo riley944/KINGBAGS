@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = getProduct(slug);
   if (!p) return {};
   return {
-    title: `${p.name} — Fully Custom From $${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/Bag | KINGBAGS`,
+    title: `${p.name} — Fully Custom, $${p.tiers[0].unitPrice.toFixed(2)}/Bag at ${p.minOrder.toLocaleString()} | KINGBAGS`,
     description: `${p.description.slice(0, 150)}...`,
   };
 }

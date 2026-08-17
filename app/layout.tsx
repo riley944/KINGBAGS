@@ -4,9 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "KINGBAGS — Custom Reusable Bags for Your Business | 500 Unit Minimums",
+  title: "KINGBAGS — Fully Custom Cut & Sew Bags | From 1,500 Bags",
   description:
-    "Premium custom reusable bags from the team behind bags for America's most loved brands. Grocery totes, cooler bags, canvas totes and more. 500 unit minimums, instant pricing, delivered in 3–4 weeks.",
+    "Fully custom cut-and-sew bags from the team behind bags for America's most loved brands. Edge-to-edge printing, instant pricing, air-freighted in as little as 4–6 weeks — not the industry's 60–90 days. From 1,500 bags.",
   keywords: [
     "custom reusable bags",
     "branded tote bags bulk",
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     "wholesale reusable bags",
   ],
   openGraph: {
-    title: "KINGBAGS — Custom Reusable Bags for Your Business",
+    title: "KINGBAGS — Fully Custom Cut & Sew Bags",
     description:
-      "Design your custom bag online. Instant pricing. 500 unit minimums. Delivered in 3–4 weeks.",
+      "Design your fully custom bag online. Instant pricing. From 1,500 bags, air-freighted in as little as 4–6 weeks.",
     type: "website",
   },
 };

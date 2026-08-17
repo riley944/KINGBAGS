@@ -5,7 +5,7 @@ import { PRODUCTS } from "@/lib/products";
 export const metadata = {
   title: "The Bags | KINGBAGS",
   description:
-    "Three fully custom cut-and-sew bags with edge-to-edge printing: the Grocery Tote, the Canvas Tote, and the Beach Bag. From 2,000 bags.",
+    "Three fully custom cut-and-sew bags with edge-to-edge printing: the Grocery Tote, the Canvas Tote, and the Beach Bag. From 1,500 bags.",
 };
 
 export default function ProductsPage() {
@@ -29,7 +29,7 @@ export default function ProductsPage() {
                 <h2 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h2>
                 <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
                 <div className="flex justify-between items-center text-[15px]">
-                  <span className="font-bold text-ember">From ${p.tiers[p.tiers.length - 1].unitPrice.toFixed(2)}/bag</span>
+                  <span className="font-bold text-ember">${p.tiers[0].unitPrice.toFixed(2)}/bag at {p.minOrder.toLocaleString()}</span>
                   <span className="text-ink-soft/70">{p.sizes.length} {p.sizes.length === 1 ? "size" : "sizes"}</span>
                 </div>
               </div>
