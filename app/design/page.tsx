@@ -22,6 +22,7 @@ function Configurator() {
   const [company, setCompany] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const previewRef = useRef<HTMLCanvasElement | null>(null);
   const drag = useRef({ on: false, sx: 0, sy: 0, ox: 0.5, oy: 0.5 });
 
@@ -72,7 +73,7 @@ function Configurator() {
       const up = await uploadArt(artFile);
       if (up) artFilename = up;
     }
-    await saveQuote({
+    const res = await saveQuote({
       email,
       company: company || undefined,
       product_slug: product.slug,
@@ -84,7 +85,12 @@ function Configurator() {
       notes: `phone: ${phone} | sourcing: CN`,
     });
     setSubmitting(false);
-    setSubmitted(true);
+    if (res.ok) {
+      setSubmitted(true);
+    } else {
+      // Never show the confirmation for a quote we did not actually store.
+      setSubmitError(res.error || "Something went wrong saving your quote.");
+    }
   };
 
   const { width: tw, height: th } = templateSize(dieline);
@@ -250,6 +256,12 @@ function Configurator() {
                 className="w-full btn-ember !py-4">
                 {submitting ? "Saving…" : "Get My Bags"}
               </button>
+              {submitError && (
+                <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
+                  We couldn&apos;t save your quote. Please try again, or email{" "}
+                  <a href="mailto:hello@kingbags.com" className="font-semibold underline">hello@kingbags.com</a>.
+                </p>
+              )}
               <p className="text-[11px] text-ink-soft mt-3 text-center">A real person reviews every design. No spam, ever.</p>
             </div>
           )}
