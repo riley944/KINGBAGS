@@ -10,7 +10,7 @@ export default function Footer() {
             <span className="font-serif font-black text-2xl" style={{ color: "#E8703C" }}>BAGS</span>
           </div>
           <p className="text-[15px] leading-relaxed">
-            Fully custom bags from the team behind programs for America's most loved brands. A King Universal Inc. company.
+            Fully custom bags from the team behind some of America's largest bag programs. A King Universal Inc. company.
           </p>
         </div>
         <div>

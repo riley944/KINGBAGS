@@ -23,7 +23,7 @@ const KITS = [
     id: "exact-sample",
     name: "The Exact Sample",
     price: 150,
-    tagline: "Your bag, your art, in your hands — before the full run.",
+    tagline: "A pre-production copy of your actual bag, before the full run.",
     includes: [
       "One pre-production sample of your actual bag, cut and sewn with your artwork",
       "Made at the same factory that produces your full order",

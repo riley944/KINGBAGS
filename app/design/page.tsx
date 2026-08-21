@@ -241,7 +241,7 @@ function Configurator() {
           {submitted ? (
             <div className="bg-ember-tint rounded-2.5xl p-8 text-center">
               <h3 className="font-serif font-bold text-2xl text-ink mb-2">Your proof is on the way.</h3>
-              <p className="text-ink-soft text-sm leading-relaxed">Within one business day you&apos;ll get a photoreal rendering of your bag, final specs, and a sample plan — reviewed by a real person on our team. Nothing is produced and nothing is charged until you approve it.</p>
+              <p className="text-ink-soft text-sm leading-relaxed">Within one business day, a designer on our team will send your photoreal proof, final specs, and a sample plan. Nothing goes to production until you approve it.</p>
             </div>
           ) : (
             <div className="bg-white rounded-2.5xl shadow-soft p-7">
@@ -263,8 +263,8 @@ function Configurator() {
                 </p>
               )}
               <ul className="mt-5 space-y-2 text-[13px] text-ink-soft">
-                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Free photoreal proof before anything is produced</li>
-                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited revisions until you love it</li>
+                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Free proof of your exact bag before anything is produced</li>
+                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited proof revisions</li>
                 <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve your proof</li>
               </ul>
               <p className="text-[13px] text-ink-soft mt-4 pt-4 border-t border-ink/10">

@@ -10,14 +10,14 @@ export const metadata = {
 const STATS = [
   { v: "10+", l: "Years building brand programs" },
   { v: "13+", l: "Partner factories worldwide" },
-  { v: "6", l: "Product categories mastered" },
-  { v: "95%", l: "Of orders, we're importer of record" },
+  { v: "6", l: "Product categories in production" },
+  { v: "95%", l: "Of orders cleared through customs by us" },
 ];
 
 const VALUES = [
   {
     t: "Cut and sew, never blanks",
-    d: "Most 'custom' bags are catalog blanks with a logo pressed on. Every KINGBAGS bag is built from a flat production template — your art printed edge to edge across every panel, then cut and sewn into the finished bag. There is no blank. The bag is the art.",
+    d: "Most 'custom' bags are catalog blanks with a logo pressed on. Every KINGBAGS bag starts as a flat production template with your art printed edge to edge across every panel, then gets cut and sewn into the finished bag. Nothing about it ever was a blank.",
   },
   {
     t: "Factory-direct, no middlemen",
@@ -29,7 +29,7 @@ const VALUES = [
   },
   {
     t: "A real person on every order",
-    d: "The platform gives you instant pricing and a live proof — but before anything goes to production, a human on our team reviews your art, confirms your specs, and walks your order through the factory. Software for speed. People for certainty.",
+    d: "The platform gives you instant pricing and a live proof, but before anything goes to production, someone on our team reviews your art, confirms your specs, and walks your order through the factory.",
   },
 ];
 
@@ -118,7 +118,7 @@ export default function AboutPage() {
             <h2 className="font-serif font-black text-3xl md:text-5xl text-ink leading-tight mb-6">
               Your brand deserves the same craft.
             </h2>
-            <p className="text-ink-soft text-lg mb-10">Design your bag in minutes. A real person reviews every order.</p>
+            <p className="text-ink-soft text-lg mb-10">Design your bag in minutes — our team takes it from there.</p>
             <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
           </Reveal>
         </div>
