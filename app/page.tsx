@@ -41,11 +41,11 @@ export default function Home() {
       {/* TRUST STRIP */}
       <section className="bg-charcoal text-white">
         <div className="mx-auto max-w-6xl px-5 py-5 flex flex-wrap justify-center gap-x-10 gap-y-2 text-[15px] font-medium">
-          <span>10+ years building national brand programs</span>
+          <span>The same bags we build for national brands</span>
           <span className="text-white/25">·</span>
-          <span>13+ partner factories</span>
+          <span>Factory-direct pricing, no middleman markup</span>
           <span className="text-white/25">·</span>
-          <span>Importer of record on 95% of orders</span>
+          <span>Shipping and customs handled for you</span>
           <span className="text-white/25">·</span>
           <span>From 1,500 bags</span>
         </div>
@@ -137,7 +137,7 @@ export default function Home() {
               The team behind some of America's largest bag programs.
             </h2>
             <p className="text-white/65 text-lg leading-relaxed max-w-xl mx-auto mb-10">
-              For over a decade, King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS is the same team, the same factories, and the same standards — sized for brands ordering 1,500 bags, not 150,000.
+              For over a decade, King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS is the same team, the same factories, and the same standards — sized for brands ordering 1,500 bags, not 150,000. You get the best bag your brand can put its name on, at the price the factory charges — not what a distributor marks it up to.
             </p>
             <Link href="/design" className="btn-light text-lg !px-12 !py-5">Design Your Bag</Link>
           </Reveal>

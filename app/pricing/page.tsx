@@ -18,7 +18,7 @@ export default function PricingPage() {
               Honest numbers, right up front.
             </h1>
             <p className="text-lg text-ink-soft leading-relaxed">
-              Every price below is for a fully custom, edge-to-edge printed, cut-and-sewn bag — not a blank with a logo. Most orders fly air freight and land in 4–6 weeks. We&apos;re the importer of record, so customs, duties, and freight show up on one invoice with your final quote. No surprises at the port.
+              Every price below is for a fully custom, edge-to-edge printed, cut-and-sewn bag — not a blank with a logo. Most orders fly air freight and land in 4–6 weeks, and we handle the shipping, customs, and duties ourselves. One invoice, delivered to your door, no surprises.
             </p>
           </Reveal>
         </div>
