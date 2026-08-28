@@ -4,19 +4,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: "#FAF8F4",
-        smoke: "#F0EDE7",
-        ink: { DEFAULT: "#211F1C", soft: "#6E6A63" },
-        ember: { DEFAULT: "#D9561F", dark: "#B03F10", tint: "#FBEDE4" },
-        charcoal: "#171614",
+        paper: "#FFFFFF",
+        smoke: "#F3F5F2",
+        ink: { DEFAULT: "#10140F", soft: "#5C635B" },
+        ember: { DEFAULT: "#14532D", dark: "#0C3D20", tint: "#E9F2EC" },
+        charcoal: "#101410",
       },
       fontFamily: {
         serif: ["var(--font-display)", "Georgia", "serif"],
         sans: ["var(--font-body)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 2px 16px rgba(33,31,28,0.06)",
-        lift: "0 18px 44px rgba(33,31,28,0.11)",
+        soft: "0 1px 2px rgba(16,20,15,0.05), 0 4px 16px rgba(16,20,15,0.05)",
+        lift: "0 2px 4px rgba(16,20,15,0.05), 0 18px 40px rgba(16,20,15,0.10)",
       },
       borderRadius: { "2.5xl": "1.25rem", "4xl": "2rem" },
     },

@@ -5,16 +5,16 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: #FAF8F4;
-  color: #211F1C;
+  background-color: #FFFFFF;
+  color: #10140F;
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background-color: #FBEDE4; color: #B03F10; }
+::selection { background-color: #E9F2EC; color: #0C3D20; }
 
 :focus-visible {
-  outline: 2px solid #D9561F;
+  outline: 2px solid #14532D;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -26,43 +26,43 @@ table { font-variant-numeric: tabular-nums; }
 /* Buttons — every variant guaranteed visible on every background used in the site */
 .btn-ember {
   display: inline-flex; align-items: center; justify-content: center;
-  background-color: #D9561F; color: #FFFFFF;
+  background-color: #14532D; color: #FFFFFF;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-ember:hover { background-color: #B03F10; transform: scale(1.02); }
+.btn-ember:hover { background-color: #0C3D20; transform: scale(1.02); }
 .btn-ember:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 .btn-ink {
   display: inline-flex; align-items: center; justify-content: center;
-  background-color: #211F1C; color: #FAF8F4;
+  background-color: #10140F; color: #FFFFFF;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-ink:hover { background-color: #D9561F; color: #FFFFFF; transform: scale(1.02); }
+.btn-ink:hover { background-color: #14532D; color: #FFFFFF; transform: scale(1.02); }
 .btn-ink:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 /* On dark sections use btn-light */
 .btn-light {
   display: inline-flex; align-items: center; justify-content: center;
-  background-color: #FAF8F4; color: #211F1C;
+  background-color: #FFFFFF; color: #10140F;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-light:hover { background-color: #D9561F; color: #FFFFFF; transform: scale(1.02); }
+.btn-light:hover { background-color: #14532D; color: #FFFFFF; transform: scale(1.02); }
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
-  color: #211F1C; background-color: transparent;
+  color: #10140F; background-color: transparent;
   font-weight: 600; font-size: 1rem; padding: 1rem 1.8rem; border-radius: 9999px;
-  border: 1.5px solid #211F1C;
+  border: 1.5px solid #10140F;
   transition: all 0.15s ease;
 }
-.btn-outline:hover { background-color: #211F1C; color: #FAF8F4; }
+.btn-outline:hover { background-color: #10140F; color: #FFFFFF; }
 
 .section-label {
   font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
-  text-transform: uppercase; color: #D9561F;
+  text-transform: uppercase; color: #14532D;
 }
 
 /* Reveal-on-scroll animation */

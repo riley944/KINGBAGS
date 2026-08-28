@@ -22,7 +22,7 @@ export function drawDieline(
   if (!ctx) return;
 
   // Fabric base
-  ctx.fillStyle = "#F2EFE9";
+  ctx.fillStyle = "#F2F4F0";
   ctx.fillRect(0, 0, W, H);
 
   // User art — tiled/positioned across the WHOLE template (edge-to-edge philosophy)

@@ -7,7 +7,7 @@ export default function Footer() {
         <div>
           <div className="flex items-baseline gap-0.5 mb-4">
             <span className="font-serif font-black text-2xl text-white">KING</span>
-            <span className="font-serif font-black text-2xl" style={{ color: "#E8703C" }}>BAGS</span>
+            <span className="font-serif font-black text-2xl" style={{ color: "#58B383" }}>BAGS</span>
           </div>
           <p className="text-[15px] leading-relaxed">
             Fully custom bags from the team behind some of America's largest bag programs. A King Universal Inc. company.

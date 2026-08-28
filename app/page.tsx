@@ -89,7 +89,7 @@ export default function Home() {
             {featured.map((p, i) => (
               <Reveal key={p.slug} delay={i * 120}>
                 <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
-                  <div className="aspect-square bg-paper flex items-center justify-center">
+                  <div className="aspect-square bg-smoke flex items-center justify-center">
                     <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
                   </div>
                   <div className="p-7">
@@ -133,7 +133,7 @@ export default function Home() {
       <section className="py-28 bg-charcoal text-white">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
-            <p className="section-label mb-5" style={{ color: "#E8703C" }}>Why KINGBAGS</p>
+            <p className="section-label mb-5" style={{ color: "#58B383" }}>Why KINGBAGS</p>
             <h2 className="font-serif font-black text-4xl md:text-[50px] mb-7 leading-tight">
               The team behind some of America's largest bag programs.
             </h2>
