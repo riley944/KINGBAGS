@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import BagArt from "@/components/BagArt";
 import { PRODUCTS } from "@/lib/products";
 
 export const metadata = {
@@ -23,7 +24,7 @@ export default function ProductsPage() {
           <Reveal key={p.slug} delay={i * 100}>
             <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
               <div className="aspect-square bg-smoke flex items-center justify-center">
-                <span className="font-serif italic text-ink/20 text-lg">[ {p.shortName} ]</span>
+                <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
               </div>
               <div className="p-7">
                 <h2 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h2>

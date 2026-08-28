@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import BagArt from "@/components/BagArt";
 
 export const metadata = {
   title: "Our Work | KINGBAGS",
@@ -40,7 +41,10 @@ export default function GalleryPage() {
               <Reveal key={w.title} delay={(i % 3) * 100}>
                 <div className="group bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
                   <div className="aspect-square bg-smoke flex items-center justify-center">
-                    <span className="font-serif italic text-ink/20 px-6 text-center">[ {w.title} — photography ]</span>
+                    <BagArt
+                      variant={["grocery-tote", "canvas-tote", "beach-bag"][i % 3]}
+                      className="w-1/2 text-ink/25 group-hover:text-ember/50 transition-colors"
+                    />
                   </div>
                   <div className="p-6">
                     <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-ember mb-2">{w.cat}</div>

@@ -1,7 +1,23 @@
 import type { Metadata } from "next";
+import { Fraunces, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["600", "700", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "KINGBAGS — Fully Custom Cut & Sew Bags | From 1,500 Bags",
@@ -24,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable}`}>
       <body>
         <Header />
         <main>{children}</main>

@@ -11,8 +11,8 @@ module.exports = {
         charcoal: "#171614",
       },
       fontFamily: {
-        serif: ["Fraunces", "Georgia", "serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["var(--font-display)", "Georgia", "serif"],
+        sans: ["var(--font-body)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         soft: "0 2px 16px rgba(33,31,28,0.06)",

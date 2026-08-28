@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BagArt from "@/components/BagArt";
 import { PRODUCTS, getProduct } from "@/lib/products";
 
 export function generateStaticParams() {
@@ -26,7 +27,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <Link href="/products" className="text-sm text-ember font-semibold hover:underline">← All Bags</Link>
       <div className="grid md:grid-cols-2 gap-12 mt-8">
         <div className="aspect-square bg-smoke rounded-4xl flex items-center justify-center">
-          <span className="font-serif italic text-ink/20">[ {p.name} photography ]</span>
+          <BagArt variant={p.slug} className="w-3/5 text-ink/35" />
         </div>
         <div>
           <h1 className="font-serif font-black text-4xl md:text-5xl text-ink mb-3">{p.name}</h1>
