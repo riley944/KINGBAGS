@@ -27,15 +27,16 @@ export default function Header() {
             const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
             return (
               <Link key={n.href} href={n.href}
-                className={`text-[15px] font-semibold transition-colors ${active ? "text-ember" : "text-ink hover:text-ember"}`}>
+                className={`relative text-[15px] font-semibold transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-[2px] after:bg-ember after:rounded-full after:transition-all ${active ? "text-ember after:w-full" : "text-ink hover:text-ember after:w-0 hover:after:w-full"}`}>
                 {n.label}
               </Link>
             );
           })}
         </nav>
         <div className="hidden md:block">
-          <Link href="/design" className="bg-ember text-white text-[15px] font-semibold px-6 py-3 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03]">
-            Design Your Bag
+          <Link href="/design" className="group bg-ember text-white text-[15px] font-semibold px-6 py-3 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
+            Start Your Order
+            <span className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
           </Link>
         </div>
         <button className="md:hidden text-ink text-2xl" onClick={() => setOpen(!open)} aria-label="Menu">
@@ -66,7 +67,7 @@ export default function Header() {
           </nav>
           <div className="px-5 pb-8 pt-4 shrink-0">
             <Link href="/design" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
-              Design Your Bag
+              Start Your Order →
             </Link>
             <p className="text-center text-sm text-ink-soft mt-4">
               <a href="mailto:hello@kingbags.com" className="hover:text-ink">hello@kingbags.com</a>

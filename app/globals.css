@@ -25,12 +25,13 @@ table { font-variant-numeric: tabular-nums; }
 
 /* Buttons — every variant guaranteed visible on every background used in the site */
 .btn-ember {
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
   background-color: #14532D; color: #FFFFFF;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
+  box-shadow: 0 6px 20px rgba(20, 83, 45, 0.28);
   transition: all 0.15s ease;
 }
-.btn-ember:hover { background-color: #0C3D20; transform: scale(1.02); }
+.btn-ember:hover { background-color: #0C3D20; transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 28px rgba(20, 83, 45, 0.35); }
 .btn-ember:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 .btn-ink {

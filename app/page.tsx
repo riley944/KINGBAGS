@@ -65,13 +65,16 @@ export default function Home() {
         <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
           <div className="max-w-6xl mx-auto">
             <h1 className="font-hero font-extrabold text-[11.5vw] md:text-[92px] leading-[1.02] text-ink">
-              A bag this good, they'll<br /><span className="text-ember italic">never</span> put it down.
+              Make the bag <span className="text-ember italic">nobody</span><br />throws away.
             </h1>
           </div>
           <div className="pointer-events-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
-              <Link href="/products" className="btn-outline bg-paper/70 backdrop-blur-sm">See the lineup</Link>
+              <Link href="/design" className="btn-ember group text-lg !px-12 !py-5">
+                Start Your Order
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+              <Link href="/products" className="btn-outline bg-paper/70 backdrop-blur-sm">Explore the Bags</Link>
             </div>
           </div>
         </div>
@@ -106,7 +109,7 @@ export default function Home() {
             {STEPS.map((s, i) => (
               <Reveal key={s.n} delay={i * 100}>
                 <div className="flex gap-7 md:gap-9 py-9 first:pt-1 border-b border-ink/10 last:border-b-0">
-                  <div className="font-serif font-black text-5xl text-ember w-12 shrink-0 leading-none">{s.n}</div>
+                  <div className="font-serif font-black text-5xl text-gold w-12 shrink-0 leading-none">{s.n}</div>
                   <div>
                     <h3 className="font-bold text-xl text-ink mb-2">{s.t}</h3>
                     <p className="text-ink-soft leading-relaxed">{s.d}</p>
@@ -123,7 +126,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5">
           <Reveal>
             <div className="text-center mb-16">
-              <p className="section-label mb-4">The Lineup</p>
+              <p className="section-label mb-4">The Bags</p>
               <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink leading-tight">
                 Three shapes we've built a thousand times.
               </h2>
@@ -183,7 +186,7 @@ export default function Home() {
             <p className="text-white/65 text-lg leading-relaxed max-w-xl mx-auto mb-10">
               For over a decade, King Universal has built bag programs for theme parks, destination retailers, and national chains. KINGBAGS is the same team, the same factories, and the same standards — sized for brands ordering 1,500 bags, not 150,000. You get the best bag your brand can put its name on, at the price the factory charges — not what a distributor marks it up to.
             </p>
-            <Link href="/design" className="btn-light text-lg !px-12 !py-5">Design Your Bag</Link>
+            <Link href="/design" className="btn-light text-lg !px-12 !py-5">Start Your Order</Link>
           </Reveal>
         </div>
       </section>

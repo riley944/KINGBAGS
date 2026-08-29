@@ -9,6 +9,7 @@ module.exports = {
         ink: { DEFAULT: "#10140F", soft: "#5C635B" },
         ember: { DEFAULT: "#14532D", dark: "#0C3D20", tint: "#E9F2EC" },
         charcoal: "#101410",
+        gold: "#E9A13B",
       },
       fontFamily: {
         serif: ["var(--font-display)", "Georgia", "serif"],
