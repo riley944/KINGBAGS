@@ -18,13 +18,13 @@ export default function Home() {
     <>
       {/* HERO — full-viewport spin with the headline imposed over the bag */}
       <section className="relative h-[calc(100svh-68px)] min-h-[640px] overflow-hidden bg-paper">
-        <div className="absolute inset-x-0 top-[16%] bottom-[4%]">
+        <div className="absolute inset-x-0 top-[30%] bottom-[26%] sm:top-[18%] sm:bottom-[15%]">
           <SpinHero />
         </div>
         <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
           <div className="max-w-6xl mx-auto">
             <p className="section-label mb-5">Custom cut & sew · Edge-to-edge print · From 1,500 bags</p>
-            <h1 className="font-serif font-black text-[12vw] md:text-[92px] leading-[0.95] text-ink">
+            <h1 className="font-hero font-black text-[11vw] md:text-[84px] leading-[0.98] tracking-[-0.02em] text-ink">
               A bag this good, they'll<br /><span className="text-ember italic">never</span> put it down.
             </h1>
           </div>
