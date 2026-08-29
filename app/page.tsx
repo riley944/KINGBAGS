@@ -12,6 +12,47 @@ const STEPS = [
 
 const VERTICALS = ["DTC Brands", "Restaurants", "Gyms & Studios", "Breweries", "Retail", "Events"];
 
+const TRUST = [
+  { icon: "bag", label: "Built for national brands" },
+  { icon: "tag", label: "Factory-direct pricing" },
+  { icon: "plane", label: "Shipping & customs handled" },
+  { icon: "stack", label: "From 1,500 bags" },
+];
+
+function TrustIcon({ name }: { name: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    bag: (
+      <>
+        <path d="M5 8.5 6.2 19a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.8L19 8.5Z" />
+        <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" />
+      </>
+    ),
+    tag: (
+      <>
+        <path d="M3.5 12.5 12 4h5.5a2 2 0 0 1 2 2v5.5l-8.5 8.5a2 2 0 0 1-2.8 0l-4.7-4.7a2 2 0 0 1 0-2.8Z" />
+        <circle cx="15.5" cy="8.5" r="1.2" />
+      </>
+    ),
+    plane: (
+      <>
+        <path d="M21 3 3.5 10.5l6.5 2.5 2.5 6.5L21 3Z" />
+        <path d="M10 13 21 3" />
+      </>
+    ),
+    stack: (
+      <>
+        <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+        <path d="m3.5 12.5 8.5 4.7 8.5-4.7" />
+      </>
+    ),
+  };
+  return (
+    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" stroke="#4CA173" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {paths[name]}
+    </svg>
+  );
+}
+
 export default function Home() {
   const featured = PRODUCTS.filter((p) => p.featured);
   return (
@@ -28,25 +69,23 @@ export default function Home() {
             </h1>
           </div>
           <div className="pointer-events-auto">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
               <Link href="/products" className="btn-outline bg-paper/70 backdrop-blur-sm">See the lineup</Link>
             </div>
-            <p className="text-sm text-ink-soft">Instant pricing · No account needed</p>
           </div>
         </div>
       </section>
 
       {/* TRUST STRIP */}
       <section className="bg-charcoal text-white">
-        <div className="mx-auto max-w-6xl px-5 py-5 flex flex-wrap justify-center gap-x-10 gap-y-2 text-[15px] font-medium">
-          <span>The same bags we build for national brands</span>
-          <span className="text-white/25">·</span>
-          <span>Factory-direct pricing, no middleman markup</span>
-          <span className="text-white/25">·</span>
-          <span>Shipping and customs handled for you</span>
-          <span className="text-white/25">·</span>
-          <span>From 1,500 bags</span>
+        <div className="mx-auto max-w-6xl px-5 py-3.5 flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
+          {TRUST.map((t) => (
+            <span key={t.label} className="flex items-center gap-2.5 text-[12.5px] font-bold tracking-[0.14em] uppercase whitespace-nowrap">
+              <TrustIcon name={t.icon} />
+              {t.label}
+            </span>
+          ))}
         </div>
       </section>
 

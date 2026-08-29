@@ -267,10 +267,10 @@ function Configurator() {
                 <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited proof revisions</li>
                 <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve your proof</li>
               </ul>
-              <p className="text-[13px] text-ink-soft mt-4 pt-4 border-t border-ink/10">
-                Want to hold the quality first?{" "}
-                <a href="/samples" className="text-ember font-semibold hover:underline">Order a sample kit</a> — fully credited toward your order.
-              </p>
+              <a href="/samples" className="btn-outline w-full !py-3.5 !text-[15px] mt-4 text-center">
+                Hold it first — Sample Kit from $35
+              </a>
+              <p className="text-[12px] text-ink-soft mt-2.5 text-center">Fully credited toward your order.</p>
               <p className="text-[11px] text-ink-soft mt-3 text-center">A real person reviews every design. No spam, ever.</p>
             </div>
           )}
