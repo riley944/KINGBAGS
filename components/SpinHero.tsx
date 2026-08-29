@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import BagArt from "./BagArt";
 
 // ===== CONFIG — edit these when you drop in real frames =====
-const FRAME_COUNT = 36;            // number of images in the spin
+const FRAME_COUNT = 12;            // number of images in the spin
 const FRAME_PATH = (i: number) =>
   `/spin/frame-${String(i + 1).padStart(2, "0")}.webp`; // /public/spin/frame-01.webp ... frame-36.webp
 const SPIN_DURATION_MS = 1800;     // one full rotation time
