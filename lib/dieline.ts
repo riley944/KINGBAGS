@@ -1,5 +1,8 @@
-// Dieline geometry in millimeters, from the 451_40_15 production template.
-// Layout: main column (hem/front/base/back/hem) + side gusset column.
+// Dieline geometry in millimeters, matched to the factory production layout
+// (reference: 400x350x150 template, 30mm hems). Two columns: main column
+// (hem / front / base / back-rotated / hem) + side gusset column, where the
+// gusset column is blank at base level and over the hems (no print).
+// Physical constraint: baseD === gussetW === bag depth.
 
 export type Dieline = {
   bodyW: number;   // main panel width (bag width)
@@ -12,18 +15,18 @@ export type Dieline = {
 // Per product+size. Scaled from the 451x400x150 reference template.
 export const DIELINES: Record<string, Record<string, Dieline>> = {
   "grocery-tote": {
-    S:  { bodyW: 305, panelH: 330, baseD: 130, gussetW: 178, hem: 30 },
-    M:  { bodyW: 356, panelH: 380, baseD: 140, gussetW: 203, hem: 30 },
-    L:  { bodyW: 406, panelH: 406, baseD: 150, gussetW: 229, hem: 30 },
-    XL: { bodyW: 483, panelH: 432, baseD: 160, gussetW: 254, hem: 30 },
+    S:  { bodyW: 305, panelH: 330, baseD: 178, gussetW: 178, hem: 30 },
+    M:  { bodyW: 356, panelH: 381, baseD: 203, gussetW: 203, hem: 30 },
+    L:  { bodyW: 406, panelH: 406, baseD: 229, gussetW: 229, hem: 30 },
+    XL: { bodyW: 483, panelH: 432, baseD: 254, gussetW: 254, hem: 30 },
   },
   "canvas-tote": {
-    S: { bodyW: 330, panelH: 330, baseD: 110, gussetW: 127, hem: 25 },
-    M: { bodyW: 381, panelH: 381, baseD: 120, gussetW: 152, hem: 25 },
-    L: { bodyW: 457, panelH: 406, baseD: 130, gussetW: 178, hem: 25 },
+    S: { bodyW: 330, panelH: 330, baseD: 127, gussetW: 127, hem: 25 },
+    M: { bodyW: 381, panelH: 381, baseD: 152, gussetW: 152, hem: 25 },
+    L: { bodyW: 457, panelH: 406, baseD: 178, gussetW: 178, hem: 25 },
   },
   "beach-bag": {
-    OS: { bodyW: 559, panelH: 381, baseD: 160, gussetW: 203, hem: 30 },
+    OS: { bodyW: 559, panelH: 381, baseD: 203, gussetW: 203, hem: 30 },
   },
 };
 

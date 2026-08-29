@@ -33,6 +33,17 @@ export function drawDieline(
     ctx.drawImage(art.img, art.x * W - w / 2, art.y * H - h / 2, w, h);
   }
 
+  // The gusset column only prints across the two side panels: blank the
+  // base-level square and the hem strips, matching the factory layout.
+  {
+    const bx = d.bodyW * pxPerMM;
+    const bw = W - bx;
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(bx, 0, bw, d.hem * pxPerMM);
+    ctx.fillRect(bx, (d.hem + d.panelH) * pxPerMM, bw, d.baseD * pxPerMM);
+    ctx.fillRect(bx, (d.hem + d.panelH + d.baseD + d.panelH) * pxPerMM, bw, d.hem * pxPerMM);
+  }
+
   // Panel guides (only in editor view, not on 3D texture)
   if (showGuides) {
     const r = regions(d);
