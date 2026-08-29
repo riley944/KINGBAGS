@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Fraunces, Instrument_Sans } from "next/font/google";
+import { Fraunces, Instrument_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,7 +12,7 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-const archivo = Archivo({
+const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["700", "800", "900"],
   style: ["normal", "italic"],
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable} ${archivo.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable} ${playfair.variable}`}>
       <body>
         <noscript>
           <style>{`.reveal { opacity: 1 !important; }`}</style>

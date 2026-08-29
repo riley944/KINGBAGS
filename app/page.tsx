@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
           <div className="max-w-6xl mx-auto">
-            <h1 className="font-hero font-black text-[11.5vw] md:text-[92px] leading-[0.97] tracking-[-0.02em] text-ink">
+            <h1 className="font-hero font-extrabold text-[11.5vw] md:text-[92px] leading-[1.02] text-ink">
               A bag this good, they'll<br /><span className="text-ember italic">never</span> put it down.
             </h1>
           </div>
