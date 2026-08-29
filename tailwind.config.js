@@ -18,7 +18,7 @@ module.exports = {
         soft: "0 1px 2px rgba(16,20,15,0.05), 0 4px 16px rgba(16,20,15,0.05)",
         lift: "0 2px 4px rgba(16,20,15,0.05), 0 18px 40px rgba(16,20,15,0.10)",
       },
-      borderRadius: { "2.5xl": "1.25rem", "4xl": "2rem" },
+      borderRadius: { "2.5xl": "0.875rem", "4xl": "1.125rem" },
     },
   },
   plugins: [],

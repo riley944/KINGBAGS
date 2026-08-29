@@ -16,25 +16,24 @@ export default function Home() {
   const featured = PRODUCTS.filter((p) => p.featured);
   return (
     <>
-      {/* HERO — copy superimposes over the spin once frames exist */}
-      <section className="relative">
-        <div className="mx-auto max-w-4xl px-5 pt-20 pb-8 md:pt-28 text-center relative z-10">
-          <p className="section-label mb-6">Custom cut & sew · Edge-to-edge print · From 1,500 bags</p>
-          <h1 className="font-serif font-black text-[44px] md:text-[74px] leading-[1.0] text-ink mb-7">
-            A bag this good,<br />they'll <span className="text-ember italic">never</span> put it down.
-          </h1>
-          <p className="text-lg md:text-xl text-ink-soft max-w-xl mx-auto mb-10 leading-relaxed">
-            Fully custom bags, built from scratch for your brand — your art covers every inch of fabric before the bag is even sewn.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-            <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
-            <Link href="/products" className="btn-outline">See the lineup</Link>
-          </div>
-          <p className="text-sm text-ink-soft">Instant pricing · No account needed</p>
+      {/* HERO — full-viewport spin with the headline imposed over the bag */}
+      <section className="relative h-[calc(100svh-68px)] min-h-[640px] overflow-hidden bg-paper">
+        <div className="absolute inset-x-0 top-[16%] bottom-[4%]">
+          <SpinHero />
         </div>
-        <div className="mx-auto max-w-5xl px-5 pb-20">
-          <div className="aspect-[16/9] md:aspect-[16/8] rounded-4xl bg-smoke shadow-soft overflow-hidden">
-            <SpinHero />
+        <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
+          <div className="max-w-6xl mx-auto">
+            <p className="section-label mb-5">Custom cut & sew · Edge-to-edge print · From 1,500 bags</p>
+            <h1 className="font-serif font-black text-[12vw] md:text-[92px] leading-[0.95] text-ink">
+              A bag this good, they'll<br /><span className="text-ember italic">never</span> put it down.
+            </h1>
+          </div>
+          <div className="pointer-events-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+              <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
+              <Link href="/products" className="btn-outline bg-paper/70 backdrop-blur-sm">See the lineup</Link>
+            </div>
+            <p className="text-sm text-ink-soft">Instant pricing · No account needed</p>
           </div>
         </div>
       </section>
@@ -53,20 +52,27 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-24">
-        <div className="mx-auto max-w-6xl px-5">
+      <section className="py-24 md:py-28 border-t border-ink/10">
+        <div className="mx-auto max-w-6xl px-5 grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-20">
           <Reveal>
-            <h2 className="font-serif font-black text-4xl md:text-[50px] text-center text-ink mb-16 leading-tight">
-              Design it. Price it. Carry it.
-            </h2>
+            <div className="md:sticky md:top-28">
+              <h2 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-6">
+                Design it.<br />Price it.<br />Carry it.
+              </h2>
+              <p className="text-ink-soft text-lg leading-relaxed max-w-sm">
+                Fully custom bags, built from scratch for your brand — your art covers every inch of fabric before the bag is even sewn.
+              </p>
+            </div>
           </Reveal>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div>
             {STEPS.map((s, i) => (
-              <Reveal key={s.n} delay={i * 120}>
-                <div className="bg-white rounded-2.5xl p-9 shadow-soft h-full">
-                  <div className="w-12 h-12 rounded-full bg-ember-tint text-ember font-serif font-black text-2xl flex items-center justify-center mb-6">{s.n}</div>
-                  <h3 className="font-bold text-2xl text-ink mb-3">{s.t}</h3>
-                  <p className="text-ink-soft text-[16px] leading-relaxed">{s.d}</p>
+              <Reveal key={s.n} delay={i * 100}>
+                <div className="flex gap-7 md:gap-9 py-9 first:pt-1 border-b border-ink/10 last:border-b-0">
+                  <div className="font-serif font-black text-5xl text-ember w-12 shrink-0 leading-none">{s.n}</div>
+                  <div>
+                    <h3 className="font-bold text-xl text-ink mb-2">{s.t}</h3>
+                    <p className="text-ink-soft leading-relaxed">{s.d}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -88,7 +94,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {featured.map((p, i) => (
               <Reveal key={p.slug} delay={i * 120}>
-                <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
+                <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
                   <div className="aspect-square bg-smoke flex items-center justify-center">
                     <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
                   </div>
@@ -110,22 +116,21 @@ export default function Home() {
       </section>
 
       {/* VERTICALS */}
-      <section className="py-24">
-        <div className="mx-auto max-w-6xl px-5 text-center">
+      <section className="py-24 border-t border-ink/10">
+        <div className="mx-auto max-w-5xl px-5 text-center">
           <Reveal>
-            <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink mb-14 leading-tight max-w-2xl mx-auto">
+            <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink mb-10 leading-tight max-w-2xl mx-auto">
               If your customers carry it, it should carry your brand.
             </h2>
+            <p className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-[13px] md:text-sm font-bold tracking-[0.18em] uppercase text-ink-soft">
+              {VERTICALS.map((v, i) => (
+                <span key={v} className="flex items-center gap-3">
+                  {i > 0 && <span className="text-ember">·</span>}
+                  <span>{v}</span>
+                </span>
+              ))}
+            </p>
           </Reveal>
-          <div className="flex flex-wrap justify-center gap-3">
-            {VERTICALS.map((v, i) => (
-              <Reveal key={v} delay={i * 60}>
-                <div className="bg-white shadow-soft text-ink rounded-full px-7 py-3.5 font-semibold text-[15px] hover:bg-ember hover:text-white transition-colors cursor-default">
-                  {v}
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -42,6 +42,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable}`}>
       <body>
+        <noscript>
+          <style>{`.reveal { opacity: 1 !important; }`}</style>
+        </noscript>
         <Header />
         <main>{children}</main>
         <Footer />

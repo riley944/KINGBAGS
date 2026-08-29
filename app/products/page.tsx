@@ -22,7 +22,7 @@ export default function ProductsPage() {
       <div className="grid md:grid-cols-3 gap-6">
         {PRODUCTS.map((p, i) => (
           <Reveal key={p.slug} delay={i * 100}>
-            <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
+            <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
               <div className="aspect-square bg-smoke flex items-center justify-center">
                 <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
               </div>
