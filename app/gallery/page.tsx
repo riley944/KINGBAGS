@@ -88,7 +88,7 @@ export default function LookbookPage() {
                 <div className="group bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
                   <ConceptImage slug={c.slug} variant={c.bag} />
                   <div className="p-6">
-                    <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-ember mb-2">{c.vertical}</div>
+                    <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-gold-deep mb-2">{c.vertical}</div>
                     <h2 className="font-bold text-ink text-lg mb-1">{c.brand}</h2>
                     <p className="text-[13px] font-semibold text-ink-soft mb-2">{c.construction}</p>
                     <p className="text-sm text-ink-soft leading-relaxed">{c.note}</p>

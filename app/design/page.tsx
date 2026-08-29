@@ -156,7 +156,7 @@ function Configurator() {
           {/* 01 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-ember/25">01</span>
+              <span className="font-serif font-black text-5xl text-gold/70">01</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Choose your bag</h2>
             </div>
             <div className="flex flex-wrap gap-2.5 mb-4">
@@ -181,7 +181,7 @@ function Configurator() {
           {/* 02 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-ember/25">02</span>
+              <span className="font-serif font-black text-5xl text-gold/70">02</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Get the template</h2>
             </div>
             <div className="bg-white rounded-2.5xl border border-ink/10 p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
@@ -202,7 +202,7 @@ function Configurator() {
           {/* 03 */}
           <div>
             <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-ember/25">03</span>
+              <span className="font-serif font-black text-5xl text-gold/70">03</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Place your art</h2>
             </div>
             {!art.img && (

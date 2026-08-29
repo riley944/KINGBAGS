@@ -65,7 +65,7 @@ export default function Home() {
         <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
           <div className="max-w-6xl mx-auto">
             <h1 className="font-hero font-extrabold text-[11.5vw] md:text-[92px] leading-[1.02] text-ink">
-              Make the bag <span className="text-ember italic">nobody</span><br />throws away.
+              Make the bag <span className="text-gold italic">nobody</span><br />throws away.
             </h1>
           </div>
           <div className="pointer-events-auto">
@@ -157,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* VERTICALS */}
-      <section className="py-24 border-t border-ink/10">
+      <section className="py-24 bg-gold-tint">
         <div className="mx-auto max-w-5xl px-5 text-center">
           <Reveal>
             <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink mb-10 leading-tight max-w-2xl mx-auto">
@@ -166,7 +166,7 @@ export default function Home() {
             <p className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-[13px] md:text-sm font-bold tracking-[0.18em] uppercase text-ink-soft">
               {VERTICALS.map((v, i) => (
                 <span key={v} className="flex items-center gap-3">
-                  {i > 0 && <span className="text-ember">·</span>}
+                  {i > 0 && <span className="text-gold-deep">·</span>}
                   <span>{v}</span>
                 </span>
               ))}
