@@ -23,6 +23,7 @@ function Configurator() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [demo, setDemo] = useState(false);
   const previewRef = useRef<HTMLCanvasElement | null>(null);
   const drag = useRef({ on: false, sx: 0, sy: 0, ox: 0.5, oy: 0.5 });
 
@@ -44,9 +45,52 @@ function Configurator() {
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) return;
     setArtFile(file);
+    setDemo(false);
     const img = new Image();
     img.onload = () => setArt((a) => ({ ...a, img }));
     img.src = URL.createObjectURL(file);
+  };
+
+  // Paints a full-bleed demo artwork so first-time visitors see what a
+  // proper edge-to-edge layout looks like on the real template.
+  const showExample = () => {
+    // Match the live template's aspect so the example genuinely bleeds
+    // edge to edge across every panel of the dieline.
+    const { width: dw, height: dh } = templateSize(dieline);
+    const c = document.createElement("canvas");
+    c.width = 1100;
+    c.height = Math.round((1100 * dh) / dw);
+    const x = c.getContext("2d");
+    if (!x) return;
+    x.fillStyle = "#14532D";
+    x.fillRect(0, 0, c.width, c.height);
+    // scattered leaf-dot pattern
+    x.fillStyle = "rgba(250, 248, 240, 0.16)";
+    for (let i = 0; i < 160; i++) {
+      const px = (i * 197) % c.width, py = (i * 331) % c.height;
+      x.beginPath();
+      x.ellipse(px, py, 26, 11, (i % 6) * 0.5, 0, Math.PI * 2);
+      x.fill();
+    }
+    // wordmark band across the front panel zone
+    const bandH = c.height * 0.14;
+    const bandY = c.height * 0.30;
+    x.fillStyle = "#FAF8F0";
+    x.fillRect(0, bandY, c.width, bandH);
+    x.fillStyle = "#14532D";
+    x.textAlign = "center";
+    x.textBaseline = "middle";
+    x.font = `italic 900 ${Math.round(bandH * 0.5)}px Georgia, serif`;
+    x.fillText("Your Brand", c.width / 2, bandY + bandH * 0.42);
+    x.font = `700 ${Math.round(bandH * 0.16)}px Georgia, serif`;
+    x.fillText("E S T .  2 0 2 6", c.width / 2, bandY + bandH * 0.8);
+    const img = new Image();
+    img.onload = () => {
+      setArtFile(null);
+      setDemo(true);
+      setArt({ img, x: 0.5, y: 0.5, scale: 1.0 });
+    };
+    img.src = c.toDataURL("image/png");
   };
 
   const downloadTemplate = () => {
@@ -162,11 +206,32 @@ function Configurator() {
               <h2 className="font-serif font-bold text-2xl text-ink">Place your art</h2>
             </div>
             {!art.img && (
-              <label className="block bg-white rounded-2.5xl p-10 text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/20 hover:border-ember/40 mb-5">
+              <label className="block bg-white rounded-2.5xl p-10 text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/20 hover:border-ember/40 mb-3">
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
                 <span className="font-semibold text-ink block mb-1.5 text-lg">Upload your artwork</span>
                 <span className="text-sm text-ink-soft">Formatted to the template, or full-bleed art we'll position together. PNG or JPG, high resolution.</span>
               </label>
+            )}
+            {!art.img && (
+              <p className="text-sm text-ink-soft text-center mb-5">
+                Not sure what "edge to edge" means?{" "}
+                <button onClick={showExample} className="text-ember font-semibold hover:underline">
+                  See an example layout
+                </button>
+              </p>
+            )}
+            {demo && (
+              <div className="bg-ember-tint rounded-2xl px-5 py-4 mb-4 flex items-start justify-between gap-4">
+                <p className="text-sm text-ink leading-relaxed">
+                  <span className="font-semibold">Example layout.</span> Notice the art runs across the front, back, sides, and base — the whole template prints, then gets cut and sewn. Upload your own art to replace it.
+                </p>
+                <button
+                  onClick={() => { setDemo(false); setArt({ img: null, x: 0.5, y: 0.5, scale: 1 }); }}
+                  className="text-sm font-semibold text-ember hover:underline shrink-0"
+                >
+                  Clear
+                </button>
+              </div>
             )}
             <canvas
               ref={previewRef}
