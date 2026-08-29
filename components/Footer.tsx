@@ -1,13 +1,13 @@
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="bg-charcoal text-white/75">
       <div className="mx-auto max-w-6xl px-5 py-16 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="flex items-baseline gap-0.5 mb-4">
-            <span className="font-serif font-black text-2xl text-white">KING</span>
-            <span className="font-serif font-black text-2xl" style={{ color: "#4CA173" }}>BAGS</span>
+          <div className="mb-4">
+            <Logo dark />
           </div>
           <p className="text-[15px] leading-relaxed">
             Fully custom bags from the team behind some of America's largest bag programs. A King Universal Inc. company.

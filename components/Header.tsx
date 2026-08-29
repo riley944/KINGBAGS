@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 import { useState } from "react";
 
 const NAV = [
@@ -18,9 +19,8 @@ export default function Header() {
   return (
     <header className={`sticky top-0 z-50 border-b border-ink/10 ${open ? "bg-paper" : "bg-paper/90 backdrop-blur-md"}`}>
       <div className="mx-auto max-w-6xl px-5 flex items-center justify-between h-[68px]">
-        <Link href="/" className="flex items-baseline gap-0.5">
-          <span className="font-serif font-black text-2xl tracking-tight text-ink">KING</span>
-          <span className="font-serif font-black text-2xl tracking-tight text-ember">BAGS</span>
+        <Link href="/" aria-label="KINGBAGS home">
+          <Logo />
         </Link>
         <nav className="hidden md:flex items-center gap-7">
           {NAV.map((n) => {
@@ -45,9 +45,8 @@ export default function Header() {
       {open && (
         <div className="md:hidden fixed inset-0 z-50 bg-paper flex flex-col">
           <div className="flex items-center justify-between h-[68px] px-5 border-b border-ink/10 shrink-0">
-            <Link href="/" className="flex items-baseline gap-0.5" onClick={() => setOpen(false)}>
-              <span className="font-serif font-black text-2xl tracking-tight text-ink">KING</span>
-              <span className="font-serif font-black text-2xl tracking-tight text-ember">BAGS</span>
+            <Link href="/" aria-label="KINGBAGS home" onClick={() => setOpen(false)}>
+              <Logo />
             </Link>
             <button className="text-ink text-2xl w-10 h-10 flex items-center justify-center" onClick={() => setOpen(false)} aria-label="Close menu">
               ✕
@@ -59,7 +58,7 @@ export default function Header() {
               return (
                 <Link key={n.href} href={n.href} onClick={() => setOpen(false)}
                   className="flex items-baseline justify-between py-5 border-b border-ink/10 group">
-                  <span className={`font-hero text-4xl ${active ? "text-ember" : "text-ink"}`}>{n.label}</span>
+                  <span className={`font-hero font-bold text-4xl ${active ? "text-ember" : "text-ink"}`}>{n.label}</span>
                   <span className="text-ember text-xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                 </Link>
               );
