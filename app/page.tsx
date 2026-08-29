@@ -23,8 +23,7 @@ export default function Home() {
         </div>
         <div className="relative z-10 h-full flex flex-col items-center justify-between text-center px-5 pt-10 md:pt-14 pb-8 pointer-events-none">
           <div className="max-w-6xl mx-auto">
-            <p className="section-label mb-5">Custom cut & sew · Edge-to-edge print · From 1,500 bags</p>
-            <h1 className="font-hero font-black text-[11vw] md:text-[84px] leading-[0.98] tracking-[-0.02em] text-ink">
+            <h1 className="font-hero text-[13vw] md:text-[104px] leading-[1.0] text-ink">
               A bag this good, they'll<br /><span className="text-ember italic">never</span> put it down.
             </h1>
           </div>
