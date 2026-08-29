@@ -8,6 +8,8 @@ export type Product = {
   tagline: string;
   description: string;
   sizes: SizeOption[];
+  material: string;
+  construction: string[];
   minOrder: number;
   leadTime: string;
   tiers: PricingTier[];
@@ -30,6 +32,13 @@ export const PRODUCTS: Product[] = [
       { code: "M", label: "Medium", dims: '14" × 15" × 8"' },
       { code: "L", label: "Large", dims: '16" × 16" × 9"' },
       { code: "XL", label: "X-Large", dims: '19" × 17" × 10"' },
+    ],
+    material: "100% non-woven polypropylene, laminated",
+    construction: [
+      "Full-color laminated print across every panel",
+      "Reinforced sewn handles, cross-stitched at stress points",
+      "Structured board bottom",
+      "Wipes clean; built for years of grocery runs",
     ],
     minOrder: MIN_ORDER,
     leadTime: "4–6 weeks",
@@ -55,6 +64,13 @@ export const PRODUCTS: Product[] = [
       { code: "M", label: "Medium", dims: '15" × 15" × 6"' },
       { code: "L", label: "Large", dims: '18" × 16" × 7"' },
     ],
+    material: "Heavyweight cotton canvas",
+    construction: [
+      "Edge-to-edge print, cut and sewn to your design",
+      "Long self-fabric straps, bar-tacked",
+      "Interior seams bound and finished",
+      "The tote people keep for years",
+    ],
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [
@@ -75,6 +91,13 @@ export const PRODUCTS: Product[] = [
     description:
       "One size, seriously built. Extra-heavy canvas, wide flat bottom that stands on its own, rope-grade handles, and your art edge to edge. The oversized carryall your customers will use every weekend for a decade.",
     sizes: [{ code: "OS", label: "One Size", dims: '22" × 15" × 8"' }],
+    material: "Extra-heavy cotton canvas",
+    construction: [
+      "Wide flat woven base that stands on its own",
+      "Rope-grade handles, anchored through the body",
+      "Edge-to-edge print on every panel",
+      "Built for a decade of weekends",
+    ],
     minOrder: MIN_ORDER,
     leadTime: "5–7 weeks",
     tiers: [

@@ -46,6 +46,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
 
+          <div className="mb-9">
+            <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Materials & construction</div>
+            <p className="font-semibold text-ink mb-2.5">{p.material}</p>
+            <ul className="space-y-1.5">
+              {p.construction.map((c) => (
+                <li key={c} className="flex gap-2.5 text-[15px] text-ink-soft leading-snug">
+                  <span className="text-ember font-bold shrink-0">·</span> {c}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="flex gap-8 mb-9 text-[15px]">
             <div><span className="font-semibold text-ink">Minimum:</span> <span className="text-ink-soft">{p.minOrder.toLocaleString()} bags</span></div>
             <div><span className="font-semibold text-ink">Lead time:</span> <span className="text-ink-soft">{p.leadTime}</span></div>
