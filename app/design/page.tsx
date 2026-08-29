@@ -118,7 +118,7 @@ function Configurator() {
             <div className="flex flex-wrap gap-2.5 mb-4">
               {PRODUCTS.map((p) => (
                 <button key={p.slug} onClick={() => setProduct(p)}
-                  className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${product.slug === p.slug ? "bg-ink text-paper" : "bg-white text-ink-soft shadow-soft hover:text-ink"}`}>
+                  className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${product.slug === p.slug ? "bg-ink text-paper" : "bg-white text-ink-soft border border-ink/10 hover:text-ink"}`}>
                   {p.shortName}
                 </button>
               ))}
@@ -126,7 +126,7 @@ function Configurator() {
             <div className="flex flex-wrap gap-2.5">
               {product.sizes.map((s) => (
                 <button key={s.code} onClick={() => setSizeCode(s.code)}
-                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-ember-tint text-ember font-semibold ring-1 ring-ember/30" : "bg-white text-ink-soft shadow-soft hover:text-ink"}`}>
+                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-ember-tint text-ember font-semibold ring-1 ring-ember/30" : "bg-white text-ink-soft border border-ink/10 hover:text-ink"}`}>
                   <span className="font-semibold">{s.label}</span>
                   <span className="ml-2 opacity-70">{s.dims}</span>
                 </button>
@@ -140,7 +140,7 @@ function Configurator() {
               <span className="font-serif font-black text-5xl text-ember/25">02</span>
               <h2 className="font-serif font-bold text-2xl text-ink">Get the template</h2>
             </div>
-            <div className="bg-white rounded-2.5xl shadow-soft p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div className="bg-white rounded-2.5xl border border-ink/10 p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
                 <p className="font-semibold text-ink mb-1">
                   {product.name} · {size.label} production template
@@ -162,7 +162,7 @@ function Configurator() {
               <h2 className="font-serif font-bold text-2xl text-ink">Place your art</h2>
             </div>
             {!art.img && (
-              <label className="block bg-white rounded-2.5xl p-10 shadow-soft text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/15 hover:border-ember/40 mb-5">
+              <label className="block bg-white rounded-2.5xl p-10 text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/20 hover:border-ember/40 mb-5">
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
                 <span className="font-semibold text-ink block mb-1.5 text-lg">Upload your artwork</span>
                 <span className="text-sm text-ink-soft">Formatted to the template, or full-bleed art we'll position together. PNG or JPG, high resolution.</span>
@@ -170,7 +170,7 @@ function Configurator() {
             )}
             <canvas
               ref={previewRef}
-              className="w-full h-auto rounded-2.5xl bg-white shadow-soft touch-none select-none"
+              className="w-full h-auto rounded-2.5xl bg-white border border-ink/10 touch-none select-none"
               style={{ cursor: art.img ? "grab" : "default", maxHeight: 460, objectFit: "contain" }}
               onPointerDown={(e) => {
                 if (!art.img) return;
@@ -190,7 +190,7 @@ function Configurator() {
             />
             {art.img && (
               <div className="flex items-center gap-6 mt-4">
-                <div className="flex-1 bg-white rounded-2xl px-5 py-4 shadow-soft">
+                <div className="flex-1 bg-white rounded-2xl px-5 py-4 border border-ink/10">
                   <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-2">Art size</label>
                   <input type="range" min={0.3} max={3} step={0.01} value={art.scale}
                     onChange={(e) => setArt((a) => ({ ...a, scale: Number(e.target.value) }))}
@@ -210,7 +210,7 @@ function Configurator() {
 
         {/* SIDE RAIL */}
         <div className="lg:sticky lg:top-24 h-fit space-y-5">
-          <div className="bg-white rounded-2.5xl shadow-soft p-7">
+          <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
             <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Quantity</label>
             <div className="grid grid-cols-3 gap-2 mb-4">
               {QTY_PRESETS.map((q) => (
@@ -244,7 +244,7 @@ function Configurator() {
               <p className="text-ink-soft text-sm leading-relaxed">Within one business day, a designer on our team will send your photoreal proof, final specs, and a sample plan. Nothing goes to production until you approve it.</p>
             </div>
           ) : (
-            <div className="bg-white rounded-2.5xl shadow-soft p-7">
+            <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
               <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Get your bags</label>
               <input type="email" placeholder="Work email" value={email} onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />

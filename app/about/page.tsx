@@ -56,7 +56,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl px-5 grid grid-cols-2 md:grid-cols-4 gap-5">
           {STATS.map((s, i) => (
             <Reveal key={s.l} delay={i * 100}>
-              <div className="bg-white rounded-2.5xl shadow-soft p-8 text-center h-full">
+              <div className="bg-white rounded-2.5xl border border-ink/10 p-8 text-center h-full">
                 <div className="font-serif font-black text-5xl text-ember mb-2">{s.v}</div>
                 <div className="text-sm text-ink-soft leading-snug">{s.l}</div>
               </div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
       <section className="py-24 bg-charcoal text-white">
         <div className="mx-auto max-w-3xl px-5">
           <Reveal>
-            <p className="section-label mb-5" style={{ color: "#58B383" }}>The Story</p>
+            <p className="section-label mb-5" style={{ color: "#4CA173" }}>The Story</p>
             <h2 className="font-serif font-black text-3xl md:text-5xl leading-tight mb-8">
               Built in the rooms where the biggest bag programs get made.
             </h2>
@@ -101,7 +101,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-6">
             {VALUES.map((v, i) => (
               <Reveal key={v.t} delay={i * 100}>
-                <div className="bg-white rounded-2.5xl shadow-soft p-9 h-full">
+                <div className="bg-white rounded-2.5xl border border-ink/10 p-9 h-full">
                   <h3 className="font-serif font-bold text-2xl text-ink mb-4">{v.t}</h3>
                   <p className="text-ink-soft leading-relaxed">{v.d}</p>
                 </div>

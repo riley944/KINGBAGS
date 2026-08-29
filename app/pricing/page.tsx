@@ -28,7 +28,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-5xl px-5 space-y-8">
           {PRODUCTS.map((p, i) => (
             <Reveal key={p.slug} delay={i * 100}>
-              <div className="bg-white rounded-2.5xl shadow-soft overflow-hidden">
+              <div className="bg-white rounded-2.5xl border border-ink/10 overflow-hidden">
                 <div className="p-8 pb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
                   <div>
                     <h2 className="font-serif font-black text-3xl text-ink mb-1">{p.name}</h2>

@@ -92,7 +92,7 @@ export default function SamplesPage() {
                 <button
                   onClick={() => setKit(k.id)}
                   className={`text-left bg-white rounded-2.5xl p-8 h-full w-full transition-all ${
-                    kit === k.id ? "ring-2 ring-ember shadow-lift" : "shadow-soft hover:shadow-lift"
+                    kit === k.id ? "ring-2 ring-ember shadow-lift" : "border border-ink/10 hover:border-ember/50 hover:shadow-lift"
                   }`}
                 >
                   <div className="flex items-baseline justify-between mb-2">
@@ -113,7 +113,7 @@ export default function SamplesPage() {
             ))}
           </div>
 
-          <div className="max-w-xl mx-auto bg-white rounded-2.5xl shadow-soft p-8">
+          <div className="max-w-xl mx-auto bg-white rounded-2.5xl border border-ink/10 p-8">
             <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">
               {kit ? `Request ${KITS.find((k) => k.id === kit)?.name}` : "Pick a kit above, then tell us where to reach you"}
             </label>

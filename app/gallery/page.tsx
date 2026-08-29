@@ -39,7 +39,7 @@ export default function GalleryPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {WORK.map((w, i) => (
               <Reveal key={w.title} delay={(i % 3) * 100}>
-                <div className="group bg-white rounded-2.5xl overflow-hidden shadow-soft hover:shadow-lift transition-all hover:-translate-y-1 h-full">
+                <div className="group bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all hover:-translate-y-1 h-full">
                   <div className="aspect-square bg-smoke flex items-center justify-center">
                     <BagArt
                       variant={["grocery-tote", "canvas-tote", "beach-bag"][i % 3]}

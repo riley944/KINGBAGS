@@ -137,7 +137,7 @@ export default function Home() {
       <section className="py-28 bg-charcoal text-white">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
-            <p className="section-label mb-5" style={{ color: "#58B383" }}>Why KINGBAGS</p>
+            <p className="section-label mb-5" style={{ color: "#4CA173" }}>Why KINGBAGS</p>
             <h2 className="font-serif font-black text-4xl md:text-[50px] mb-7 leading-tight">
               The team behind some of America's largest bag programs.
             </h2>

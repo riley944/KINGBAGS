@@ -16,7 +16,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   return (
-    <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-ink/10">
+    <header className={`sticky top-0 z-50 border-b border-ink/10 ${open ? "bg-paper" : "bg-paper/90 backdrop-blur-md"}`}>
       <div className="mx-auto max-w-6xl px-5 flex items-center justify-between h-[68px]">
         <Link href="/" className="flex items-baseline gap-0.5">
           <span className="font-serif font-black text-2xl tracking-tight text-ink">KING</span>
@@ -43,16 +43,37 @@ export default function Header() {
         </button>
       </div>
       {open && (
-        <nav className="md:hidden bg-paper border-t border-ink/10 px-5 py-5 flex flex-col gap-4">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="text-ink font-semibold text-lg" onClick={() => setOpen(false)}>
-              {n.label}
+        <div className="md:hidden fixed inset-0 z-50 bg-paper flex flex-col">
+          <div className="flex items-center justify-between h-[68px] px-5 border-b border-ink/10 shrink-0">
+            <Link href="/" className="flex items-baseline gap-0.5" onClick={() => setOpen(false)}>
+              <span className="font-serif font-black text-2xl tracking-tight text-ink">KING</span>
+              <span className="font-serif font-black text-2xl tracking-tight text-ember">BAGS</span>
             </Link>
-          ))}
-          <Link href="/design" className="bg-ember text-white font-semibold px-6 py-4 rounded-full text-center" onClick={() => setOpen(false)}>
-            Design Your Bag
-          </Link>
-        </nav>
+            <button className="text-ink text-2xl w-10 h-10 flex items-center justify-center" onClick={() => setOpen(false)} aria-label="Close menu">
+              ✕
+            </button>
+          </div>
+          <nav className="flex-1 overflow-y-auto px-5">
+            {NAV.map((n) => {
+              const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
+              return (
+                <Link key={n.href} href={n.href} onClick={() => setOpen(false)}
+                  className="flex items-baseline justify-between py-5 border-b border-ink/10 group">
+                  <span className={`font-hero text-4xl ${active ? "text-ember" : "text-ink"}`}>{n.label}</span>
+                  <span className="text-ember text-xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="px-5 pb-8 pt-4 shrink-0">
+            <Link href="/design" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
+              Design Your Bag
+            </Link>
+            <p className="text-center text-sm text-ink-soft mt-4">
+              <a href="mailto:hello@kingbags.com" className="hover:text-ink">hello@kingbags.com</a>
+            </p>
+          </div>
+        </div>
       )}
     </header>
   );

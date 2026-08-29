@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Sizes</div>
             <div className="flex flex-wrap gap-2.5">
               {p.sizes.map((s) => (
-                <span key={s.code} className="bg-white shadow-soft rounded-xl px-4 py-2.5 text-sm">
+                <span key={s.code} className="bg-white border border-ink/10 rounded-xl px-4 py-2.5 text-sm">
                   <span className="font-semibold text-ink">{s.label}</span>
                   <span className="text-ink-soft ml-2">{s.dims}</span>
                 </span>
@@ -51,7 +51,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div><span className="font-semibold text-ink">Lead time:</span> <span className="text-ink-soft">{p.leadTime}</span></div>
           </div>
 
-          <div className="bg-white rounded-2.5xl shadow-soft overflow-hidden mb-9">
+          <div className="bg-white rounded-2.5xl border border-ink/10 overflow-hidden mb-9">
             <div className="bg-charcoal text-white text-[11px] font-bold tracking-[0.18em] uppercase px-6 py-3.5">Quantity Pricing</div>
             <table className="w-full text-[15px]">
               <tbody>
