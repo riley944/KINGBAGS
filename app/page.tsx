@@ -3,6 +3,7 @@ import { PRODUCTS } from "@/lib/products";
 import SpinHero from "@/components/SpinHero";
 import Reveal from "@/components/Reveal";
 import BagArt from "@/components/BagArt";
+import CountUp from "@/components/CountUp";
 
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
@@ -156,6 +157,55 @@ export default function Home() {
         </div>
       </section>
 
+      {/* THE MATH — marketing impact stats */}
+      <section className="py-24 md:py-32 bg-ember text-white">
+        <div className="mx-auto max-w-6xl px-5">
+          <Reveal>
+            <div className="text-center mb-16">
+              <p className="section-label mb-4" style={{ color: "#E9A13B" }}>The Math</p>
+              <h2 className="font-serif font-black text-4xl md:text-[54px] leading-tight max-w-3xl mx-auto">
+                The hardest-working ad you'll ever buy.
+              </h2>
+            </div>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-12 md:gap-8 text-center">
+            <Reveal delay={0}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                  <CountUp to={3300} />
+                </div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  impressions from a single bag over its life
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3">⅒¢</div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  cost per impression — the cheapest ad medium measured
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={240}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                  <CountUp to={5} suffix="M" />
+                </div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  impressions from one 1,500-bag minimum run
+                </p>
+              </div>
+            </Reveal>
+          </div>
+          <Reveal delay={300}>
+            <p className="text-center text-white/40 text-[13px] mt-14">
+              Source: ASI Ad Impressions Study, 2026
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* VERTICALS */}
       <section className="py-24 bg-gold-tint">
         <div className="mx-auto max-w-5xl px-5 text-center">
@@ -173,6 +223,57 @@ export default function Home() {
             </p>
           </Reveal>
         </div>
+      </section>
+
+      {/* THE GREEN MATH — environmental impact */}
+      <section className="py-24 md:py-32 border-t border-ink/10">
+        <div className="mx-auto max-w-6xl px-5 grid md:grid-cols-[1.1fr_1fr] gap-14 md:gap-20 items-center">
+          <Reveal>
+            <div>
+              <p className="section-label mb-4">The Green Math</p>
+              <h2 className="font-serif font-black text-4xl md:text-[54px] text-ink leading-[1.05] mb-6">
+                One bag retires <span className="text-ember italic">five hundred</span>.
+              </h2>
+              <p className="text-ink-soft text-lg leading-relaxed mb-4 max-w-lg">
+                A single-use plastic bag works for about 12 minutes. A KINGBAGS bag works for
+                years — and every trip it takes is one more plastic bag that never gets made.
+              </p>
+              <p className="text-ink-soft text-lg leading-relaxed max-w-lg">
+                Your customers already want to carry the solution. Put your name on it.
+              </p>
+            </div>
+          </Reveal>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-12 text-center">
+            <Reveal delay={100}>
+              <div>
+                <div className="font-serif font-black text-6xl md:text-7xl text-ember mb-2 tabular-nums">
+                  <CountUp to={500} suffix="+" />
+                </div>
+                <p className="text-ink-soft text-[15px] leading-snug">single-use bags replaced per bag, per year</p>
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <div>
+                <div className="font-serif font-black text-6xl md:text-7xl text-ember mb-2 tabular-nums">
+                  <CountUp to={12} />
+                  <span className="text-3xl md:text-4xl align-baseline"> min</span>
+                </div>
+                <p className="text-ink-soft text-[15px] leading-snug">the average working life of a plastic bag</p>
+              </div>
+            </Reveal>
+            <Reveal delay={300}>
+              <div className="col-span-2">
+                <div className="font-serif font-black text-6xl md:text-7xl text-gold mb-2 tabular-nums">
+                  <CountUp to={750} suffix="K+" />
+                </div>
+                <p className="text-ink-soft text-[15px] leading-snug">plastic bags a 1,500-bag run can retire every year it's carried</p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+        <p className="text-center text-ink-soft/60 text-[13px] mt-14 px-5">
+          Based on industry lifecycle estimates for reusable shopping bags
+        </p>
       </section>
 
       {/* CREDIBILITY — the section you love, kept and elevated */}
