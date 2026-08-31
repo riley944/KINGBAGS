@@ -8,7 +8,7 @@ import CountUp from "@/components/CountUp";
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
   { n: "2", t: "Price it yourself", d: "Pick your quantity and the price is right there. No quote emails, no waiting on a callback." },
-  { n: "3", t: "Carry it in weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 4–6 weeks; the industry norm for bags like these is closer to three months." },
+  { n: "3", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 4–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
 
 const VERTICALS = ["DTC Brands", "Restaurants", "Gyms & Studios", "Breweries", "Retail", "Events"];
@@ -93,6 +93,55 @@ export default function Home() {
         </div>
       </section>
 
+      {/* THE MATH — marketing impact stats */}
+      <section className="py-24 md:py-32 bg-ember text-white">
+        <div className="mx-auto max-w-6xl px-5">
+          <Reveal>
+            <div className="text-center mb-16">
+              <p className="section-label mb-4" style={{ color: "#E9A13B" }}>The Math</p>
+              <h2 className="font-serif font-black text-4xl md:text-[54px] leading-tight max-w-3xl mx-auto">
+                The hardest-working ad you'll ever buy.
+              </h2>
+            </div>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-12 md:gap-8 text-center">
+            <Reveal delay={0}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                  <CountUp to={3300} />
+                </div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  impressions from a single bag over its life
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3">⅒¢</div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  cost per impression — the cheapest ad medium measured
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={240}>
+              <div>
+                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                  <CountUp to={5} suffix="M" />
+                </div>
+                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
+                  impressions from one 1,500-bag minimum run
+                </p>
+              </div>
+            </Reveal>
+          </div>
+          <Reveal delay={300}>
+            <p className="text-center text-white/40 text-[13px] mt-14">
+              Source: ASI Ad Impressions Study, 2026
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* HOW IT WORKS */}
       <section className="py-24 md:py-28 border-t border-ink/10">
         <div className="mx-auto max-w-6xl px-5 grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-20">
@@ -152,57 +201,8 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center">
-            <Link href="/products" className="btn-ink">See all three bags</Link>
+            <Link href="/products" className="btn-ink">Compare all three bags</Link>
           </div>
-        </div>
-      </section>
-
-      {/* THE MATH — marketing impact stats */}
-      <section className="py-24 md:py-32 bg-ember text-white">
-        <div className="mx-auto max-w-6xl px-5">
-          <Reveal>
-            <div className="text-center mb-16">
-              <p className="section-label mb-4" style={{ color: "#E9A13B" }}>The Math</p>
-              <h2 className="font-serif font-black text-4xl md:text-[54px] leading-tight max-w-3xl mx-auto">
-                The hardest-working ad you'll ever buy.
-              </h2>
-            </div>
-          </Reveal>
-          <div className="grid md:grid-cols-3 gap-12 md:gap-8 text-center">
-            <Reveal delay={0}>
-              <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
-                  <CountUp to={3300} />
-                </div>
-                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
-                  impressions from a single bag over its life
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={120}>
-              <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3">⅒¢</div>
-                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
-                  cost per impression — the cheapest ad medium measured
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={240}>
-              <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
-                  <CountUp to={5} suffix="M" />
-                </div>
-                <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
-                  impressions from one 1,500-bag minimum run
-                </p>
-              </div>
-            </Reveal>
-          </div>
-          <Reveal delay={300}>
-            <p className="text-center text-white/40 text-[13px] mt-14">
-              Source: ASI Ad Impressions Study, 2026
-            </p>
-          </Reveal>
         </div>
       </section>
 

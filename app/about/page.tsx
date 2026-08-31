@@ -37,7 +37,7 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="py-20 md:py-28">
+      <section className="pt-16 pb-12 md:pt-20 md:pb-14">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <p className="section-label mb-5">About KINGBAGS</p>
@@ -52,7 +52,7 @@ export default function AboutPage() {
       </section>
 
       {/* STATS */}
-      <section className="pb-24">
+      <section className="py-14 md:py-16 bg-smoke border-y border-ink/10">
         <div className="mx-auto max-w-5xl px-5 grid grid-cols-2 md:grid-cols-4 gap-5">
           {STATS.map((s, i) => (
             <Reveal key={s.l} delay={i * 100}>

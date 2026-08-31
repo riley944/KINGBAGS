@@ -14,7 +14,7 @@ export default function ProductsPage() {
     <div className="mx-auto max-w-6xl px-5 py-16 md:py-20">
       <Reveal>
         <p className="section-label mb-4">The Lineup</p>
-        <h1 className="font-serif font-black text-4xl md:text-6xl text-ink leading-[1.05] mb-4">Three bags. Fully yours.</h1>
+        <h1 className="font-serif font-black text-4xl md:text-6xl text-ink leading-[1.05] mb-4">Three bags. Zero blanks.</h1>
         <p className="text-ink-soft text-lg max-w-2xl mb-14">
           Every bag is cut and sewn from scratch with your art edge to edge — the same construction we run for national brand programs.
         </p>
