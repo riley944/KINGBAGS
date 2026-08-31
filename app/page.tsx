@@ -11,7 +11,14 @@ const STEPS = [
   { n: "3", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 4–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
 
-const VERTICALS = ["DTC Brands", "Restaurants", "Gyms & Studios", "Breweries", "Retail", "Events"];
+const VERTICALS = [
+  { label: "DTC Brands", color: "#14532D" },
+  { label: "Restaurants", color: "#B45309" },
+  { label: "Gyms & Studios", color: "#1E40AF" },
+  { label: "Breweries", color: "#7C2231" },
+  { label: "Retail", color: "#0F766E" },
+  { label: "Events", color: "#6B21A8" },
+];
 
 const TRUST = [
   { icon: "bag", label: "Built for national brands" },
@@ -213,14 +220,19 @@ export default function Home() {
             <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink mb-10 leading-tight max-w-2xl mx-auto">
               If your customers carry it, it should carry your brand.
             </h2>
-            <p className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-[13px] md:text-sm font-bold tracking-[0.18em] uppercase text-ink-soft">
+            <div className="flex flex-wrap justify-center gap-3.5">
               {VERTICALS.map((v, i) => (
-                <span key={v} className="flex items-center gap-3">
-                  {i > 0 && <span className="text-gold-deep">·</span>}
-                  <span>{v}</span>
-                </span>
+                <Reveal key={v.label} delay={i * 60}>
+                  <Link
+                    href="/gallery"
+                    style={{ backgroundColor: v.color }}
+                    className="inline-block text-white font-bold text-base md:text-lg px-7 py-3.5 rounded-full transition-all hover:scale-110 hover:shadow-lift"
+                  >
+                    {v.label}
+                  </Link>
+                </Reveal>
               ))}
-            </p>
+            </div>
           </Reveal>
         </div>
       </section>
