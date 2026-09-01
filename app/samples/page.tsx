@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { PRODUCTS } from "@/lib/products";
 import { saveLead } from "@/lib/supabase";
+import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 
 const KITS = [
@@ -55,8 +56,12 @@ export default function SamplesPage() {
       message: `sample kit request: ${kit}`,
     });
     setSubmitting(false);
-    if (res.ok) setSubmitted(true);
-    else setError(res.error || "Something went wrong.");
+    if (res.ok) {
+      track("sample_requested", { kit: kit ?? "", product: style });
+      setSubmitted(true);
+    } else {
+      setError(res.error || "Something went wrong.");
+    }
   };
 
   return (

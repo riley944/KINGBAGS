@@ -5,6 +5,7 @@ import { PRODUCTS, priceFor, Product, MIN_ORDER } from "@/lib/products";
 import { DIELINES, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
 import { saveQuote, uploadArt } from "@/lib/supabase";
+import { track } from "@/lib/track";
 
 const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
 
@@ -130,6 +131,7 @@ function Configurator() {
     });
     setSubmitting(false);
     if (res.ok) {
+      track("quote_submitted", { product: product.slug, quantity: qty, value: Math.round(total) });
       setSubmitted(true);
     } else {
       // Never show the confirmation for a quote we did not actually store.

@@ -12,12 +12,12 @@ const STEPS = [
 ];
 
 const VERTICALS = [
-  { label: "DTC Brands", color: "#14532D" },
-  { label: "Restaurants", color: "#B45309" },
-  { label: "Gyms & Studios", color: "#1E40AF" },
-  { label: "Breweries", color: "#7C2231" },
-  { label: "Retail", color: "#0F766E" },
-  { label: "Events", color: "#6B21A8" },
+  { slug: "dtc-brands", label: "DTC Brands", color: "#14532D" },
+  { slug: "restaurants", label: "Restaurants", color: "#B45309" },
+  { slug: "gyms-studios", label: "Gyms & Studios", color: "#1E40AF" },
+  { slug: "breweries", label: "Breweries", color: "#7C2231" },
+  { slug: "retail", label: "Retail", color: "#0F766E" },
+  { slug: "events", label: "Events", color: "#6B21A8" },
 ];
 
 const TRUST = [
@@ -55,7 +55,7 @@ function TrustIcon({ name }: { name: string }) {
     ),
   };
   return (
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" stroke="#4CA173" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" stroke="#E9A13B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       {paths[name]}
     </svg>
   );
@@ -89,7 +89,7 @@ export default function Home() {
       </section>
 
       {/* TRUST STRIP — slow ticker, one thin line on every screen */}
-      <section className="bg-charcoal text-white py-3.5">
+      <section className="bg-ember-dark text-white py-3.5">
         <div className="ticker">
           <div className="ticker-track">
             {[0, 1].map((copy) => (
@@ -230,7 +230,7 @@ export default function Home() {
               {VERTICALS.map((v, i) => (
                 <Reveal key={v.label} delay={i * 60}>
                   <Link
-                    href="/gallery"
+                    href={`/for/${v.slug}`}
                     style={{ backgroundColor: v.color }}
                     className="inline-block text-white font-bold text-base md:text-lg px-7 py-3.5 rounded-full transition-all hover:scale-110 hover:shadow-lift"
                   >

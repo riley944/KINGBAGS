@@ -15,14 +15,15 @@ export default function CountUp({
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
+  // Server-render the final value so crawlers and no-JS readers see the real
+  // number; the count-up animation layers on when the element scrolls in.
+  const [value, setValue] = useState(to);
   const started = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(to);
       return;
     }
     const io = new IntersectionObserver(

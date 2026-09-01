@@ -3,6 +3,7 @@ import { Fraunces, Instrument_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Analytics from "@/components/Analytics";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <noscript>
           <style>{`.reveal { opacity: 1 !important; }`}</style>
         </noscript>
+        <Analytics />
         <Header />
         <main>{children}</main>
         <Footer />
