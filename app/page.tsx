@@ -88,15 +88,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="bg-charcoal text-white">
-        <div className="mx-auto max-w-6xl px-5 py-3.5 flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
-          {TRUST.map((t) => (
-            <span key={t.label} className="flex items-center gap-2.5 text-[12.5px] font-bold tracking-[0.14em] uppercase whitespace-nowrap">
-              <TrustIcon name={t.icon} />
-              {t.label}
-            </span>
-          ))}
+      {/* TRUST STRIP — slow ticker, one thin line on every screen */}
+      <section className="bg-charcoal text-white py-3.5">
+        <div className="ticker">
+          <div className="ticker-track">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="ticker-half" aria-hidden={copy === 1}>
+                {TRUST.map((t) => (
+                  <span key={t.label} className="flex items-center gap-2.5 text-[12.5px] font-bold tracking-[0.14em] uppercase whitespace-nowrap">
+                    <TrustIcon name={t.icon} />
+                    {t.label}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
