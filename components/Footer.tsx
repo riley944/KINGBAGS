@@ -29,6 +29,7 @@ export default function Footer() {
             <li><Link href="/samples" className="hover:text-white">Sample Kits</Link></li>
             <li><Link href="/gallery" className="hover:text-white">Lookbook</Link></li>
             <li><Link href="/design" className="hover:text-white">Start Your Order</Link></li>
+            <li><Link href="/account" className="hover:text-white">Your Account</Link></li>
           </ul>
         </div>
         <div>

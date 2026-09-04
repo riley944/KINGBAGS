@@ -1,11 +1,19 @@
 "use client";
 import { useState, useRef, useEffect, Suspense, useCallback } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PRODUCTS, priceFor, Product, MIN_ORDER } from "@/lib/products";
 import { DIELINES, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
-import { saveQuote, uploadArt } from "@/lib/supabase";
+import { saveQuote, uploadArt, stashPendingOrder } from "@/lib/supabase";
+import { runPreflight, PreflightCheck } from "@/lib/preflight";
 import { track } from "@/lib/track";
+
+const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
+  pass: { icon: "✓", cls: "text-ember" },
+  warn: { icon: "!", cls: "text-gold-deep" },
+  fail: { icon: "✕", cls: "text-red-500" },
+};
 
 const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
 
@@ -118,20 +126,35 @@ function Configurator() {
       const up = await uploadArt(artFile);
       if (up) artFilename = up;
     }
+    const productName = `${product.name} — ${size.label} (${size.dims})`;
+    const totalRounded = Math.round(total * 100) / 100;
     const res = await saveQuote({
       email,
       company: company || undefined,
       product_slug: product.slug,
-      product_name: `${product.name} — ${size.label} (${size.dims})`,
+      product_name: productName,
       quantity: qty,
       unit_price: unit,
-      total_price: Math.round(total * 100) / 100,
+      total_price: totalRounded,
       art_filename: artFilename,
       notes: `phone: ${phone} | sourcing: CN`,
     });
     setSubmitting(false);
     if (res.ok) {
       track("quote_submitted", { product: product.slug, quantity: qty, value: Math.round(total) });
+      // Hand the locked quote to the continue-flow so the customer can turn
+      // it into a tracked order without retyping anything.
+      stashPendingOrder({
+        product_slug: product.slug,
+        product_name: productName,
+        quantity: qty,
+        unit_price: unit,
+        total_price: totalRounded,
+        art_filename: artFilename,
+        email,
+        phone,
+        company: company || undefined,
+      });
       setSubmitted(true);
     } else {
       // Never show the confirmation for a quote we did not actually store.
@@ -140,6 +163,12 @@ function Configurator() {
   };
 
   const { width: tw, height: th } = templateSize(dieline);
+  // Instant pre-flight: pure geometry against the live dieline, recomputed
+  // as the art moves or scales. Nothing leaves the browser.
+  const preflight =
+    art.img && !demo
+      ? runPreflight({ img: art.img, fileType: artFile?.type ?? null, dieline, x: art.x, y: art.y, scale: art.scale })
+      : [];
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 md:py-20">
@@ -269,6 +298,29 @@ function Configurator() {
                 </label>
               </div>
             )}
+            {preflight.length > 0 && (
+              <div className="bg-white rounded-2.5xl border border-ink/10 p-6 mt-4">
+                <div className="flex items-baseline justify-between gap-4 mb-4">
+                  <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft">
+                    Instant art check
+                  </span>
+                  <span className="text-[11px] text-ink-soft">Checked in your browser</span>
+                </div>
+                <ul className="space-y-3.5">
+                  {preflight.map((c) => (
+                    <li key={c.id} className="flex gap-3">
+                      <span className={`font-bold shrink-0 ${CHECK_STYLE[c.level].cls}`}>
+                        {CHECK_STYLE[c.level].icon}
+                      </span>
+                      <div>
+                        <p className="text-[15px] font-semibold text-ink leading-snug">{c.title}</p>
+                        <p className="text-[13px] text-ink-soft leading-relaxed mt-0.5">{c.detail}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <p className="text-sm text-ink-soft mt-5 leading-relaxed">
               This flat proof is how your bag prints. After you submit, our design team builds a photoreal rendering of the finished bag and sends it with your sample — you approve the real thing, not a guess.
             </p>
@@ -307,8 +359,18 @@ function Configurator() {
 
           {submitted ? (
             <div className="bg-ember-tint rounded-2.5xl p-8 text-center">
-              <h3 className="font-serif font-bold text-2xl text-ink mb-2">Your proof is on the way.</h3>
-              <p className="text-ink-soft text-sm leading-relaxed">Within one business day, a designer on our team will send your photoreal proof, final specs, and a sample plan. Nothing goes to production until you approve it.</p>
+              <h3 className="font-serif font-bold text-2xl text-ink mb-2">Your quote is locked.</h3>
+              <p className="text-ink-soft text-sm leading-relaxed">
+                Within one business day, a designer on our team will send your photoreal proof,
+                final specs, and a sample plan. Nothing goes to production until you approve it.
+              </p>
+              <Link href="/order/continue" className="btn-ember w-full !py-4 mt-6 text-center">
+                Continue Your Order →
+              </Link>
+              <p className="text-[12px] text-ink-soft mt-3 leading-relaxed">
+                Add your shipping details and track every step — art review to delivery — in
+                your account. Still nothing to pay until you approve your proof.
+              </p>
             </div>
           ) : (
             <div className="bg-white rounded-2.5xl border border-ink/10 p-7">

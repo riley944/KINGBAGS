@@ -33,7 +33,11 @@ export default function Header() {
             );
           })}
         </nav>
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-6">
+          <Link href="/account"
+            className={`text-[15px] font-semibold transition-colors ${path.startsWith("/account") ? "text-ember" : "text-ink-soft hover:text-ink"}`}>
+            Account
+          </Link>
           <Link href="/design" className="group bg-ember text-white text-[15px] font-semibold px-6 py-3 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
             Start Your Order
             <span className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
@@ -66,6 +70,10 @@ export default function Header() {
             })}
           </nav>
           <div className="px-5 pb-8 pt-4 shrink-0">
+            <Link href="/account" onClick={() => setOpen(false)}
+              className="block text-center font-semibold text-ink py-3 mb-2 rounded-full border border-ink/15 hover:border-ember hover:text-ember transition-colors">
+              Your Account
+            </Link>
             <Link href="/design" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
               Start Your Order →
             </Link>
