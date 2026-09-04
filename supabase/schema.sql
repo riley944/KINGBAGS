@@ -127,7 +127,7 @@ create table if not exists kingbags.order_events (
 create index if not exists order_events_order_idx on kingbags.order_events (order_id, created_at);
 
 create or replace function kingbags.touch_updated_at()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = kingbags as $$
 begin
   new.updated_at := now();
   return new;
@@ -185,3 +185,9 @@ drop policy if exists "authenticated can upload art" on storage.objects;
 create policy "authenticated can upload art"
   on storage.objects for insert to authenticated
   with check (bucket_id = 'kingbags-art');
+
+-- Trigger functions are internal only: keep them off the REST RPC surface.
+-- Triggers still fire — trigger EXECUTE checks the table owner, not the
+-- request role.
+revoke execute on function kingbags.touch_updated_at() from public, anon, authenticated;
+revoke execute on function kingbags.log_order_event() from public, anon, authenticated;
