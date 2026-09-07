@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Instrument_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
 import AttributionCapture from "@/components/AttributionCapture";
 
@@ -58,9 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
         <Analytics />
         <AttributionCapture />
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

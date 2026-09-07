@@ -3,6 +3,8 @@ import { serviceClient, isAdminRequest } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
+// One payload for the whole ops panel: orders + their events, plus the
+// quotes and sample-kit leads pipelines.
 export async function GET(req: Request) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -14,14 +16,15 @@ export async function GET(req: Request) {
       { status: 503 }
     );
   }
-  const { data: orders, error } = await db
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(200);
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  const ids = (orders ?? []).map((o) => o.id);
+  const [ordersRes, quotesRes, leadsRes] = await Promise.all([
+    db.from("orders").select("*").order("created_at", { ascending: false }).limit(200),
+    db.from("quotes").select("*").order("created_at", { ascending: false }).limit(200),
+    db.from("leads").select("*").order("created_at", { ascending: false }).limit(200),
+  ]);
+  if (ordersRes.error) return NextResponse.json({ error: ordersRes.error.message }, { status: 500 });
+
+  const ids = (ordersRes.data ?? []).map((o) => o.id);
   let events: unknown[] = [];
   if (ids.length > 0) {
     const { data } = await db
@@ -31,5 +34,11 @@ export async function GET(req: Request) {
       .order("created_at", { ascending: true });
     events = data ?? [];
   }
-  return NextResponse.json({ orders: orders ?? [], events });
+
+  return NextResponse.json({
+    orders: ordersRes.data ?? [],
+    events,
+    quotes: quotesRes.data ?? [],
+    leads: leadsRes.data ?? [],
+  });
 }
