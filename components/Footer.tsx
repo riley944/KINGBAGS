@@ -42,6 +42,10 @@ export default function Footer() {
       </div>
       <div className="border-t border-white/10 py-5 text-center text-sm text-white/45">
         © {new Date().getFullYear()} KINGBAGS · A King Universal Inc. Company · Raleigh, NC
+        <span className="mx-2">·</span>
+        <Link href="/privacy" className="hover:text-white">Privacy</Link>
+        <span className="mx-2">·</span>
+        <Link href="/terms" className="hover:text-white">Terms</Link>
       </div>
     </footer>
   );
