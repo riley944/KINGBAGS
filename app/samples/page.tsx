@@ -155,7 +155,7 @@ export default function SamplesPage() {
             {error && (
               <p className="text-xs text-red-500 mt-3 text-center">
                 We couldn&apos;t send that. Please try again, or email{" "}
-                <a href="mailto:hello@kingbags.com" className="font-semibold underline">hello@kingbags.com</a>.
+                <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
               </p>
             )}
             <p className="text-[11px] text-ink-soft mt-3 text-center">

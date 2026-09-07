@@ -74,7 +74,7 @@ export default function PricingPage() {
               <p className="text-white/65 text-lg mb-8 max-w-md mx-auto">
                 Volume programs get dedicated pricing, custom construction options, ocean-freight economics, and a direct line to our team.
               </p>
-              <a href="mailto:hello@kingbags.com" className="btn-light">hello@kingbags.com</a>
+              <a href="mailto:hello@kingbags.co" className="btn-light">hello@kingbags.co</a>
             </div>
           </Reveal>
         </div>

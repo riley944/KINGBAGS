@@ -78,7 +78,7 @@ export default function Header() {
               Start Your Order →
             </Link>
             <p className="text-center text-sm text-ink-soft mt-4">
-              <a href="mailto:hello@kingbags.com" className="hover:text-ink">hello@kingbags.com</a>
+              <a href="mailto:hello@kingbags.co" className="hover:text-ink">hello@kingbags.co</a>
             </p>
           </div>
         </div>

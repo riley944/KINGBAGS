@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="text-xs font-bold tracking-[0.2em] uppercase text-white mb-4">Get In Touch</div>
           <p className="text-[15px] leading-relaxed">
             Volume over 50,000 bags?<br />
-            <a href="mailto:hello@kingbags.com" className="text-white font-semibold hover:underline">hello@kingbags.com</a>
+            <a href="mailto:hello@kingbags.co" className="text-white font-semibold hover:underline">hello@kingbags.co</a>
           </p>
         </div>
       </div>

@@ -388,7 +388,7 @@ function Configurator() {
               {submitError && (
                 <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
                   We couldn&apos;t save your quote. Please try again, or email{" "}
-                  <a href="mailto:hello@kingbags.com" className="font-semibold underline">hello@kingbags.com</a>.
+                  <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
                 </p>
               )}
               <ul className="mt-5 space-y-2 text-[13px] text-ink-soft">

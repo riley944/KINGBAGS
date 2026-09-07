@@ -255,7 +255,7 @@ function AccountInner() {
           <div className="bg-smoke rounded-2.5xl p-6 mb-8">
             <p className="text-ink-soft text-sm">
               We couldn&apos;t load your orders just now. Refresh to try again, or email{" "}
-              <a href="mailto:hello@kingbags.com" className="font-semibold underline">hello@kingbags.com</a>.
+              <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
             </p>
           </div>
         )}

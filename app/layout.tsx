@@ -29,6 +29,7 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kingbags.co"),
   title: "KINGBAGS — Fully Custom Cut & Sew Bags | From 1,500 Bags",
   description:
     "Fully custom cut-and-sew bags from the team behind some of America's largest bag programs. Edge-to-edge printing, instant pricing, delivered in 4–6 weeks. From 1,500 bags.",
