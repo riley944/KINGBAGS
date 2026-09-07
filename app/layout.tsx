@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
+import AttributionCapture from "@/components/AttributionCapture";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <style>{`.reveal { opacity: 1 !important; }`}</style>
         </noscript>
         <Analytics />
+        <AttributionCapture />
         <Header />
         <main>{children}</main>
         <Footer />

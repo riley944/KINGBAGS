@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { PRODUCTS } from "@/lib/products";
 import { saveLead } from "@/lib/supabase";
+import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 
@@ -53,7 +54,7 @@ export default function SamplesPage() {
       email,
       company: company || undefined,
       product_slug: style,
-      message: `sample kit request: ${kit}`,
+      message: `sample kit request: ${kit}${getAttribution() ? ` | src: ${getAttribution()}` : ""}`,
     });
     setSubmitting(false);
     if (res.ok) {

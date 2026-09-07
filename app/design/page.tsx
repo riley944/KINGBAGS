@@ -7,6 +7,7 @@ import { DIELINES, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
 import { saveQuote, uploadArt, stashPendingOrder } from "@/lib/supabase";
 import { runPreflight, PreflightCheck } from "@/lib/preflight";
+import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 
 const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
@@ -137,7 +138,7 @@ function Configurator() {
       unit_price: unit,
       total_price: totalRounded,
       art_filename: artFilename,
-      notes: `phone: ${phone} | sourcing: CN`,
+      notes: `phone: ${phone} | sourcing: CN${getAttribution() ? ` | src: ${getAttribution()}` : ""}`,
     });
     setSubmitting(false);
     if (res.ok) {
