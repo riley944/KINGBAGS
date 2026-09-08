@@ -143,6 +143,17 @@ export async function fetchOrders(): Promise<{ ok: boolean; orders: Order[]; err
   return { ok: true, orders: (data ?? []) as Order[] };
 }
 
+// Customers may replace the artwork on their own orders (needs_changes
+// flow) — column-level grant, RLS-scoped to the owner.
+export async function updateOrderArt(orderId: string, artFilename: string) {
+  if (!supabase) return { ok: false, error: "Supabase not configured" };
+  const { error } = await supabase
+    .from("orders")
+    .update({ art_filename: artFilename })
+    .eq("id", orderId);
+  return { ok: !error, error: error?.message };
+}
+
 export async function fetchOrderEvents(orderIds: string[]): Promise<OrderEvent[]> {
   if (!supabase || orderIds.length === 0) return [];
   const { data } = await supabase
