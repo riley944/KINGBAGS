@@ -120,7 +120,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-12 md:gap-8 text-center">
             <Reveal delay={0}>
               <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tabular-nums tracking-tight">
                   <CountUp to={3300} />
                 </div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
@@ -130,7 +130,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={120}>
               <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3">⅒¢</div>
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tracking-tight">⅒¢</div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
                   cost per impression — the cheapest ad medium measured
                 </p>
@@ -138,7 +138,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={240}>
               <div>
-                <div className="font-serif font-black text-7xl md:text-8xl text-gold mb-3 tabular-nums">
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tabular-nums tracking-tight">
                   <CountUp to={5} suffix="M" />
                 </div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
@@ -172,7 +172,7 @@ export default function Home() {
             {STEPS.map((s, i) => (
               <Reveal key={s.n} delay={i * 100}>
                 <div className="flex gap-7 md:gap-9 py-9 first:pt-1 border-b border-ink/10 last:border-b-0">
-                  <div className="font-serif font-black text-5xl text-gold w-12 shrink-0 leading-none">{s.n}</div>
+                  <div className="font-grotesk font-extrabold text-4xl text-gold w-12 shrink-0 leading-none">{s.n}</div>
                   <div>
                     <h3 className="font-bold text-xl text-ink mb-2">{s.t}</h3>
                     <p className="text-ink-soft leading-relaxed">{s.d}</p>
@@ -264,7 +264,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 text-center">
             <Reveal delay={100}>
               <div>
-                <div className="font-serif font-black text-6xl md:text-7xl text-ember mb-2 tabular-nums">
+                <div className="font-grotesk font-extrabold text-6xl md:text-7xl text-ember mb-2 tabular-nums tracking-tight">
                   <CountUp to={500} suffix="+" />
                 </div>
                 <p className="text-ink-soft text-[15px] leading-snug">single-use bags replaced per bag, per year</p>
@@ -272,7 +272,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={200}>
               <div>
-                <div className="font-serif font-black text-6xl md:text-7xl text-ember mb-2 tabular-nums">
+                <div className="font-grotesk font-extrabold text-6xl md:text-7xl text-ember mb-2 tabular-nums tracking-tight">
                   <CountUp to={12} />
                   <span className="text-3xl md:text-4xl align-baseline"> min</span>
                 </div>
@@ -281,7 +281,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={300}>
               <div className="col-span-2">
-                <div className="font-serif font-black text-6xl md:text-7xl text-gold mb-2 tabular-nums">
+                <div className="font-grotesk font-extrabold text-6xl md:text-7xl text-gold mb-2 tabular-nums tracking-tight">
                   <CountUp to={750} suffix="K+" />
                 </div>
                 <p className="text-ink-soft text-[15px] leading-snug">plastic bags a 1,500-bag run can retire every year it's carried</p>

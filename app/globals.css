@@ -62,8 +62,18 @@ table { font-variant-numeric: tabular-nums; }
 .btn-outline:hover { background-color: #10140F; color: #FFFFFF; }
 
 .section-label {
+  font-family: var(--font-grotesk), var(--font-body), sans-serif;
   font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
   text-transform: uppercase; color: #14532D;
+}
+
+/* DM Serif Display ships one weight: never let the browser fake-bold it. */
+.font-serif, .font-hero { font-synthesis: none; letter-spacing: -0.005em; }
+
+/* Buttons and UI accents carry the grotesk. */
+.btn-ember, .btn-ink, .btn-light, .btn-outline {
+  font-family: var(--font-grotesk), var(--font-body), sans-serif;
+  font-weight: 700;
 }
 
 /* Reveal-on-scroll animation */

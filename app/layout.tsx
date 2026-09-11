@@ -1,29 +1,32 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans, Playfair_Display } from "next/font/google";
+import { DM_Serif_Display, DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import AttributionCapture from "@/components/AttributionCapture";
 
-const fraunces = Fraunces({
+// Type system: DM Serif Display for headlines and prices (one weight —
+// font-synthesis is disabled in globals.css so weight utilities don't
+// fake-bold it), DM Sans for body and UI, Bricolage Grotesque as the
+// accent for the wordmark, labels, buttons, and stat numerals.
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["600", "700", "900"],
+  weight: "400",
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-hero",
-  display: "swap",
-});
-
-const instrumentSans = Instrument_Sans({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
+  display: "swap",
+});
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-grotesk",
   display: "swap",
 });
 
@@ -49,7 +52,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable} ${bricolage.variable}`}>
       <body>
         <noscript>
           <style>{`.reveal { opacity: 1 !important; }`}</style>

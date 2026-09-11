@@ -84,7 +84,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
         <div className="mx-auto max-w-5xl px-5 grid grid-cols-3 gap-6 text-center">
           <Reveal>
             <div>
-              <div className="font-serif font-black text-4xl md:text-6xl mb-1 tabular-nums" style={{ color: v.onDark }}>
+              <div className="font-grotesk font-extrabold text-4xl md:text-6xl mb-1 tracking-tight tabular-nums" style={{ color: v.onDark }}>
                 <CountUp to={3300} />
               </div>
               <p className="text-white/60 text-sm md:text-[15px]">impressions per bag</p>
@@ -92,13 +92,13 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
           </Reveal>
           <Reveal delay={100}>
             <div>
-              <div className="font-serif font-black text-4xl md:text-6xl mb-1" style={{ color: v.onDark }}>4–6</div>
+              <div className="font-grotesk font-extrabold text-4xl md:text-6xl mb-1 tracking-tight" style={{ color: v.onDark }}>4–6</div>
               <p className="text-white/60 text-sm md:text-[15px]">weeks door to door</p>
             </div>
           </Reveal>
           <Reveal delay={200}>
             <div>
-              <div className="font-serif font-black text-4xl md:text-6xl mb-1 tabular-nums" style={{ color: v.onDark }}>
+              <div className="font-grotesk font-extrabold text-4xl md:text-6xl mb-1 tracking-tight tabular-nums" style={{ color: v.onDark }}>
                 <CountUp to={1500} />
               </div>
               <p className="text-white/60 text-sm md:text-[15px]">bag minimum, factory-direct</p>

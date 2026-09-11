@@ -51,14 +51,17 @@ export function drawDieline(
     ctx.setLineDash([6, 6]);
     ctx.lineWidth = 1.5;
     const boxes: [string, { x: number; y: number; w: number; h: number }][] = [
-      ["FRONT", r.front], ["BASE", r.base], ["BACK (prints rotated)", r.back],
+      ["FRONT", r.front], ["BASE", r.base], ["BACK ↻", r.back],
       ["SIDE 1", r.gusset1], ["SIDE 2", r.gusset2],
     ];
-    ctx.font = `${Math.max(11, 12 * pxPerMM * 2)}px Satoshi, sans-serif`;
-    ctx.fillStyle = "rgba(30,58,47,0.6)";
+    // Labels are read on a canvas scaled down ~2x in the editor, so they
+    // are set large and bold to stay legible.
+    const labelPx = Math.max(14, 13 * pxPerMM * 2.6);
+    ctx.font = `700 ${labelPx}px system-ui, sans-serif`;
+    ctx.fillStyle = "rgba(20,83,45,0.72)";
     for (const [label, b] of boxes) {
       ctx.strokeRect(b.x * pxPerMM, b.y * pxPerMM, b.w * pxPerMM, b.h * pxPerMM);
-      ctx.fillText(label, b.x * pxPerMM + 8, b.y * pxPerMM + 18);
+      ctx.fillText(label, b.x * pxPerMM + labelPx * 0.5, b.y * pxPerMM + labelPx * 1.25);
     }
     ctx.setLineDash([]);
   }

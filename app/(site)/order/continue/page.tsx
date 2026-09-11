@@ -14,9 +14,7 @@ import {
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 import PaymentStep from "@/components/PaymentStep";
-
-const inputCls =
-  "w-full rounded-xl px-4 py-3.5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none";
+import Field, { inputCls } from "@/components/Field";
 
 function OrderSummary({ p }: { p: PendingOrder }) {
   return (
@@ -255,21 +253,40 @@ export default function ContinueOrderPage() {
             </p>
             <OrderSummary p={pending} />
 
-            <div className="space-y-3">
-              <input type="text" placeholder="Company" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />
-              <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />
+            <div>
+              <Field label="Company">
+                <input type="text" placeholder="Your brand" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Phone">
+                <input type="tel" placeholder="(919) 555-0100" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />
+              </Field>
 
-              <p className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft pt-3">Ship to</p>
-              <input type="text" placeholder="Recipient name" value={shipName} onChange={(e) => setShipName(e.target.value)} className={inputCls} />
-              <input type="text" placeholder="Street address" value={address1} onChange={(e) => setAddress1(e.target.value)} className={inputCls} />
-              <input type="text" placeholder="Suite, unit, dock (optional)" value={address2} onChange={(e) => setAddress2(e.target.value)} className={inputCls} />
-              <div className="grid grid-cols-[1fr_80px_110px] gap-3">
-                <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} className={inputCls} />
-                <input type="text" placeholder="State" value={stateCode} onChange={(e) => setStateCode(e.target.value)} className={inputCls} />
-                <input type="text" placeholder="ZIP" value={postal} onChange={(e) => setPostal(e.target.value)} className={inputCls} />
+              <div className="flex items-center gap-4 mt-7 mb-4">
+                <span className="font-grotesk font-bold text-[12px] tracking-[0.2em] text-gold-deep">SHIP TO</span>
+                <span className="h-px flex-1 bg-ink/10" />
+              </div>
+              <Field label="Recipient">
+                <input type="text" placeholder="Who signs for it" value={shipName} onChange={(e) => setShipName(e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Street address">
+                <input type="text" placeholder="418 Glenwood Ave" value={address1} onChange={(e) => setAddress1(e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Suite, unit, or dock" hint="optional">
+                <input type="text" placeholder="Suite 210" value={address2} onChange={(e) => setAddress2(e.target.value)} className={inputCls} />
+              </Field>
+              <div className="grid grid-cols-[1fr_84px_120px] gap-3">
+                <Field label="City">
+                  <input type="text" placeholder="Raleigh" value={city} onChange={(e) => setCity(e.target.value)} className={inputCls} />
+                </Field>
+                <Field label="State">
+                  <input type="text" placeholder="NC" value={stateCode} onChange={(e) => setStateCode(e.target.value)} className={inputCls} />
+                </Field>
+                <Field label="ZIP">
+                  <input type="text" placeholder="27603" value={postal} onChange={(e) => setPostal(e.target.value)} className={inputCls} />
+                </Field>
               </div>
 
-              <label className="flex items-center gap-2.5 pt-3 text-[15px] text-ink cursor-pointer">
+              <label className="flex items-center gap-2.5 mt-3 text-[15px] text-ink cursor-pointer">
                 <input
                   type="checkbox" checked={billingSame}
                   onChange={(e) => setBillingSame(e.target.checked)}
@@ -278,10 +295,14 @@ export default function ContinueOrderPage() {
                 Billing contact is the same as me
               </label>
               {!billingSame && (
-                <>
-                  <input type="text" placeholder="Billing contact name" value={billingName} onChange={(e) => setBillingName(e.target.value)} className={inputCls} />
-                  <input type="email" placeholder="Billing email" value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className={inputCls} />
-                </>
+                <div className="mt-4">
+                  <Field label="Billing contact name">
+                    <input type="text" placeholder="Accounts payable" value={billingName} onChange={(e) => setBillingName(e.target.value)} className={inputCls} />
+                  </Field>
+                  <Field label="Billing email">
+                    <input type="email" placeholder="ap@company.com" value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className={inputCls} />
+                  </Field>
+                </div>
               )}
             </div>
 

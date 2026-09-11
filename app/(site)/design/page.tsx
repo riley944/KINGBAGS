@@ -9,6 +9,7 @@ import { saveQuote, uploadArt, stashPendingOrder } from "@/lib/supabase";
 import { runPreflight, PreflightCheck } from "@/lib/preflight";
 import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
+import Field, { inputCls } from "@/components/Field";
 
 const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
   pass: { icon: "✓", cls: "text-ember" },
@@ -17,6 +18,19 @@ const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }
 };
 
 const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
+
+function StepHeader({ n, title }: { n: string; title: string }) {
+  return (
+    <div className="mb-6">
+      <div className="flex items-center gap-4 mb-3">
+        <span className="font-grotesk font-bold text-[12px] tracking-[0.2em] text-gold-deep">STEP {n}</span>
+        <span className="h-px flex-1 bg-ink/10" />
+      </div>
+      <h2 className="font-serif text-[30px] md:text-[34px] text-ink leading-tight">{title}</h2>
+    </div>
+  );
+}
+
 
 function Configurator() {
   const params = useSearchParams();
@@ -187,24 +201,21 @@ function Configurator() {
         <div className="space-y-14">
           {/* 01 */}
           <div>
-            <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-gold/70">01</span>
-              <h2 className="font-serif font-bold text-2xl text-ink">Choose your bag</h2>
-            </div>
-            <div className="flex flex-wrap gap-2.5 mb-4">
+            <StepHeader n="01" title="Choose your bag" />
+            <div className="flex flex-wrap gap-2.5 mb-5">
               {PRODUCTS.map((p) => (
                 <button key={p.slug} onClick={() => setProduct(p)}
-                  className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${product.slug === p.slug ? "bg-ink text-paper" : "bg-white text-ink-soft border border-ink/10 hover:text-ink"}`}>
+                  className={`font-grotesk font-bold rounded-full px-5 py-2.5 text-sm transition-all ${product.slug === p.slug ? "bg-ink text-paper" : "bg-white text-ink-soft border border-ink/10 hover:text-ink hover:border-ink/30"}`}>
                   {p.shortName}
                 </button>
               ))}
             </div>
-            <div className="flex flex-wrap gap-2.5">
+            <div className="inline-flex flex-wrap gap-1 bg-smoke rounded-2xl p-1.5">
               {product.sizes.map((s) => (
                 <button key={s.code} onClick={() => setSizeCode(s.code)}
-                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-ember-tint text-ember font-semibold ring-1 ring-ember/30" : "bg-white text-ink-soft border border-ink/10 hover:text-ink"}`}>
-                  <span className="font-semibold">{s.label}</span>
-                  <span className="ml-2 opacity-70">{s.dims}</span>
+                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-white text-ink shadow-soft font-semibold" : "text-ink-soft hover:text-ink"}`}>
+                  {s.label}
+                  <span className="ml-2 text-[12px] opacity-60">{s.dims}</span>
                 </button>
               ))}
             </div>
@@ -212,10 +223,7 @@ function Configurator() {
 
           {/* 02 */}
           <div>
-            <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-gold/70">02</span>
-              <h2 className="font-serif font-bold text-2xl text-ink">Get the template</h2>
-            </div>
+            <StepHeader n="02" title="Get the template" />
             <div className="bg-white rounded-2.5xl border border-ink/10 p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
                 <p className="font-semibold text-ink mb-1">
@@ -233,15 +241,18 @@ function Configurator() {
 
           {/* 03 */}
           <div>
-            <div className="flex items-baseline gap-4 mb-6">
-              <span className="font-serif font-black text-5xl text-gold/70">03</span>
-              <h2 className="font-serif font-bold text-2xl text-ink">Place your art</h2>
-            </div>
+            <StepHeader n="03" title="Place your art" />
             {!art.img && (
-              <label className="block bg-white rounded-2.5xl p-10 text-center cursor-pointer hover:shadow-lift transition-all border border-dashed border-ink/20 hover:border-ember/40 mb-3">
+              <label className="block bg-smoke rounded-2.5xl px-8 py-12 text-center cursor-pointer border border-ink/10 hover:border-ember/50 hover:bg-ember-tint/50 transition-all mb-3">
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
-                <span className="font-semibold text-ink block mb-1.5 text-lg">Upload your artwork</span>
-                <span className="text-sm text-ink-soft">Formatted to the template, or full-bleed art we'll position together. PNG or JPG, high resolution.</span>
+                <span className="mx-auto mb-5 w-14 h-14 rounded-full bg-white border border-ink/10 flex items-center justify-center text-ember">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 16V4" /><path d="m6 10 6-6 6 6" /><path d="M4 20h16" />
+                  </svg>
+                </span>
+                <span className="font-serif text-[26px] text-ink block mb-1.5 leading-tight">Drop your artwork here</span>
+                <span className="text-sm text-ink-soft block">PNG, JPG, or WebP · full-bleed art, or formatted to the template · high resolution</span>
+                <span className="btn-outline inline-block mt-6 !py-2.5 !px-6 !text-[14px]">Choose a file</span>
               </label>
             )}
             {!art.img && (
@@ -265,9 +276,10 @@ function Configurator() {
                 </button>
               </div>
             )}
+            <div className="bg-smoke rounded-2.5xl border border-ink/10 p-3 md:p-5">
             <canvas
               ref={previewRef}
-              className="w-full h-auto rounded-2.5xl bg-white border border-ink/10 touch-none select-none"
+              className="w-full h-auto rounded-xl bg-white shadow-soft touch-none select-none"
               style={{ cursor: art.img ? "grab" : "default", maxHeight: 460, objectFit: "contain" }}
               onPointerDown={(e) => {
                 if (!art.img) return;
@@ -285,6 +297,10 @@ function Configurator() {
               onPointerUp={() => (drag.current.on = false)}
               onPointerLeave={() => (drag.current.on = false)}
             />
+            <p className="text-[12px] text-ink-soft mt-3 text-center">
+              Flat production template · {Math.round(tw)}mm × {Math.round(th)}mm · back panel prints rotated 180° · drag to reposition
+            </p>
+            </div>
             {art.img && (
               <div className="flex items-center gap-6 mt-4">
                 <div className="flex-1 bg-white rounded-2xl px-5 py-4 border border-ink/10">
@@ -331,11 +347,11 @@ function Configurator() {
         {/* SIDE RAIL */}
         <div className="lg:sticky lg:top-24 h-fit space-y-5">
           <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
-            <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Quantity</label>
+            <label className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Quantity</label>
             <div className="grid grid-cols-3 gap-2 mb-4">
               {QTY_PRESETS.map((q) => (
                 <button key={q} onClick={() => { setQty(q); setCustomQty(""); }}
-                  className={`rounded-xl px-2 py-2.5 text-sm font-semibold transition-all ${qty === q && isPreset ? "bg-ember text-white" : "bg-smoke text-ink-soft hover:text-ink"}`}>
+                  className={`font-grotesk font-bold rounded-xl px-2 py-2.5 text-sm transition-all ${qty === q && isPreset ? "bg-ember text-white" : "bg-smoke text-ink-soft hover:text-ink"}`}>
                   {q.toLocaleString()}
                 </button>
               ))}
@@ -350,11 +366,11 @@ function Configurator() {
               <p className="text-xs text-red-500 mt-2">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
             )}
             <div className="border-t border-ink/10 pt-5 mt-5">
-              <div className="text-sm text-ink-soft mb-1">{qty.toLocaleString()} × ${unit.toFixed(2)}</div>
-              <div className="font-serif font-black text-[40px] text-ink leading-none mb-2">
+              <div className="text-[13px] text-ink-soft mb-1.5">{qty.toLocaleString()} bags × ${unit.toFixed(2)}</div>
+              <div className="font-serif text-[52px] text-ink leading-none mb-2.5 tabular-nums">
                 ${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
               </div>
-              <div className="text-xs text-ink-soft">{size.label} · {size.dims} · {product.leadTime}</div>
+              <div className="text-[12px] text-ink-soft">{product.shortName} · {size.label} {size.dims} · {product.leadTime}</div>
             </div>
           </div>
 
@@ -375,13 +391,16 @@ function Configurator() {
             </div>
           ) : (
             <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
-              <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Get your bags</label>
-              <input type="email" placeholder="Work email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
-              <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
-              <input type="text" placeholder="Company (optional)" value={company} onChange={(e) => setCompany(e.target.value)}
-                className="w-full rounded-xl px-4 py-3.5 mb-5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none" />
+              <label className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Lock in this price</label>
+              <Field label="Work email">
+                <input type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Phone">
+                <input type="tel" placeholder="(919) 555-0100" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Company" hint="optional">
+                <input type="text" placeholder="Your brand" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />
+              </Field>
               <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
                 className="w-full btn-ember !py-4">
                 {submitting ? "Saving…" : "Lock In My Quote"}
