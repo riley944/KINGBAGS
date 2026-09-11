@@ -10,6 +10,7 @@ import { runPreflight, PreflightCheck } from "@/lib/preflight";
 import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 import Field, { inputCls } from "@/components/Field";
+import BagArt from "@/components/BagArt";
 
 const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
   pass: { icon: "✓", cls: "text-ember" },
@@ -18,18 +19,6 @@ const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }
 };
 
 const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
-
-function StepHeader({ n, title }: { n: string; title: string }) {
-  return (
-    <div className="mb-6">
-      <div className="flex items-center gap-4 mb-3">
-        <span className="font-grotesk font-bold text-[12px] tracking-[0.2em] text-gold-deep">STEP {n}</span>
-        <span className="h-px flex-1 bg-ink/10" />
-      </div>
-      <h2 className="font-serif text-[30px] md:text-[34px] text-ink leading-tight">{title}</h2>
-    </div>
-  );
-}
 
 
 function Configurator() {
@@ -185,170 +174,183 @@ function Configurator() {
       ? runPreflight({ img: art.img, fileType: artFile?.type ?? null, dieline, x: art.x, y: art.y, scale: art.scale })
       : [];
 
+  const fileInput = (
+    <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
+  );
+
   return (
-    <div className="mx-auto max-w-6xl px-5 py-14 md:py-20">
-      <div className="max-w-2xl mb-14">
-        <p className="section-label mb-4">The Studio</p>
-        <h1 className="font-serif font-black text-4xl md:text-6xl text-ink leading-[1.05] mb-5">
-          Design your bag.
-        </h1>
-        <p className="text-ink-soft text-lg leading-relaxed">
-          Every KINGBAGS bag prints from a real production template — the same file our factories cut and sew from. Place your art here, and what you see is what gets made.
+    <div className="mx-auto max-w-[1200px] px-5 py-10 md:py-14">
+      {/* header */}
+      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 mb-8">
+        <div>
+          <p className="section-label mb-3">The Studio</p>
+          <h1 className="font-serif text-4xl md:text-[52px] text-ink leading-[1.02]">Design your bag.</h1>
+        </div>
+        <p className="text-ink-soft text-[15px] leading-relaxed max-w-sm lg:text-right">
+          Real production template. Instant price. Free proof before anything is made.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-[1fr_380px] gap-12">
-        <div className="space-y-14">
-          {/* 01 */}
-          <div>
-            <StepHeader n="01" title="Choose your bag" />
-            <div className="flex flex-wrap gap-2.5 mb-5">
-              {PRODUCTS.map((p) => (
-                <button key={p.slug} onClick={() => setProduct(p)}
-                  className={`font-grotesk font-bold rounded-full px-5 py-2.5 text-sm transition-all ${product.slug === p.slug ? "bg-ink text-paper" : "bg-white text-ink-soft border border-ink/10 hover:text-ink hover:border-ink/30"}`}>
-                  {p.shortName}
-                </button>
-              ))}
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_400px] gap-6 items-start">
+        {/* ---------- WORKBENCH ---------- */}
+        <div>
+          <div
+            className="relative bg-smoke rounded-2.5xl border border-ink/10 overflow-hidden"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const f = e.dataTransfer.files?.[0];
+              if (f) handleFile(f);
+            }}
+          >
+            <div className="flex items-center justify-between px-5 pt-4">
+              <span className="font-grotesk font-bold text-[11px] tracking-[0.18em] uppercase text-ink-soft">
+                Live proof · {product.shortName} · {size.label}
+              </span>
+              <span className="text-[11px] text-ink-soft tabular-nums">
+                {Math.round(tw)} × {Math.round(th)} mm
+              </span>
             </div>
-            <div className="inline-flex flex-wrap gap-1 bg-smoke rounded-2xl p-1.5">
-              {product.sizes.map((s) => (
-                <button key={s.code} onClick={() => setSizeCode(s.code)}
-                  className={`rounded-xl px-4 py-2.5 text-sm transition-all ${sizeCode === s.code ? "bg-white text-ink shadow-soft font-semibold" : "text-ink-soft hover:text-ink"}`}>
-                  {s.label}
-                  <span className="ml-2 text-[12px] opacity-60">{s.dims}</span>
-                </button>
-              ))}
+            <div className="h-[540px] md:h-[640px] flex items-center justify-center p-4 md:p-6">
+              <canvas
+                ref={previewRef}
+                className="block max-h-full max-w-full w-auto h-auto rounded-xl bg-white shadow-soft touch-none select-none"
+                style={{ cursor: art.img ? "grab" : "default" }}
+                onPointerDown={(e) => {
+                  if (!art.img) return;
+                  drag.current = { on: true, sx: e.clientX, sy: e.clientY, ox: art.x, oy: art.y };
+                }}
+                onPointerMove={(e) => {
+                  if (!drag.current.on) return;
+                  const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
+                  setArt((a) => ({
+                    ...a,
+                    x: Math.max(0, Math.min(1, drag.current.ox + (e.clientX - drag.current.sx) / rect.width)),
+                    y: Math.max(0, Math.min(1, drag.current.oy + (e.clientY - drag.current.sy) / rect.height)),
+                  }));
+                }}
+                onPointerUp={() => (drag.current.on = false)}
+                onPointerLeave={() => (drag.current.on = false)}
+              />
             </div>
-          </div>
-
-          {/* 02 */}
-          <div>
-            <StepHeader n="02" title="Get the template" />
-            <div className="bg-white rounded-2.5xl border border-ink/10 p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-              <div>
-                <p className="font-semibold text-ink mb-1">
-                  {product.name} · {size.label} production template
-                </p>
-                <p className="text-sm text-ink-soft">
-                  {Math.round(tw)}mm × {Math.round(th)}mm flat dieline — front, back, sides, and base, exactly as it prints. Build your art to this file in any design tool.
-                </p>
+            {!art.img && (
+              <div className="absolute inset-x-0 bottom-5 flex justify-center px-4 pointer-events-none">
+                <div className="pointer-events-auto bg-white/95 backdrop-blur rounded-2xl border border-ink/10 shadow-lift px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-3 max-w-full">
+                  <span className="w-10 h-10 rounded-full bg-ember-tint text-ember flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M12 16V4" /><path d="m6 10 6-6 6 6" /><path d="M4 20h16" />
+                    </svg>
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink text-[15px] leading-tight">Drop your artwork on the template</p>
+                    <p className="text-[12px] text-ink-soft mt-0.5">PNG, JPG, or WebP · high resolution · full-bleed</p>
+                  </div>
+                  <label className="btn-ember !py-2.5 !px-5 !text-[13px] cursor-pointer shrink-0">
+                    {fileInput}
+                    Choose file
+                  </label>
+                </div>
               </div>
-              <button onClick={downloadTemplate} className="btn-outline shrink-0 !py-3 !px-6 !text-sm">
-                Download template
-              </button>
-            </div>
+            )}
           </div>
 
-          {/* 03 */}
-          <div>
-            <StepHeader n="03" title="Place your art" />
-            {!art.img && (
-              <label className="block bg-smoke rounded-2.5xl px-8 py-12 text-center cursor-pointer border border-ink/10 hover:border-ember/50 hover:bg-ember-tint/50 transition-all mb-3">
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
-                <span className="mx-auto mb-5 w-14 h-14 rounded-full bg-white border border-ink/10 flex items-center justify-center text-ember">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 16V4" /><path d="m6 10 6-6 6 6" /><path d="M4 20h16" />
-                  </svg>
-                </span>
-                <span className="font-serif text-[26px] text-ink block mb-1.5 leading-tight">Drop your artwork here</span>
-                <span className="text-sm text-ink-soft block">PNG, JPG, or WebP · full-bleed art, or formatted to the template · high resolution</span>
-                <span className="btn-outline inline-block mt-6 !py-2.5 !px-6 !text-[14px]">Choose a file</span>
-              </label>
-            )}
-            {!art.img && (
-              <p className="text-sm text-ink-soft text-center mb-5">
-                Not sure what "edge to edge" means?{" "}
+          {/* toolbar */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-4 px-1">
+            {art.img ? (
+              <>
+                <div className="flex items-center gap-3 flex-1 min-w-[220px]">
+                  <span className="text-[11px] font-grotesk font-bold tracking-[0.14em] uppercase text-ink-soft shrink-0">Art size</span>
+                  <input type="range" min={0.3} max={3} step={0.01} value={art.scale}
+                    onChange={(e) => setArt((a) => ({ ...a, scale: Number(e.target.value) }))}
+                    className="flex-1 accent-ember" />
+                </div>
+                <label className="text-[13px] font-semibold text-ember cursor-pointer hover:underline">
+                  {fileInput}
+                  Replace art
+                </label>
+                {demo && (
+                  <button
+                    onClick={() => { setDemo(false); setArt({ img: null, x: 0.5, y: 0.5, scale: 1 }); }}
+                    className="text-[13px] font-semibold text-ink-soft hover:text-ink"
+                  >
+                    Clear example
+                  </button>
+                )}
+              </>
+            ) : (
+              <p className="text-[13px] text-ink-soft">
+                Not sure what &ldquo;edge to edge&rdquo; means?{" "}
                 <button onClick={showExample} className="text-ember font-semibold hover:underline">
                   See an example layout
                 </button>
               </p>
             )}
-            {demo && (
-              <div className="bg-ember-tint rounded-2xl px-5 py-4 mb-4 flex items-start justify-between gap-4">
-                <p className="text-sm text-ink leading-relaxed">
-                  <span className="font-semibold">Example layout.</span> Notice the art runs across the front, back, sides, and base — the whole template prints, then gets cut and sewn. Upload your own art to replace it.
-                </p>
-                <button
-                  onClick={() => { setDemo(false); setArt({ img: null, x: 0.5, y: 0.5, scale: 1 }); }}
-                  className="text-sm font-semibold text-ember hover:underline shrink-0"
-                >
-                  Clear
-                </button>
-              </div>
-            )}
-            <div className="bg-smoke rounded-2.5xl border border-ink/10 p-3 md:p-5">
-            <canvas
-              ref={previewRef}
-              className="w-full h-auto rounded-xl bg-white shadow-soft touch-none select-none"
-              style={{ cursor: art.img ? "grab" : "default", maxHeight: 460, objectFit: "contain" }}
-              onPointerDown={(e) => {
-                if (!art.img) return;
-                drag.current = { on: true, sx: e.clientX, sy: e.clientY, ox: art.x, oy: art.y };
-              }}
-              onPointerMove={(e) => {
-                if (!drag.current.on) return;
-                const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-                setArt((a) => ({
-                  ...a,
-                  x: Math.max(0, Math.min(1, drag.current.ox + (e.clientX - drag.current.sx) / rect.width)),
-                  y: Math.max(0, Math.min(1, drag.current.oy + (e.clientY - drag.current.sy) / rect.height)),
-                }));
-              }}
-              onPointerUp={() => (drag.current.on = false)}
-              onPointerLeave={() => (drag.current.on = false)}
-            />
-            <p className="text-[12px] text-ink-soft mt-3 text-center">
-              Flat production template · {Math.round(tw)}mm × {Math.round(th)}mm · back panel prints rotated 180° · drag to reposition
-            </p>
-            </div>
-            {art.img && (
-              <div className="flex items-center gap-6 mt-4">
-                <div className="flex-1 bg-white rounded-2xl px-5 py-4 border border-ink/10">
-                  <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-2">Art size</label>
-                  <input type="range" min={0.3} max={3} step={0.01} value={art.scale}
-                    onChange={(e) => setArt((a) => ({ ...a, scale: Number(e.target.value) }))}
-                    className="w-full accent-ember" />
-                </div>
-                <label className="text-sm font-semibold text-ember cursor-pointer hover:underline shrink-0">
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
-                  Replace art
-                </label>
-              </div>
-            )}
-            {preflight.length > 0 && (
-              <div className="bg-white rounded-2.5xl border border-ink/10 p-6 mt-4">
-                <div className="flex items-baseline justify-between gap-4 mb-4">
-                  <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft">
-                    Instant art check
-                  </span>
-                  <span className="text-[11px] text-ink-soft">Checked in your browser</span>
-                </div>
-                <ul className="space-y-3.5">
-                  {preflight.map((c) => (
-                    <li key={c.id} className="flex gap-3">
-                      <span className={`font-bold shrink-0 ${CHECK_STYLE[c.level].cls}`}>
-                        {CHECK_STYLE[c.level].icon}
-                      </span>
-                      <div>
-                        <p className="text-[15px] font-semibold text-ink leading-snug">{c.title}</p>
-                        <p className="text-[13px] text-ink-soft leading-relaxed mt-0.5">{c.detail}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <p className="text-sm text-ink-soft mt-5 leading-relaxed">
-              This flat proof is how your bag prints. After you submit, our design team builds a photoreal rendering of the finished bag and sends it with your sample — you approve the real thing, not a guess.
-            </p>
+            <button onClick={downloadTemplate} className="ml-auto text-[13px] font-semibold text-ink hover:text-ember underline underline-offset-4">
+              Download blank template
+            </button>
           </div>
+
+          {demo && (
+            <div className="bg-ember-tint rounded-2xl px-5 py-4 mt-4">
+              <p className="text-sm text-ink leading-relaxed">
+                <span className="font-semibold">Example layout.</span> The art runs across the front, back, sides, and base — the whole template prints, then gets cut and sewn. Upload your own art to replace it.
+              </p>
+            </div>
+          )}
+
+          {preflight.length > 0 && (
+            <div className="bg-white rounded-2.5xl border border-ink/10 p-5 mt-4">
+              <div className="flex items-baseline justify-between gap-4 mb-3">
+                <span className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft">Instant art check</span>
+                <span className="text-[11px] text-ink-soft">Checked in your browser</span>
+              </div>
+              <ul className="space-y-3">
+                {preflight.map((c) => (
+                  <li key={c.id} className="flex gap-3">
+                    <span className={`font-bold shrink-0 ${CHECK_STYLE[c.level].cls}`}>{CHECK_STYLE[c.level].icon}</span>
+                    <div>
+                      <p className="text-[14px] font-semibold text-ink leading-snug">{c.title}</p>
+                      <p className="text-[13px] text-ink-soft leading-relaxed mt-0.5">{c.detail}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <p className="text-[13px] text-ink-soft mt-5 leading-relaxed max-w-2xl">
+            This flat proof is how your bag prints — the same template our factories cut and sew from. After you lock in a quote, our design team builds a photoreal rendering of the finished bag and you approve the real thing, not a guess.
+          </p>
         </div>
 
-        {/* SIDE RAIL */}
-        <div className="lg:sticky lg:top-24 h-fit space-y-5">
-          <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
-            <label className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Quantity</label>
-            <div className="grid grid-cols-3 gap-2 mb-4">
+        {/* ---------- CONFIGURATOR RAIL ---------- */}
+        <div className="lg:sticky lg:top-24 bg-white rounded-2.5xl border border-ink/10 shadow-soft divide-y divide-ink/10">
+          <section className="p-6">
+            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Bag</p>
+            <div className="grid grid-cols-3 gap-2 mb-5">
+              {PRODUCTS.map((p) => (
+                <button key={p.slug} onClick={() => setProduct(p)}
+                  className={`rounded-xl border p-3 text-left transition-all ${product.slug === p.slug ? "border-ember bg-ember-tint" : "border-ink/10 hover:border-ink/30"}`}>
+                  <BagArt variant={p.slug} className={`w-9 h-9 mb-2 ${product.slug === p.slug ? "text-ember" : "text-ink/50"}`} />
+                  <span className="block text-[13px] font-semibold text-ink leading-tight">{p.shortName}</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Size</p>
+            <div className="grid grid-cols-2 gap-1 bg-smoke rounded-2xl p-1.5">
+              {product.sizes.map((s) => (
+                <button key={s.code} onClick={() => setSizeCode(s.code)}
+                  className={`rounded-xl px-3 py-2.5 text-[13px] text-left transition-all ${sizeCode === s.code ? "bg-white text-ink shadow-soft font-semibold" : "text-ink-soft hover:text-ink"}`}>
+                  {s.label}
+                  <span className="block text-[11px] opacity-60">{s.dims}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="p-6">
+            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Quantity</p>
+            <div className="grid grid-cols-3 gap-2 mb-3">
               {QTY_PRESETS.map((q) => (
                 <button key={q} onClick={() => { setQty(q); setCustomQty(""); }}
                   className={`font-grotesk font-bold rounded-xl px-2 py-2.5 text-sm transition-all ${qty === q && isPreset ? "bg-ember text-white" : "bg-smoke text-ink-soft hover:text-ink"}`}>
@@ -360,69 +362,73 @@ function Configurator() {
               type="text" inputMode="numeric" placeholder="Custom quantity"
               value={customQty ? Number(customQty).toLocaleString() : ""}
               onChange={(e) => handleCustomQty(e.target.value)}
-              className={`w-full rounded-xl px-4 py-3 text-base font-semibold text-ink bg-smoke border placeholder:font-normal placeholder:text-ink-soft/60 focus:outline-none ${qtyValid || customQty === "" ? "border-transparent focus:border-ember" : "border-red-400"}`}
+              className={`w-full rounded-xl px-4 py-3 text-base font-semibold text-ink bg-smoke border placeholder:font-normal placeholder:text-ink-soft/50 focus:outline-none ${qtyValid || customQty === "" ? "border-transparent focus:border-ember" : "border-red-400"}`}
             />
             {!qtyValid && customQty !== "" && (
               <p className="text-xs text-red-500 mt-2">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
             )}
-            <div className="border-t border-ink/10 pt-5 mt-5">
-              <div className="text-[13px] text-ink-soft mb-1.5">{qty.toLocaleString()} bags × ${unit.toFixed(2)}</div>
-              <div className="font-serif text-[52px] text-ink leading-none mb-2.5 tabular-nums">
-                ${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-              </div>
-              <div className="text-[12px] text-ink-soft">{product.shortName} · {size.label} {size.dims} · {product.leadTime}</div>
-            </div>
-          </div>
+          </section>
 
-          {submitted ? (
-            <div className="bg-ember-tint rounded-2.5xl p-8 text-center">
-              <h3 className="font-serif font-bold text-2xl text-ink mb-2">Your quote is locked.</h3>
-              <p className="text-ink-soft text-sm leading-relaxed">
-                Within one business day, a designer on our team will send your photoreal proof,
-                final specs, and a sample plan. Nothing goes to production until you approve it.
-              </p>
-              <Link href="/order/continue" className="btn-ember w-full !py-4 mt-6 text-center">
-                Continue Your Order →
-              </Link>
-              <p className="text-[12px] text-ink-soft mt-3 leading-relaxed">
-                Add your shipping details and track every step — art review to delivery — in
-                your account. Still nothing to pay until you approve your proof.
-              </p>
+          <section className="p-6 bg-smoke/60">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <div className="text-[13px] text-ink-soft mb-1">{qty.toLocaleString()} bags × ${unit.toFixed(2)}</div>
+                <div className="font-serif text-[48px] text-ink leading-none tabular-nums">
+                  ${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </div>
+              </div>
+              <div className="text-right text-[12px] text-ink-soft leading-relaxed pb-1">
+                {product.shortName} · {size.label}<br />{product.leadTime}
+              </div>
             </div>
-          ) : (
-            <div className="bg-white rounded-2.5xl border border-ink/10 p-7">
-              <label className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">Lock in this price</label>
-              <Field label="Work email">
-                <input type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} />
-              </Field>
-              <Field label="Phone">
-                <input type="tel" placeholder="(919) 555-0100" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />
-              </Field>
-              <Field label="Company" hint="optional">
-                <input type="text" placeholder="Your brand" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />
-              </Field>
-              <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
-                className="w-full btn-ember !py-4">
-                {submitting ? "Saving…" : "Lock In My Quote"}
-              </button>
-              {submitError && (
-                <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
-                  We couldn&apos;t save your quote. Please try again, or email{" "}
-                  <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
+          </section>
+
+          <section className="p-6">
+            {submitted ? (
+              <div className="text-center">
+                <h3 className="font-serif text-2xl text-ink mb-2">Your quote is locked.</h3>
+                <p className="text-ink-soft text-sm leading-relaxed">
+                  Within one business day, a designer on our team will send your photoreal proof, final specs, and a sample plan. Nothing goes to production until you approve it.
                 </p>
-              )}
-              <ul className="mt-5 space-y-2 text-[13px] text-ink-soft">
-                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Free proof of your exact bag before anything is produced</li>
-                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited proof revisions</li>
-                <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve your proof</li>
-              </ul>
-              <a href="/samples" className="btn-outline w-full !py-3.5 !text-[15px] mt-4 text-center">
-                Hold it first — Sample Kit from $35
-              </a>
-              <p className="text-[12px] text-ink-soft mt-2.5 text-center">Fully credited toward your order.</p>
-              <p className="text-[11px] text-ink-soft mt-3 text-center">A real person reviews every design. No spam, ever.</p>
-            </div>
-          )}
+                <Link href="/order/continue" className="btn-ember w-full !py-4 mt-5 text-center">
+                  Continue Your Order →
+                </Link>
+                <p className="text-[12px] text-ink-soft mt-3 leading-relaxed">
+                  Add shipping details and track every step in your account. Still nothing to pay until you approve your proof.
+                </p>
+              </div>
+            ) : (
+              <>
+                <Field label="Work email">
+                  <input type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} />
+                </Field>
+                <Field label="Phone">
+                  <input type="tel" placeholder="(919) 555-0100" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />
+                </Field>
+                <Field label="Company" hint="optional">
+                  <input type="text" placeholder="Your brand" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />
+                </Field>
+                <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
+                  className="w-full btn-ember !py-4 mt-2">
+                  {submitting ? "Saving…" : "Lock In My Quote"}
+                </button>
+                {submitError && (
+                  <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
+                    We couldn&apos;t save your quote. Please try again, or email{" "}
+                    <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
+                  </p>
+                )}
+                <ul className="mt-4 space-y-1.5 text-[13px] text-ink-soft">
+                  <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Free proof of your exact bag first</li>
+                  <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited proof revisions</li>
+                  <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve it</li>
+                </ul>
+                <a href="/samples" className="btn-outline w-full !py-3 !text-[14px] mt-4 text-center">
+                  Hold it first — Sample Kit from $35
+                </a>
+              </>
+            )}
+          </section>
         </div>
       </div>
     </div>
