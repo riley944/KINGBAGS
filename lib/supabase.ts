@@ -95,6 +95,9 @@ export type Order = {
   billing_name: string | null;
   billing_email: string | null;
   notes: string | null;
+  payment_status: "none" | "method_saved" | "charged" | "failed";
+  paid_at: string | null;
+  stripe_payment_method_id: string | null;
 };
 
 export type OrderEvent = {
@@ -128,9 +131,9 @@ export async function createOrder(o: {
   billing_email?: string;
   notes?: string;
 }) {
-  if (!supabase) return { ok: false as const, error: "Supabase not configured" };
-  const { error } = await supabase.from("orders").insert(o);
-  return { ok: !error, error: error?.message };
+  if (!supabase) return { ok: false, id: null, error: "Supabase not configured" };
+  const { data, error } = await supabase.from("orders").insert(o).select("id").single();
+  return { ok: !error, id: data?.id ?? null, error: error?.message };
 }
 
 export async function fetchOrders(): Promise<{ ok: boolean; orders: Order[]; error?: string }> {

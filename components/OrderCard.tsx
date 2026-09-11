@@ -172,6 +172,31 @@ export default function OrderCard({
         )}
       </div>
 
+      {/* payment state */}
+      <div className="px-6 md:px-8 pb-5 -mt-2">
+        {order.payment_status === "method_saved" && (
+          <p className="text-[13px] text-ink-soft">
+            <span className="text-ember font-bold">✓</span> Payment method on file — charged
+            only after you approve your proof.
+          </p>
+        )}
+        {order.payment_status === "charged" && (
+          <p className="text-[13px] text-ink-soft">
+            <span className="text-ember font-bold">✓</span> Paid
+            {order.paid_at
+              ? ` on ${new Date(order.paid_at).toLocaleDateString(undefined, { month: "long", day: "numeric" })}`
+              : ""}
+            . Receipt in your email.
+          </p>
+        )}
+        {order.payment_status === "failed" && (
+          <p className="text-[13px] text-amber-800">
+            Your payment didn&apos;t go through — check your email, or contact{" "}
+            <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
+          </p>
+        )}
+      </div>
+
       {/* details + history */}
       <details className="group border-t border-ink/5">
         <summary className="px-6 md:px-8 py-3.5 text-[13px] font-semibold text-ink-soft hover:text-ink cursor-pointer list-none flex items-center justify-between">

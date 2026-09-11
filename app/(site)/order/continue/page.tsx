@@ -13,6 +13,7 @@ import {
 } from "@/lib/supabase";
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
+import PaymentStep from "@/components/PaymentStep";
 
 const inputCls =
   "w-full rounded-xl px-4 py-3.5 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none";
@@ -44,6 +45,8 @@ export default function ContinueOrderPage() {
   const [ready, setReady] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [pending, setPending] = useState<PendingOrder | null>(null);
+  // Set once the order row exists; the flow then shows the payment step.
+  const [placedOrder, setPlacedOrder] = useState<{ id: string; total: number } | null>(null);
 
   // sign-in step
   const [email, setEmail] = useState("");
@@ -77,8 +80,26 @@ export default function ContinueOrderPage() {
       setReady(true);
       return;
     }
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       setUser(data.session?.user ?? null);
+      // Returning from a bank-redirect payment setup: Stripe sends the
+      // customer back here with the setup_intent in the URL. Record it,
+      // then land on the dashboard.
+      const sp = new URLSearchParams(window.location.search);
+      const retOrder = sp.get("order");
+      const retSI = sp.get("setup_intent");
+      if (retOrder && retSI && data.session) {
+        await fetch("/api/payment/setup-complete", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${data.session.access_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ order_id: retOrder, setup_intent_id: retSI }),
+        }).catch(() => null);
+        router.replace("/account?placed=1");
+        return;
+      }
       setReady(true);
     });
     // The magic link can land in this same tab — pick the session up live.
@@ -89,9 +110,11 @@ export default function ContinueOrderPage() {
   }, []);
 
   // Signed in with nothing to place → the account page is the destination.
+  // (Unless we're mid-flow on the payment step, where pending is already
+  // cleared but the customer is still here.)
   useEffect(() => {
-    if (ready && user && !pending) router.replace("/account");
-  }, [ready, user, pending, router]);
+    if (ready && user && !pending && !placedOrder) router.replace("/account");
+  }, [ready, user, pending, placedOrder, router]);
 
   const handleSendLink = async () => {
     if (!email || sending) return;
@@ -136,7 +159,14 @@ export default function ContinueOrderPage() {
     if (res.ok) {
       track("order_placed", { product: pending.product_slug, quantity: pending.quantity, value: Math.round(pending.total_price) });
       clearPendingOrder();
-      router.push("/account?placed=1");
+      if (res.id) {
+        // Straight into the payment step — card saved now, charged after
+        // proof approval.
+        setPlacedOrder({ id: res.id, total: pending.total_price });
+        setPending(null);
+      } else {
+        router.push("/account?placed=1");
+      }
     } else {
       setError(res.error || "Couldn't place the order. Please try again.");
     }
@@ -151,7 +181,22 @@ export default function ContinueOrderPage() {
       <Reveal>
         <p className="section-label mb-4">Your Order</p>
 
-        {!pending ? (
+        {placedOrder ? (
+          <div>
+            <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
+              Order placed. One last step.
+            </h1>
+            <p className="text-ink-soft text-lg leading-relaxed mb-7">
+              Save a payment method so that once you approve your proof, nothing slows your
+              bags down.
+            </p>
+            <PaymentStep
+              orderId={placedOrder.id}
+              totalLabel={`$${placedOrder.total.toLocaleString(undefined, { maximumFractionDigits: 0 })} when your proof is approved`}
+              onDone={() => router.push("/account?placed=1")}
+            />
+          </div>
+        ) : !pending ? (
           <div>
             <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
               Start with a quote.

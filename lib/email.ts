@@ -50,6 +50,20 @@ type OrderLike = {
   total_price: number | string;
 };
 
+// Sent when the saved payment method is charged after proof approval.
+export function paymentCapturedEmail(order: OrderLike): { subject: string; html: string } {
+  return {
+    subject: "Payment received — your bags are going into production",
+    html: shell(
+      "Paid, and moving.",
+      `<p>Your payment went through and your order is headed to the factory floor.
+       A receipt from Stripe is on its way separately. Next stop: cutting, printing,
+       and sewing — we'll email tracking the moment your bags ship.</p>`,
+      order
+    ),
+  };
+}
+
 // One email per customer-meaningful status change. Returns null for
 // statuses that shouldn't email (e.g. 'submitted' — the customer was
 // looking at the confirmation screen seconds ago).

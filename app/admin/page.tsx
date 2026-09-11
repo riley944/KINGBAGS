@@ -139,6 +139,26 @@ export default function AdminPage() {
     load(key);
   };
 
+  const charge = async (order: Order) => {
+    if (busy) return;
+    if (!window.confirm(`Charge ${money(order.total_price)} to ${order.company}'s saved payment method now?`)) return;
+    setBusy(true);
+    setNotice(null);
+    setError(null);
+    const res = await fetch(`/api/admin/orders/${order.id}/charge`, {
+      method: "POST",
+      headers: { "x-admin-key": key },
+    });
+    const body = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (res.ok && body.ok) {
+      setNotice(`${order.company} charged ${money(order.total_price)} (${body.payment_status}) — order moved to In production, customer emailed.`);
+    } else {
+      setError(body.error ? `Charge failed: ${body.error}` : `Charge did not complete (${body.payment_status ?? res.status}).`);
+    }
+    load(key);
+  };
+
   const viewArt = async (filename: string) => {
     const res = await fetch(`/api/admin/art?file=${encodeURIComponent(filename)}`, {
       headers: { "x-admin-key": key },
@@ -445,6 +465,35 @@ export default function AdminPage() {
                 <p className="text-[12px] text-ink-soft mt-2">
                   Status changes email the customer automatically.
                 </p>
+              </div>
+
+              <div className="border-t border-ink/10 pt-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Payment</p>
+                <p className="text-[14px] text-ink mb-3">
+                  {{
+                    none: "No payment method on file",
+                    method_saved: "Payment method saved — ready to charge after approval",
+                    charged: `Paid${selected.paid_at ? ` on ${dateShort(selected.paid_at)}` : ""}`,
+                    failed: "Last charge attempt failed — see history",
+                  }[selected.payment_status] ?? "Unknown"}
+                </p>
+                {(selected.payment_status === "method_saved" || selected.payment_status === "failed") &&
+                  ["art_approved", "awaiting_payment"].includes(selected.status) &&
+                  selected.stripe_payment_method_id !== null && (
+                    <button
+                      onClick={() => charge(selected)}
+                      disabled={busy}
+                      className="text-[14px] font-bold px-5 py-3 rounded-lg bg-ink text-white hover:bg-charcoal transition-colors disabled:opacity-50"
+                    >
+                      {busy ? "…" : `Charge ${money(selected.total_price)} now`}
+                    </button>
+                  )}
+                {selected.payment_status === "method_saved" &&
+                  !["art_approved", "awaiting_payment"].includes(selected.status) && (
+                    <p className="text-[12px] text-ink-soft">
+                      Charge unlocks once the order reaches Art approved.
+                    </p>
+                  )}
               </div>
 
               <div className="border-t border-ink/10 pt-5">

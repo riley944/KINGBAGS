@@ -14,6 +14,18 @@ export function serviceClient() {
   });
 }
 
+// Resolves the signed-in customer from a route request's Authorization
+// header (Supabase access token). Returns null when absent or invalid.
+export async function userFromRequest(req: Request) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  if (!url || !anon || !token) return null;
+  const client = createClient(url, anon, { auth: { persistSession: false } });
+  const { data, error } = await client.auth.getUser(token);
+  return error ? null : data.user;
+}
+
 // Shared-secret gate for the admin endpoints. Refuses everything until
 // ADMIN_SECRET is configured.
 export function isAdminRequest(req: Request): boolean {

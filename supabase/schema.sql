@@ -148,6 +148,9 @@ begin
   elsif tg_op = 'UPDATE' and new.status is distinct from old.status then
     insert into kingbags.order_events (order_id, event, status, actor)
     values (new.id, 'status_changed', new.status, 'team');
+  elsif tg_op = 'UPDATE' and new.art_filename is distinct from old.art_filename then
+    insert into kingbags.order_events (order_id, event, status, actor)
+    values (new.id, 'artwork_updated', new.status, 'customer');
   end if;
   return new;
 end $$;
@@ -191,3 +194,28 @@ create policy "authenticated can upload art"
 -- request role.
 revoke execute on function kingbags.touch_updated_at() from public, anon, authenticated;
 revoke execute on function kingbags.log_order_event() from public, anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 7. Stripe payment state (phase 3). Server-written only.
+-- ---------------------------------------------------------------------------
+alter table kingbags.orders
+  add column if not exists stripe_customer_id text,
+  add column if not exists stripe_setup_intent_id text,
+  add column if not exists stripe_payment_method_id text,
+  add column if not exists stripe_payment_intent_id text,
+  add column if not exists payment_status text not null default 'none'
+    check (payment_status in ('none','method_saved','charged','failed')),
+  add column if not exists paid_at timestamptz;
+
+-- ---------------------------------------------------------------------------
+-- 8. Customer art revisions: owners may update art_filename on their own
+--    orders (needs_changes flow). Column-level grant.
+-- ---------------------------------------------------------------------------
+drop policy if exists "own orders: revise art" on kingbags.orders;
+create policy "own orders: revise art" on kingbags.orders
+  for update to authenticated
+  using (user_id = auth.uid())
+  with check (user_id = auth.uid());
+
+revoke update on kingbags.orders from authenticated;
+grant update (art_filename) on kingbags.orders to authenticated;

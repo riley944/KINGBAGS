@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
+    "@stripe/stripe-js": "^9.16.0",
+    "@supabase/supabase-js": "^2.47.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@supabase/supabase-js": "^2.47.0",
-    "three": "^0.171.0",
-    "@react-three/fiber": "^9.0.0",
-    "@react-three/drei": "^10.0.0"
+    "stripe": "^22.6.2",
+    "three": "^0.171.0"
   },
   "devDependencies": {
     "@types/node": "^22",
