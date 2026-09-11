@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
-import { PRODUCTS } from "@/lib/products";
-import { saveLead } from "@/lib/supabase";
-import { getAttribution } from "@/lib/attribution";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 
+// Live Stripe payment links (created on the KING BAGS account). Checkout
+// collects payment, shipping address, phone, and bag preference.
 const KITS = [
   {
     id: "quality-kit",
@@ -19,7 +19,8 @@ const KITS = [
       "Spec sheet with dimensions, materials, and print process",
     ],
     note: "Ships in 3–5 business days. Fully credited toward your order.",
-    cta: "Request the Quality Kit",
+    cta: "Order the Quality Kit — $35",
+    url: "https://buy.stripe.com/eVq9AUaJxcb61ur5E763K00",
   },
   {
     id: "exact-sample",
@@ -33,37 +34,14 @@ const KITS = [
       "Everything in the Quality Kit, included",
     ],
     note: "Ships in 2–3 weeks. Fully credited toward your order — serious buyers pay nothing extra.",
-    cta: "Request the Exact Sample",
+    cta: "Order the Exact Sample — $150",
+    url: "https://buy.stripe.com/28E5kEbNB4IE2yvgiL63K01",
   },
 ];
 
-export default function SamplesPage() {
-  const [kit, setKit] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
-  const [style, setStyle] = useState(PRODUCTS[0].slug);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async () => {
-    if (!email || !kit || submitting) return;
-    setSubmitting(true);
-    setError(null);
-    const res = await saveLead({
-      email,
-      company: company || undefined,
-      product_slug: style,
-      message: `sample kit request: ${kit}${getAttribution() ? ` | src: ${getAttribution()}` : ""}`,
-    });
-    setSubmitting(false);
-    if (res.ok) {
-      track("sample_requested", { kit: kit ?? "", product: style });
-      setSubmitted(true);
-    } else {
-      setError(res.error || "Something went wrong.");
-    }
-  };
+function SamplesInner() {
+  const params = useSearchParams();
+  const paid = params.get("paid") === "1";
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:py-24">
@@ -80,27 +58,27 @@ export default function SamplesPage() {
         </Reveal>
       </div>
 
-      {submitted ? (
+      {paid ? (
         <Reveal>
           <div className="max-w-xl mx-auto bg-ember-tint rounded-2.5xl p-10 text-center">
-            <h2 className="font-serif font-bold text-2xl text-ink mb-3">Request received.</h2>
-            <p className="text-ink-soft leading-relaxed">
-              A real person on our team will email you within one business day with payment
-              details and a ship date. Your sample cost is credited in full when you place your order.
+            <h2 className="font-serif font-bold text-2xl text-ink mb-3">Order received. 🎉</h2>
+            <p className="text-ink-soft leading-relaxed mb-4">
+              Your sample kit is confirmed — a receipt from Stripe is in your email. We&apos;ll
+              follow up within one business day with your ship date, and your sample cost is
+              credited in full when you place your bag order.
+            </p>
+            <p className="text-sm text-ink-soft">
+              For the Exact Sample: our design team will email you about artwork before
+              anything is cut.
             </p>
           </div>
         </Reveal>
       ) : (
         <>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-14">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
             {KITS.map((k, i) => (
               <Reveal key={k.id} delay={i * 120}>
-                <button
-                  onClick={() => setKit(k.id)}
-                  className={`text-left bg-white rounded-2.5xl p-8 h-full w-full transition-all ${
-                    kit === k.id ? "ring-2 ring-ember shadow-lift" : "border border-ink/10 hover:border-ember/50 hover:shadow-lift"
-                  }`}
-                >
+                <div className="flex flex-col bg-white rounded-2.5xl border border-ink/10 hover:border-ember/40 hover:shadow-lift transition-all p-8 h-full">
                   <div className="flex items-baseline justify-between mb-2">
                     <h2 className="font-serif font-bold text-2xl text-ink">{k.name}</h2>
                     <span className="font-serif font-black text-3xl text-ember">${k.price}</span>
@@ -113,58 +91,38 @@ export default function SamplesPage() {
                       </li>
                     ))}
                   </ul>
-                  <p className="text-[13px] text-ink-soft border-t border-ink/10 pt-4">{k.note}</p>
-                </button>
+                  <div className="mt-auto">
+                    <p className="text-[13px] text-ink-soft border-t border-ink/10 pt-4 mb-5">{k.note}</p>
+                    <a
+                      href={k.url}
+                      onClick={() => track("sample_checkout", { kit: k.id, value: k.price })}
+                      className="btn-ember w-full !py-4 text-center"
+                    >
+                      {k.cta}
+                    </a>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
-
-          <div className="max-w-xl mx-auto bg-white rounded-2.5xl border border-ink/10 p-8">
-            <label className="text-[11px] font-bold tracking-[0.18em] uppercase text-ink-soft block mb-4">
-              {kit ? `Request ${KITS.find((k) => k.id === kit)?.name}` : "Pick a kit above, then tell us where to reach you"}
-            </label>
-            <input
-              type="email" placeholder="Work email" value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none"
-            />
-            <input
-              type="text" placeholder="Company (optional)" value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              className="w-full rounded-xl px-4 py-3.5 mb-3 bg-smoke text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none"
-            />
-            <div className="flex flex-wrap gap-2 mb-5">
-              {PRODUCTS.map((p) => (
-                <button
-                  key={p.slug}
-                  onClick={() => setStyle(p.slug)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-                    style === p.slug ? "bg-ink text-paper" : "bg-smoke text-ink-soft hover:text-ink"
-                  }`}
-                >
-                  {p.shortName}
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={handleSubmit}
-              disabled={!email || !kit || submitting}
-              className="w-full btn-ember !py-4"
-            >
-              {submitting ? "Sending…" : "Request My Sample"}
-            </button>
-            {error && (
-              <p className="text-xs text-red-500 mt-3 text-center">
-                We couldn&apos;t send that. Please try again, or email{" "}
-                <a href="mailto:hello@kingbags.co" className="font-semibold underline">hello@kingbags.co</a>.
-              </p>
-            )}
-            <p className="text-[11px] text-ink-soft mt-3 text-center">
-              No payment now — we&apos;ll email you an invoice and ship date first.
-            </p>
-          </div>
+          <p className="text-[14px] text-ink-soft text-center max-w-xl mx-auto">
+            Secure checkout by Stripe — card, Apple Pay, or bank payment. Not sure which kit
+            fits?{" "}
+            <a href="mailto:hello@kingbags.co" className="text-ember font-semibold hover:underline">
+              Email us
+            </a>{" "}
+            and a real person will point you right.
+          </p>
         </>
       )}
     </div>
+  );
+}
+
+export default function SamplesPage() {
+  return (
+    <Suspense fallback={<div className="py-32 text-center text-ink-soft">Loading…</div>}>
+      <SamplesInner />
+    </Suspense>
   );
 }
