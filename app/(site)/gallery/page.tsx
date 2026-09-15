@@ -51,6 +51,38 @@ const CONCEPTS = [
     note: "One-color statement: a single mark, tonal gusset copy, high-gloss olive.",
     bag: "grocery-tote",
   },
+  {
+    slug: "lucky-dog",
+    brand: "Lucky Dog",
+    vertical: "Retail",
+    construction: "The Grocery Tote · laminated non-woven",
+    note: "Illustrated all-over print with tonal yellow handles — every panel tells the story.",
+    bag: "grocery-tote",
+  },
+  {
+    slug: "pine-and-salt",
+    brand: "Pine & Salt",
+    vertical: "DTC Brands",
+    construction: "The Grocery Tote · laminated non-woven, tall",
+    note: "Camo pattern printed edge to edge under a clean two-color mark.",
+    bag: "grocery-tote",
+  },
+  {
+    slug: "hotel-marisol",
+    brand: "Hotel Marisol",
+    vertical: "Hospitality",
+    construction: "The Canvas Tote · heavyweight cotton",
+    note: "Quiet luxury: a single-color monogram and keyline on natural canvas.",
+    bag: "canvas-tote",
+  },
+  {
+    slug: "sunday-supply-co",
+    brand: "Sunday Supply Co.",
+    vertical: "Retail",
+    construction: "The Canvas Tote · heavyweight cotton",
+    note: "Engraving-style illustration and a two-color print on natural canvas.",
+    bag: "canvas-tote",
+  },
 ];
 
 export default function LookbookPage() {

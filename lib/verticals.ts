@@ -28,7 +28,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The pop-up", d: "Nothing moves product at a market stall like a beautiful bag on every arm at the event." },
     ],
     bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
-    concepts: ["wild-threads", "the-daily-market"],
+    concepts: ["wild-threads", "pine-and-salt"],
   },
   {
     slug: "restaurants",
@@ -58,7 +58,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Challenge rewards", d: "Finish the program, earn the bag everyone else asks about." },
     ],
     bestBags: ["canvas-tote", "beach-bag", "grocery-tote"],
-    concepts: ["wild-threads", "olive-market"],
+    concepts: ["pine-and-salt", "lucky-dog"],
   },
   {
     slug: "breweries",
@@ -73,7 +73,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Festival season", d: "Your bag on a thousand shoulders at every beer fest you pour at." },
     ],
     bestBags: ["beach-bag", "grocery-tote", "canvas-tote"],
-    concepts: ["good-day-coffee", "olive-market"],
+    concepts: ["olive-market", "pine-and-salt"],
   },
   {
     slug: "retail",
@@ -88,7 +88,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Loyalty tiers", d: "The bag as the visible badge of your best customers." },
     ],
     bestBags: ["grocery-tote", "canvas-tote", "beach-bag"],
-    concepts: ["casa-bonita-mercado", "the-daily-market"],
+    concepts: ["sunday-supply-co", "casa-bonita-mercado"],
   },
   {
     slug: "events",
@@ -103,7 +103,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The after-life", d: "Conference ends; the bag starts its real job at farmers markets everywhere." },
     ],
     bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
-    concepts: ["wild-threads", "casa-bonita-mercado"],
+    concepts: ["hotel-marisol", "wild-threads"],
   },
 ];
 
