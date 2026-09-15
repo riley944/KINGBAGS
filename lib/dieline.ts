@@ -18,10 +18,10 @@ export type Dieline = {
 // (see dielineFor).
 export const DIELINES: Record<string, Record<string, Dieline>> = {
   "grocery-tote": {
-    S:  { bodyW: 300, panelH: 260, baseD: 120, gussetW: 120, hem: 30 },
-    M:  { bodyW: 340, panelH: 290, baseD: 130, gussetW: 130, hem: 30 },
-    L:  { bodyW: 370, panelH: 320, baseD: 140, gussetW: 140, hem: 30 },
-    XL: { bodyW: 400, panelH: 350, baseD: 150, gussetW: 150, hem: 30 },
+    S:  { bodyW: 340, panelH: 290, baseD: 130, gussetW: 130, hem: 30 },
+    M:  { bodyW: 370, panelH: 320, baseD: 140, gussetW: 140, hem: 30 },
+    L:  { bodyW: 400, panelH: 350, baseD: 150, gussetW: 150, hem: 30 },
+    XL: { bodyW: 440, panelH: 385, baseD: 165, gussetW: 165, hem: 30 },
   },
   "canvas-tote": {
     S: { bodyW: 330, panelH: 330, baseD: 127, gussetW: 127, hem: 25 },
@@ -31,7 +31,7 @@ export const DIELINES: Record<string, Record<string, Dieline>> = {
 };
 
 export function dielineFor(slug: string, sizeCode: string, orientation: Orientation): Dieline {
-  const base = DIELINES[slug]?.[sizeCode] ?? DIELINES["grocery-tote"].XL;
+  const base = DIELINES[slug]?.[sizeCode] ?? DIELINES["grocery-tote"].L;
   if (orientation === "landscape") return base;
   return { ...base, bodyW: base.panelH, panelH: base.bodyW };
 }

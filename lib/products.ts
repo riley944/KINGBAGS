@@ -37,12 +37,12 @@ export const ORIENTATIONS: { code: Orientation; label: string; hint: string }[] 
 ];
 
 // --- Cost inputs (grocery tote, laminated non-woven, 140 GSM, glossy) ----
-// EXW per bag at the reference size (XL: 40 × 35 × 15 cm), by quantity.
+// EXW per bag at the reference size (Large: 40 × 35 × 15 cm), by quantity.
 const EXW_CURVE: [number, number][] = [
   [1500, 0.55], [3000, 0.45], [5000, 0.40], [10000, 0.34], [25000, 0.29], [50000, 0.25],
 ];
 const EXW_FLOOR = 0.25;                       // never model a cost below this
-const SIZE_FACTOR: Record<string, number> = { XL: 1.0, L: 0.9, M: 0.8, S: 0.7 };
+const SIZE_FACTOR: Record<string, number> = { XL: 1.1, L: 1.0, M: 0.9, S: 0.8 };
 const AIR_FREIGHT = 0.75;                     // per bag, any size, conservative
 // Target gross margin by quantity (share of sell price). Set a few points
 // above the goal so that absorbing the plate-fee difference (~$55/color)
@@ -106,13 +106,13 @@ export const PRODUCTS: Product[] = [
     tagline: "Edge-to-edge print. Your art is the entire bag.",
     description:
       "Fully custom cut and sew in laminated non-woven — your artwork covers every panel, front, back, gussets, and base, under a glossy finish that wipes clean. Reinforced handles and a structured bottom, built to the same spec as the national programs we run.",
-    // Reference: XL = 40 × 35 × 15 cm factory template; each size down
+    // Reference: Large = 40 × 35 × 15 cm factory template; each size
     // steps the panel set ~8%.
     sizes: [
-      { code: "S", label: "Small", w: 12, h: 10.5, d: 4.75 },
-      { code: "M", label: "Medium", w: 13.5, h: 11.5, d: 5 },
-      { code: "L", label: "Large", w: 14.5, h: 12.5, d: 5.5 },
-      { code: "XL", label: "X-Large", w: 16, h: 14, d: 6 },
+      { code: "S", label: "Small", w: 13.5, h: 11.5, d: 5 },
+      { code: "M", label: "Medium", w: 14.5, h: 12.5, d: 5.5 },
+      { code: "L", label: "Large", w: 16, h: 14, d: 6 },
+      { code: "XL", label: "X-Large", w: 17.5, h: 15.25, d: 6.5 },
     ],
     material: "140 GSM laminated non-woven polypropylene, glossy finish",
     construction: [
