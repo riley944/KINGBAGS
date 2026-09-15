@@ -98,7 +98,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {p.pricing === "modeled" ? (
             <div className="bg-white rounded-2.5xl border border-ink/10 overflow-hidden mb-9">
               <div className="bg-charcoal text-white text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase px-6 py-3.5">
-                Per-bag pricing, delivered
+                All-in per bag: bag + air freight + duties
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-[14px] min-w-[420px]">
@@ -123,7 +123,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </table>
               </div>
               <p className="px-5 py-3 text-[12px] text-ink-soft border-t border-ink/10">
-                Air freight, customs, and duties included. One-time setup ${SETUP_PER_COLOR} per ink color.
+                Delivered to your door — nothing added for freight or customs. Only extra: one-time print setup, ${SETUP_PER_COLOR} per ink color.
               </p>
             </div>
           ) : (

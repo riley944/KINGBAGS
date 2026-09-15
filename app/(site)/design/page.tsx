@@ -408,9 +408,12 @@ function Configurator() {
               </div>
             ) : (
               <div>
+                <div className="inline-flex items-center gap-2 mb-3 rounded-full bg-ember text-white px-3 py-1 text-[11px] font-grotesk font-bold tracking-[0.14em] uppercase">
+                  All-in price · bag + freight + duties
+                </div>
                 <div className="flex items-end justify-between gap-4">
                   <div>
-                    <div className="text-[13px] text-ink-soft mb-1">{qty.toLocaleString()} bags × ${unit!.toFixed(2)}</div>
+                    <div className="text-[13px] text-ink-soft mb-1">{qty.toLocaleString()} bags × ${unit!.toFixed(2)} delivered</div>
                     <div className="font-serif text-[48px] text-ink leading-none tabular-nums">{money(total)}</div>
                   </div>
                   <div className="text-right text-[12px] text-ink-soft leading-relaxed pb-1">
@@ -418,9 +421,10 @@ function Configurator() {
                   </div>
                 </div>
                 <dl className="mt-4 pt-3 border-t border-ink/10 text-[12px] text-ink-soft space-y-1">
-                  <div className="flex justify-between"><dt>Bags, delivered (freight &amp; duties in)</dt><dd className="tabular-nums">{money(subtotal)}</dd></div>
+                  <div className="flex justify-between"><dt>Bags + air freight + customs duties</dt><dd className="tabular-nums">{money(subtotal)}</dd></div>
                   <div className="flex justify-between"><dt>Print setup · {colors} color{colors > 1 ? "s" : ""}</dt><dd className="tabular-nums">{money(setup)}</dd></div>
                 </dl>
+                <p className="text-[12px] text-ink-soft mt-2">Delivered to your door. No freight or customs bill later.</p>
               </div>
             )}
           </section>

@@ -33,7 +33,7 @@ export default function ProductsPage() {
                   <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
                   <div className="flex justify-between items-center text-[15px]">
                     <span className="font-bold text-ember">
-                      {price ? `From $${price.toFixed(2)}/bag at ${p.minOrder.toLocaleString()}` : "Quoted per project"}
+                      {price ? `From $${price.toFixed(2)}/bag at ${p.minOrder.toLocaleString()} · freight & duties in` : "Quoted per project"}
                     </span>
                     <span className="text-ink-soft/70">{p.sizes.length} sizes · 2 orientations</span>
                   </div>

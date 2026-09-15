@@ -126,7 +126,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
                     <h3 className="font-bold text-ink text-lg group-hover:text-ember transition-colors">{p.name}</h3>
                     <p className="text-sm text-ink-soft mt-1 mb-3">{p.material}</p>
                     <p className="text-[15px] font-bold text-ember">
-                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()}` : "Quoted per project"}
+                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()} · freight & duties in` : "Quoted per project"}
                     </p>
                   </div>
                 </Link>
@@ -168,7 +168,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
               Price yours in the next two minutes.
             </h2>
             <p className="text-ink-soft text-lg mb-9">
-              Instant pricing in the studio. Free proof before production. Nothing to pay until you approve it.
+              Instant all-in pricing — bag, air freight, and duties — in the studio. Free proof before production. Nothing to pay until you approve it.
             </p>
             <Link href={`/design?style=${v.bestBags[0]}`} className="btn-ember text-lg !px-12 !py-5">
               Start Your Order →

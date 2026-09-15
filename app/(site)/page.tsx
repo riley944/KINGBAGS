@@ -6,7 +6,7 @@ import CountUp from "@/components/CountUp";
 
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
-  { n: "2", t: "Price it yourself", d: "Pick your quantity and the price is right there. No quote emails, no waiting on a callback." },
+  { n: "2", t: "Price it yourself", d: "Pick your quantity and the number is right there — and it's all-in: bag, air freight, and duties. No quote emails, no freight surprise later." },
   { n: "3", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 5–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
 
@@ -22,7 +22,7 @@ const VERTICALS = [
 const TRUST = [
   { icon: "bag", label: "Built for national brands" },
   { icon: "tag", label: "Factory-direct pricing" },
-  { icon: "plane", label: "Shipping & customs handled" },
+  { icon: "plane", label: "Freight & duties included" },
   { icon: "stack", label: "From 1,500 bags" },
 ];
 
@@ -205,7 +205,7 @@ export default function Home() {
                     <h3 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h3>
                     <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
                     <p className="text-[15px] font-bold text-ember">
-                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()}` : "Quoted per project"}
+                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()} · freight & duties in` : "Quoted per project"}
                     </p>
                   </div>
                 </Link>
