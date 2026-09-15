@@ -27,15 +27,19 @@ export default function Footer() {
             <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
             <li><Link href="/samples" className="hover:text-white">Sample Kits</Link></li>
             <li><Link href="/gallery" className="hover:text-white">Lookbook</Link></li>
-            <li><Link href="/design" className="hover:text-white">Start Your Order</Link></li>
+            <li><Link href="/faq" className="hover:text-white">Buyer FAQ</Link></li>
+            <li><Link href="/design" className="hover:text-white">Design &amp; Price Your Bag</Link></li>
             <li><Link href="/account" className="hover:text-white">Your Account</Link></li>
           </ul>
         </div>
         <div>
-          <div className="text-xs font-bold tracking-[0.2em] uppercase text-white mb-4">Get In Touch</div>
+          <div className="text-xs font-bold tracking-[0.2em] uppercase text-white mb-4">Talk To Us</div>
+          <p className="text-[15px] leading-relaxed mb-3">
+            <Link href="/talk" className="text-white font-semibold hover:underline">Book fifteen minutes with a bag specialist →</Link>
+          </p>
           <p className="text-[15px] leading-relaxed">
-            Volume over 50,000 bags?<br />
-            <a href="mailto:hello@kingbags.co" className="text-white font-semibold hover:underline">hello@kingbags.co</a>
+            <a href="mailto:hello@kingbags.co" className="text-white font-semibold hover:underline">hello@kingbags.co</a><br />
+            <span className="text-white/55">Raleigh, North Carolina</span>
           </p>
         </div>
       </div>

@@ -132,7 +132,7 @@ export default function LookbookPage() {
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <h2 className="font-serif font-black text-3xl md:text-5xl text-ink leading-tight mb-6">Your brand goes here next.</h2>
-            <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
+            <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design &amp; Price Your Bag</Link>
           </Reveal>
         </div>
       </section>

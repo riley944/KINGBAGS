@@ -119,7 +119,7 @@ export default function AboutPage() {
               Your brand deserves the same craft.
             </h2>
             <p className="text-ink-soft text-lg mb-10">Design your bag in minutes — our team takes it from there.</p>
-            <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design Your Bag</Link>
+            <Link href="/design" className="btn-ember text-lg !px-12 !py-5">Design &amp; Price Your Bag</Link>
           </Reveal>
         </div>
       </section>

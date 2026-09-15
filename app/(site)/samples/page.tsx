@@ -1,8 +1,10 @@
 "use client";
 import { Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
+import { CTA } from "@/lib/site";
 
 // Quality Kit checks out through a live Stripe Payment Link. The Exact
 // Sample goes through hosted Stripe Checkout created by our own API route,
@@ -21,7 +23,6 @@ const KITS = [
     note: "Ships in 3–5 business days. Fully credited toward your order.",
     cta: "Order the Quality Kit — $35",
     href: "https://buy.stripe.com/eVq9AUaJxcb61ur5E763K00",
-    external: true,
   },
   {
     id: "exact-sample",
@@ -37,94 +38,88 @@ const KITS = [
     note: "Ships in 2–3 weeks. Fully credited toward your order — serious buyers pay nothing extra.",
     cta: "Order the Exact Sample — $300",
     href: "/api/samples/checkout?kit=exact-sample",
-    external: true,
   },
 ];
+
+function Kits() {
+  return (
+    <>
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
+        {KITS.map((k, i) => (
+          <Reveal key={k.id} delay={i * 120}>
+            <div className="flex flex-col bg-white rounded-2.5xl border border-ink/10 hover:border-ember/40 hover:shadow-lift transition-all p-8 h-full">
+              <div className="flex items-baseline justify-between mb-2">
+                <h2 className="font-serif text-2xl text-ink">{k.name}</h2>
+                <span className="font-serif text-3xl text-ember">${k.price}</span>
+              </div>
+              <p className="text-ember font-semibold text-[15px] mb-5">{k.tagline}</p>
+              <ul className="space-y-2.5 mb-6">
+                {k.includes.map((line) => (
+                  <li key={line} className="flex gap-2.5 text-[15px] text-ink-soft leading-snug">
+                    <span className="text-ember font-bold shrink-0">✓</span> {line}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto">
+                <p className="text-[13px] text-ink-soft border-t border-ink/10 pt-4 mb-5">{k.note}</p>
+                <a
+                  href={k.href}
+                  onClick={() => track("purchase", { kb_action: "sample_checkout", kit: k.id, value: k.price, currency: "USD" })}
+                  className="btn-ember w-full !py-4 text-center"
+                >
+                  {k.cta}
+                </a>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <p className="text-[14px] text-ink-soft text-center max-w-xl mx-auto">
+        Secure checkout by Stripe — card, Apple Pay, or bank payment. Not sure which fits?{" "}
+        <Link href="/talk" className="text-ember font-semibold hover:underline">{CTA.talk}</Link>{" "}
+        and a real person will point you right.
+      </p>
+    </>
+  );
+}
 
 function SamplesInner() {
   const params = useSearchParams();
   const paid = params.get("paid") === "1";
   const error = params.get("error");
 
+  if (paid) {
+    return (
+      <Reveal>
+        <div className="max-w-xl mx-auto bg-ember-tint rounded-2.5xl p-10 text-center">
+          <h2 className="font-serif text-2xl text-ink mb-3">Order received. 🎉</h2>
+          <p className="text-ink-soft leading-relaxed">
+            Your sample is confirmed — a receipt from Stripe is in your email. We&apos;ll
+            follow up within one business day with your ship date, and the sample cost is
+            credited in full when you place your bag order.
+          </p>
+        </div>
+      </Reveal>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16 md:py-24">
+    <>
       {error && (
         <div className="max-w-2xl mx-auto mb-8 rounded-2.5xl border border-gold/60 bg-gold-tint px-5 py-4 text-[15px] text-ink">
           {error}
         </div>
       )}
-      <div className="max-w-2xl mx-auto text-center mb-14">
-        <Reveal>
-          <p className="section-label mb-5">Samples</p>
-          <h1 className="font-serif text-4xl md:text-6xl text-ink leading-[1.05] mb-6">
-            Hold it before you order it.
-          </h1>
-          <p className="text-lg text-ink-soft leading-relaxed">
-            Nobody should order 1,500 bags they&apos;ve never touched. Every sample is fully
-            credited toward your order — so if you were going to order anyway, it costs you nothing.
-          </p>
-        </Reveal>
-      </div>
-
-      {paid ? (
-        <Reveal>
-          <div className="max-w-xl mx-auto bg-ember-tint rounded-2.5xl p-10 text-center">
-            <h2 className="font-serif text-2xl text-ink mb-3">Order received. 🎉</h2>
-            <p className="text-ink-soft leading-relaxed">
-              Your sample is confirmed — a receipt from Stripe is in your email. We&apos;ll
-              follow up within one business day with your ship date, and the sample cost is
-              credited in full when you place your bag order.
-            </p>
-          </div>
-        </Reveal>
-      ) : (
-        <>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
-            {KITS.map((k, i) => (
-              <Reveal key={k.id} delay={i * 120}>
-                <div className="flex flex-col bg-white rounded-2.5xl border border-ink/10 hover:border-ember/40 hover:shadow-lift transition-all p-8 h-full">
-                  <div className="flex items-baseline justify-between mb-2">
-                    <h2 className="font-serif text-2xl text-ink">{k.name}</h2>
-                    <span className="font-serif text-3xl text-ember">${k.price}</span>
-                  </div>
-                  <p className="text-ember font-semibold text-[15px] mb-5">{k.tagline}</p>
-                  <ul className="space-y-2.5 mb-6">
-                    {k.includes.map((line) => (
-                      <li key={line} className="flex gap-2.5 text-[15px] text-ink-soft leading-snug">
-                        <span className="text-ember font-bold shrink-0">✓</span> {line}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto">
-                    <p className="text-[13px] text-ink-soft border-t border-ink/10 pt-4 mb-5">{k.note}</p>
-                    <a
-                      href={k.href}
-                      onClick={() => track("purchase", { kb_action: "sample_checkout", kit: k.id, value: k.price, currency: "USD" })}
-                      className="btn-ember w-full !py-4 text-center"
-                    >
-                      {k.cta}
-                    </a>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p className="text-[14px] text-ink-soft text-center max-w-xl mx-auto">
-            Secure checkout by Stripe — card, Apple Pay, or bank payment. Not sure which fits?{" "}
-            <a href="mailto:hello@kingbags.co" className="text-ember font-semibold hover:underline">
-              Email us
-            </a>{" "}
-            and a real person will point you right.
-          </p>
-        </>
-      )}
-    </div>
+      <Kits />
+    </>
   );
 }
 
 export default function SamplesPage() {
+  // The kit cards render on the server; only the paid/error state waits
+  // for the URL.
   return (
-    <Suspense fallback={<div className="py-32 text-center text-ink-soft">Loading…</div>}>
+    <Suspense fallback={<Kits />}>
       <SamplesInner />
     </Suspense>
   );

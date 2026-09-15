@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
+import NextStep from "@/components/NextStep";
 import ConceptImage from "@/components/ConceptImage";
 import CountUp from "@/components/CountUp";
 import { VERTICALS, getVertical } from "@/lib/verticals";
@@ -46,12 +47,13 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href={`/design?style=${v.bestBags[0]}`} className="btn-light text-lg !px-10 !py-4">
-                Start Your Order →
+                Design &amp; Price Your Bag →
               </Link>
               <Link href="/samples" className="text-white font-semibold underline underline-offset-4 hover:no-underline">
                 Or hold a sample first — $35
               </Link>
             </div>
+            <p className="text-white/60 text-[13px] mt-5">All-in delivered pricing · Free proof · Nothing charged until you approve</p>
           </Reveal>
         </div>
       </section>
@@ -160,8 +162,10 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
         </div>
       </section>
 
+      <NextStep />
+
       {/* CTA */}
-      <section className="pb-24 md:pb-28">
+      <section className="py-24 md:py-28">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <h2 className="font-serif font-black text-3xl md:text-5xl text-ink leading-tight mb-6">
@@ -171,7 +175,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
               Instant all-in pricing — bag, air freight, and duties — in the studio. Free proof before production. Nothing to pay until you approve it.
             </p>
             <Link href={`/design?style=${v.bestBags[0]}`} className="btn-ember text-lg !px-12 !py-5">
-              Start Your Order →
+              Design &amp; Price Your Bag →
             </Link>
           </Reveal>
         </div>

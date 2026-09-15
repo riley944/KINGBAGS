@@ -3,28 +3,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import { useState } from "react";
+import { CTA } from "@/lib/site";
 
 const NAV = [
-  { href: "/", label: "Home" },
   { href: "/products", label: "Bags" },
   { href: "/pricing", label: "Pricing" },
   { href: "/samples", label: "Samples" },
   { href: "/gallery", label: "Lookbook" },
+  { href: "/faq", label: "FAQ" },
   { href: "/about", label: "About" },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
+  const talkActive = path.startsWith("/talk");
   return (
     <header className={`sticky top-0 z-50 border-b border-ink/10 ${open ? "bg-paper" : "bg-paper/90 backdrop-blur-md"}`}>
       <div className="mx-auto max-w-6xl px-5 flex items-center justify-between h-[68px]">
         <Link href="/" aria-label="KINGBAGS home">
           <Logo />
         </Link>
-        <nav className="hidden md:flex items-center gap-7">
+        <nav className="hidden md:flex items-center gap-6">
           {NAV.map((n) => {
-            const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
+            const active = path.startsWith(n.href);
             return (
               <Link key={n.href} href={n.href}
                 className={`relative text-[15px] font-semibold transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1.5 after:h-[2px] after:bg-ember after:rounded-full after:transition-all ${active ? "text-ember after:w-full" : "text-ink hover:text-ember after:w-0 hover:after:w-full"}`}>
@@ -33,13 +35,20 @@ export default function Header() {
             );
           })}
         </nav>
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-3">
           <Link href="/account"
-            className={`text-[15px] font-semibold transition-colors ${path.startsWith("/account") ? "text-ember" : "text-ink-soft hover:text-ink"}`}>
+            className={`text-[14px] font-semibold transition-colors mr-2 ${path.startsWith("/account") ? "text-ember" : "text-ink-soft hover:text-ink"}`}>
             Account
           </Link>
-          <Link href="/design" className="group bg-ember text-white text-[15px] font-semibold px-6 py-3 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
-            Start Your Order
+          <Link href="/talk"
+            className={`text-[14px] font-bold px-4 py-2.5 rounded-full border transition-all inline-flex items-center gap-2 font-grotesk ${talkActive ? "border-ember text-ember" : "border-ink/20 text-ink hover:border-ember hover:text-ember"}`}>
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+            </svg>
+            {CTA.talk}
+          </Link>
+          <Link href="/design" className="group bg-ember text-white text-[14px] font-bold font-grotesk px-5 py-2.5 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
+            {CTA.primary}
             <span className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
           </Link>
         </div>
@@ -58,12 +67,12 @@ export default function Header() {
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto px-5">
-            {NAV.map((n) => {
+            {[{ href: "/", label: "Home" }, ...NAV, { href: "/talk", label: CTA.talk }].map((n) => {
               const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
               return (
                 <Link key={n.href} href={n.href} onClick={() => setOpen(false)}
-                  className="flex items-baseline justify-between py-5 border-b border-ink/10 group">
-                  <span className={`font-hero font-bold text-4xl ${active ? "text-ember" : "text-ink"}`}>{n.label}</span>
+                  className="flex items-baseline justify-between py-4 border-b border-ink/10 group">
+                  <span className={`font-hero text-3xl ${active ? "text-ember" : "text-ink"}`}>{n.label}</span>
                   <span className="text-ember text-xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                 </Link>
               );
@@ -75,11 +84,9 @@ export default function Header() {
               Your Account
             </Link>
             <Link href="/design" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
-              Start Your Order →
+              {CTA.primary} →
             </Link>
-            <p className="text-center text-sm text-ink-soft mt-4">
-              <a href="mailto:hello@kingbags.co" className="hover:text-ink">hello@kingbags.co</a>
-            </p>
+            <p className="text-center text-[12px] text-ink-soft mt-3">{CTA.reassurance}</p>
           </div>
         </div>
       )}

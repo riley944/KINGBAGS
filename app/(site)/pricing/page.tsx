@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import NextStep from "@/components/NextStep";
 import { PRODUCTS, unitPrice, dims, SETUP_PER_COLOR, MIN_ORDER } from "@/lib/products";
 
 export const metadata = {
@@ -98,6 +99,7 @@ export default function PricingPage() {
                   <li><span className="font-semibold text-ink">All-in per bag — bag + air freight + duties — delivered.</span> Minimum {MIN_ORDER.toLocaleString()} bags.</li>
                   <li>One-time print setup: ${SETUP_PER_COLOR} per ink color (full-color art is typically 4). Priced live in the studio.</li>
                   <li>Quantities between columns price in between. Over 50,000 — talk to us.</li>
+                  <li>These are our proven constructions. Custom dimensions or constructions outside this ladder are quoted as a custom program.</li>
                 </ul>
                 <Link href="/design?style=grocery-tote" className="btn-ink !py-3 !px-7 !text-sm">
                   Price mine live
@@ -129,17 +131,19 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="pb-28">
+      <NextStep />
+
+      <section className="py-24">
         <div className="mx-auto max-w-3xl px-5">
           <Reveal>
             <div className="bg-charcoal rounded-4xl p-10 md:p-14 text-center text-white">
               <h2 className="font-serif text-3xl md:text-4xl leading-tight mb-4">
-                Over 50,000 bags?
+                Over 50,000 bags, or custom dimensions?
               </h2>
               <p className="text-white/65 text-lg mb-8 max-w-md mx-auto">
-                Volume programs get dedicated pricing, ocean-freight economics, and a direct line to our team.
+                Volume and custom programs get dedicated pricing, ocean-freight economics, and a direct line to our team.
               </p>
-              <a href="mailto:hello@kingbags.co" className="btn-light">hello@kingbags.co</a>
+              <Link href="/talk" className="btn-light">Talk to a Specialist</Link>
             </div>
           </Reveal>
         </div>

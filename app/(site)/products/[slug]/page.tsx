@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import NextStep from "@/components/NextStep";
 import { PRODUCTS, getProduct, unitPrice, dims, entryPrice, SETUP_PER_COLOR } from "@/lib/products";
 
 export function generateStaticParams() {
@@ -25,6 +26,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!p) notFound();
 
   return (
+    <>
     <div className="mx-auto max-w-6xl px-5 py-16 md:py-20">
       <Link href="/products" className="text-sm text-ember font-semibold hover:underline">← All Bags</Link>
       <div className="grid md:grid-cols-2 gap-12 mt-8 items-start">
@@ -68,6 +70,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           <div className="mb-9">
             <div className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Sizes</div>
+            <p className="text-[13px] text-ink-soft mb-3">Proven constructions that price instantly. Need dimensions outside this ladder? <Link href="/talk" className="text-ember font-semibold hover:underline">Talk to us</Link> and we&apos;ll quote a custom program.</p>
             <div className="grid sm:grid-cols-2 gap-2.5">
               {p.sizes.map((s) => (
                 <div key={s.code} className="bg-white border border-ink/10 rounded-xl px-4 py-2.5 text-sm">
@@ -138,8 +141,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <Link href={`/design?style=${p.slug}`} className="btn-ember w-full text-center !py-4">
             {p.pricing === "modeled" ? "Design & Price This Bag" : "Design & Request a Quote"}
           </Link>
+          <p className="text-center text-[12.5px] text-ink-soft mt-3">Free proof · Nothing charged until you approve</p>
         </div>
       </div>
     </div>
+    <NextStep />
+    </>
   );
 }

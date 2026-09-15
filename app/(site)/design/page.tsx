@@ -472,6 +472,10 @@ function Configurator() {
                 <a href="/samples" className="btn-outline w-full !py-3 !text-[14px] mt-4 text-center">
                   Hold it first — Quality Kit, $35
                 </a>
+                <p className="text-center text-[12.5px] text-ink-soft mt-3">
+                  Rather talk it through?{" "}
+                  <a href="/talk" className="text-ember font-semibold hover:underline">Book fifteen minutes with a specialist</a>
+                </p>
               </>
             )}
           </section>
