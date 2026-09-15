@@ -83,6 +83,14 @@ const CONCEPTS = [
     note: "Engraving-style illustration and a two-color print on natural canvas.",
     bag: "canvas-tote",
   },
+  {
+    slug: "parker",
+    brand: "Parker",
+    vertical: "DTC Brands",
+    construction: "The Canvas Tote · heavyweight cotton, dyed",
+    note: "Piece-dyed cobalt canvas with a one-color wordmark and tonal webbing.",
+    bag: "canvas-tote",
+  },
 ];
 
 export default function LookbookPage() {
