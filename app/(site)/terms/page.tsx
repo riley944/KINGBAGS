@@ -58,7 +58,7 @@ export default function TermsPage() {
       <h2>Production and delivery</h2>
       <p>
         Custom manufacturing runs on estimates, not guarantees: typical door-to-door time is
-        4–6 weeks from proof approval, and we&apos;ll tell you promptly if your order will run
+        5–6 weeks from proof approval, and we&apos;ll tell you promptly if your order will run
         long. Delivery dates aren&apos;t a basis for cancellation unless we miss them by an
         unreasonable margin. Risk of loss passes on delivery to your address.
       </p>

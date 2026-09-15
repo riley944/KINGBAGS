@@ -1,14 +1,13 @@
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS, entryPrice } from "@/lib/products";
 import SpinHero from "@/components/SpinHero";
 import Reveal from "@/components/Reveal";
-import BagArt from "@/components/BagArt";
 import CountUp from "@/components/CountUp";
 
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
   { n: "2", t: "Price it yourself", d: "Pick your quantity and the price is right there. No quote emails, no waiting on a callback." },
-  { n: "3", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 4–6 weeks; the industry norm for bags like these is closer to three months." },
+  { n: "3", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 5–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
 
 const VERTICALS = [
@@ -62,7 +61,6 @@ function TrustIcon({ name }: { name: string }) {
 }
 
 export default function Home() {
-  const featured = PRODUCTS.filter((p) => p.featured);
   return (
     <>
       {/* HERO — full-viewport spin with the headline imposed over the bag */}
@@ -191,22 +189,23 @@ export default function Home() {
             <div className="text-center mb-16">
               <p className="section-label mb-4">The Bags</p>
               <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink leading-tight">
-                Three shapes we've built a thousand times.
+                Two bags. Every size. Both orientations.
               </h2>
             </div>
           </Reveal>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {featured.map((p, i) => (
+          <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
+            {PRODUCTS.map((p, i) => (
               <Reveal key={p.slug} delay={i * 120}>
                 <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
-                  <div className="aspect-square bg-smoke flex items-center justify-center">
-                    <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
+                  <div className="aspect-square bg-smoke relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.examples[0].src} alt={`${p.name} — concept by ${p.examples[0].brand}`} className="absolute inset-0 w-full h-full object-contain mix-blend-multiply" />
                   </div>
                   <div className="p-7">
                     <h3 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h3>
                     <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
                     <p className="text-[15px] font-bold text-ember">
-                      ${p.tiers[0].unitPrice.toFixed(2)}/bag at {p.minOrder.toLocaleString()}
+                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()}` : "Quoted per project"}
                     </p>
                   </div>
                 </Link>
@@ -214,7 +213,7 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center">
-            <Link href="/products" className="btn-ink">Compare all three bags</Link>
+            <Link href="/products" className="btn-ink">Compare both bags</Link>
           </div>
         </div>
       </section>

@@ -27,7 +27,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The order threshold", d: "Free bag over $100. Average order value goes up; the bag advertises for years." },
       { t: "The pop-up", d: "Nothing moves product at a market stall like a beautiful bag on every arm at the event." },
     ],
-    bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
+    bestBags: ["canvas-tote", "grocery-tote"],
     concepts: ["wild-threads", "pine-and-salt"],
   },
   {
@@ -42,7 +42,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The country store", d: "Heritage brands sell the bag next to the sauce — a margin line that markets itself." },
       { t: "Catering drops", d: "Show up to every office lunch with your name on the handles." },
     ],
-    bestBags: ["grocery-tote", "canvas-tote", "beach-bag"],
+    bestBags: ["grocery-tote", "canvas-tote"],
     concepts: ["good-day-coffee", "casa-bonita-mercado"],
   },
   {
@@ -57,7 +57,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The retail shelf", d: "Sell it next to the shaker bottles — members buy identity, not just equipment." },
       { t: "Challenge rewards", d: "Finish the program, earn the bag everyone else asks about." },
     ],
-    bestBags: ["canvas-tote", "beach-bag", "grocery-tote"],
+    bestBags: ["canvas-tote", "grocery-tote"],
     concepts: ["pine-and-salt", "lucky-dog"],
   },
   {
@@ -68,11 +68,11 @@ export const VERTICALS: Vertical[] = [
     headline: "Custom bags for breweries.",
     sub: "Your fans wear your merch. Give the taproom a bag worth carrying — four-pack in one hand, your brand on the other shoulder.",
     moments: [
-      { t: "The merch wall", d: "A heavyweight tote next to the tees and glassware — the piece that travels farthest." },
+      { t: "The merch wall", d: "A premium tote next to the tees and glassware — the piece that travels farthest." },
       { t: "To-go sales", d: "Crowlers and four-packs leave in a bag built for the weight, printed edge to edge." },
       { t: "Festival season", d: "Your bag on a thousand shoulders at every beer fest you pour at." },
     ],
-    bestBags: ["beach-bag", "grocery-tote", "canvas-tote"],
+    bestBags: ["grocery-tote", "canvas-tote"],
     concepts: ["olive-market", "pine-and-salt"],
   },
   {
@@ -87,7 +87,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The seasonal drop", d: "New artwork every season becomes a reason to come back and collect." },
       { t: "Loyalty tiers", d: "The bag as the visible badge of your best customers." },
     ],
-    bestBags: ["grocery-tote", "canvas-tote", "beach-bag"],
+    bestBags: ["grocery-tote", "canvas-tote"],
     concepts: ["sunday-supply-co", "casa-bonita-mercado"],
   },
   {
@@ -102,7 +102,7 @@ export const VERTICALS: Vertical[] = [
       { t: "VIP & speaker gifts", d: "A custom-dimensioned bag that feels made for the occasion, because it was." },
       { t: "The after-life", d: "Conference ends; the bag starts its real job at farmers markets everywhere." },
     ],
-    bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
+    bestBags: ["canvas-tote", "grocery-tote"],
     concepts: ["hotel-marisol", "wild-threads"],
   },
 ];

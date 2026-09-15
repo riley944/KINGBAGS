@@ -121,7 +121,7 @@ export default function SpinHero() {
         <div className="flex items-end justify-center gap-8 md:gap-14 px-8 pb-6 w-full">
           <BagArt variant="canvas-tote" className="w-1/4 max-w-[180px] text-ink/25" />
           <BagArt variant="grocery-tote" className="w-1/3 max-w-[240px] text-ember/50" />
-          <BagArt variant="beach-bag" className="w-1/4 max-w-[200px] text-ink/25" />
+          <BagArt variant="canvas-tote" className="w-1/4 max-w-[200px] text-ink/25" />
         </div>
       ) : (
         <div className="animate-pulse text-ink/15 font-serif italic">loading…</div>

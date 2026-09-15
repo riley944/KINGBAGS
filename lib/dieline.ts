@@ -4,6 +4,8 @@
 // gusset column is blank at base level and over the hems (no print).
 // Physical constraint: baseD === gussetW === bag depth.
 
+import type { Orientation } from "./products";
+
 export type Dieline = {
   bodyW: number;   // main panel width (bag width)
   panelH: number;  // front/back panel height (bag height)
@@ -12,23 +14,27 @@ export type Dieline = {
   hem: number;     // top/bottom hem
 };
 
-// Per product+size. Scaled from the 451x400x150 reference template.
+// Per product+size, LANDSCAPE orientation. Portrait rotates the panel set
+// (see dielineFor).
 export const DIELINES: Record<string, Record<string, Dieline>> = {
   "grocery-tote": {
-    S:  { bodyW: 305, panelH: 330, baseD: 178, gussetW: 178, hem: 30 },
-    M:  { bodyW: 356, panelH: 381, baseD: 203, gussetW: 203, hem: 30 },
-    L:  { bodyW: 406, panelH: 406, baseD: 229, gussetW: 229, hem: 30 },
-    XL: { bodyW: 483, panelH: 432, baseD: 254, gussetW: 254, hem: 30 },
+    S:  { bodyW: 300, panelH: 260, baseD: 120, gussetW: 120, hem: 30 },
+    M:  { bodyW: 340, panelH: 290, baseD: 130, gussetW: 130, hem: 30 },
+    L:  { bodyW: 370, panelH: 320, baseD: 140, gussetW: 140, hem: 30 },
+    XL: { bodyW: 400, panelH: 350, baseD: 150, gussetW: 150, hem: 30 },
   },
   "canvas-tote": {
     S: { bodyW: 330, panelH: 330, baseD: 127, gussetW: 127, hem: 25 },
     M: { bodyW: 381, panelH: 381, baseD: 152, gussetW: 152, hem: 25 },
     L: { bodyW: 457, panelH: 406, baseD: 178, gussetW: 178, hem: 25 },
   },
-  "beach-bag": {
-    OS: { bodyW: 559, panelH: 381, baseD: 203, gussetW: 203, hem: 30 },
-  },
 };
+
+export function dielineFor(slug: string, sizeCode: string, orientation: Orientation): Dieline {
+  const base = DIELINES[slug]?.[sizeCode] ?? DIELINES["grocery-tote"].XL;
+  if (orientation === "landscape") return base;
+  return { ...base, bodyW: base.panelH, panelH: base.bodyW };
+}
 
 // Full flat template dimensions (mm)
 export function templateSize(d: Dieline) {

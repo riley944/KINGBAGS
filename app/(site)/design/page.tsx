@@ -2,8 +2,11 @@
 import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { PRODUCTS, priceFor, Product, MIN_ORDER } from "@/lib/products";
-import { DIELINES, templateSize } from "@/lib/dieline";
+import {
+  PRODUCTS, Product, MIN_ORDER, unitPrice, setupFee, dims,
+  ORIENTATIONS, Orientation, COLOR_OPTIONS, DEFAULT_COLORS, SETUP_PER_COLOR,
+} from "@/lib/products";
+import { dielineFor, templateSize } from "@/lib/dieline";
 import { drawDieline, ArtState } from "@/components/DielineEditor";
 import { saveQuote, uploadArt, stashPendingOrder } from "@/lib/supabase";
 import { runPreflight, PreflightCheck } from "@/lib/preflight";
@@ -19,13 +22,16 @@ const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }
 };
 
 const QTY_PRESETS = [1500, 2500, 5000, 10000, 25000, 50000];
-
+const RAIL_LABEL = "text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3";
+const money = (n: number) => "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
 function Configurator() {
   const params = useSearchParams();
   const initialSlug = params.get("style") || "grocery-tote";
   const [product, setProduct] = useState<Product>(PRODUCTS.find((p) => p.slug === initialSlug) || PRODUCTS[0]);
+  const [orientation, setOrientation] = useState<Orientation>("landscape");
   const [sizeCode, setSizeCode] = useState(product.sizes[0].code);
+  const [colors, setColors] = useState(DEFAULT_COLORS);
   const [art, setArt] = useState<ArtState>({ img: null, x: 0.5, y: 0.5, scale: 1 });
   const [artFile, setArtFile] = useState<File | null>(null);
   const [qty, setQty] = useState(MIN_ORDER);
@@ -40,10 +46,13 @@ function Configurator() {
   const previewRef = useRef<HTMLCanvasElement | null>(null);
   const drag = useRef({ on: false, sx: 0, sy: 0, ox: 0.5, oy: 0.5 });
 
-  const dieline = DIELINES[product.slug]?.[sizeCode] || DIELINES["grocery-tote"].L;
+  const dieline = dielineFor(product.slug, sizeCode, orientation);
   const size = product.sizes.find((s) => s.code === sizeCode) || product.sizes[0];
-  const unit = priceFor(product, qty);
-  const total = unit * qty;
+  const quoteMode = product.pricing !== "modeled";
+  const unit = unitPrice(product, sizeCode, qty);
+  const setup = quoteMode ? 0 : setupFee(colors);
+  const subtotal = unit ? unit * qty : 0;
+  const total = subtotal + setup;
   const qtyValid = qty >= MIN_ORDER;
   const isPreset = QTY_PRESETS.includes(qty) && customQty === "";
 
@@ -67,8 +76,6 @@ function Configurator() {
   // Paints a full-bleed demo artwork so first-time visitors see what a
   // proper edge-to-edge layout looks like on the real template.
   const showExample = () => {
-    // Match the live template's aspect so the example genuinely bleeds
-    // edge to edge across every panel of the dieline.
     const { width: dw, height: dh } = templateSize(dieline);
     const c = document.createElement("canvas");
     c.width = 1100;
@@ -77,7 +84,6 @@ function Configurator() {
     if (!x) return;
     x.fillStyle = "#14532D";
     x.fillRect(0, 0, c.width, c.height);
-    // scattered leaf-dot pattern
     x.fillStyle = "rgba(250, 248, 240, 0.16)";
     for (let i = 0; i < 160; i++) {
       const px = (i * 197) % c.width, py = (i * 331) % c.height;
@@ -85,7 +91,6 @@ function Configurator() {
       x.ellipse(px, py, 26, 11, (i % 6) * 0.5, 0, Math.PI * 2);
       x.fill();
     }
-    // wordmark band across the front panel zone
     const bandH = c.height * 0.14;
     const bandY = c.height * 0.30;
     x.fillStyle = "#FAF8F0";
@@ -110,7 +115,7 @@ function Configurator() {
     const c = document.createElement("canvas");
     drawDieline(c, dieline, { img: null, x: 0.5, y: 0.5, scale: 1 }, 3, true);
     const a = document.createElement("a");
-    a.download = `KINGBAGS-template-${product.slug}-${sizeCode}.png`;
+    a.download = `KINGBAGS-template-${product.slug}-${sizeCode}-${orientation}.png`;
     a.href = c.toDataURL("image/png");
     a.click();
   };
@@ -130,7 +135,7 @@ function Configurator() {
       const up = await uploadArt(artFile);
       if (up) artFilename = up;
     }
-    const productName = `${product.name} — ${size.label} (${size.dims})`;
+    const productName = `${product.name} — ${size.label} ${dims(size, orientation)} · ${orientation} · ${colors}-color`;
     const totalRounded = Math.round(total * 100) / 100;
     const res = await saveQuote({
       email,
@@ -138,21 +143,19 @@ function Configurator() {
       product_slug: product.slug,
       product_name: productName,
       quantity: qty,
-      unit_price: unit,
+      unit_price: unit ?? 0,
       total_price: totalRounded,
       art_filename: artFilename,
-      notes: `phone: ${phone} | sourcing: CN${getAttribution() ? ` | src: ${getAttribution()}` : ""}`,
+      notes: `phone: ${phone} | orientation: ${orientation} | colors: ${colors} | setup: ${setup} | pricing: ${quoteMode ? "quote" : "modeled"} | sourcing: CN${getAttribution() ? ` | src: ${getAttribution()}` : ""}`,
     });
     setSubmitting(false);
     if (res.ok) {
       track("quote_submitted", { product: product.slug, quantity: qty, value: Math.round(total) });
-      // Hand the locked quote to the continue-flow so the customer can turn
-      // it into a tracked order without retyping anything.
       stashPendingOrder({
         product_slug: product.slug,
         product_name: productName,
         quantity: qty,
-        unit_price: unit,
+        unit_price: unit ?? 0,
         total_price: totalRounded,
         art_filename: artFilename,
         email,
@@ -161,14 +164,11 @@ function Configurator() {
       });
       setSubmitted(true);
     } else {
-      // Never show the confirmation for a quote we did not actually store.
       setSubmitError(res.error || "Something went wrong saving your quote.");
     }
   };
 
   const { width: tw, height: th } = templateSize(dieline);
-  // Instant pre-flight: pure geometry against the live dieline, recomputed
-  // as the art moves or scales. Nothing leaves the browser.
   const preflight =
     art.img && !demo
       ? runPreflight({ img: art.img, fileType: artFile?.type ?? null, dieline, x: art.x, y: art.y, scale: art.scale })
@@ -180,14 +180,13 @@ function Configurator() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-5 py-10 md:py-14">
-      {/* header */}
       <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 mb-8">
         <div>
           <p className="section-label mb-3">The Studio</p>
           <h1 className="font-serif text-4xl md:text-[52px] text-ink leading-[1.02]">Design your bag.</h1>
         </div>
         <p className="text-ink-soft text-[15px] leading-relaxed max-w-sm lg:text-right">
-          Real production template. Instant price. Free proof before anything is made.
+          Real production template. Instant delivered price. Free proof before anything is made.
         </p>
       </div>
 
@@ -205,7 +204,7 @@ function Configurator() {
           >
             <div className="flex items-center justify-between px-5 pt-4">
               <span className="font-grotesk font-bold text-[11px] tracking-[0.18em] uppercase text-ink-soft">
-                Live proof · {product.shortName} · {size.label}
+                Live proof · {product.shortName} · {size.label} · {orientation}
               </span>
               <span className="text-[11px] text-ink-soft tabular-nums">
                 {Math.round(tw)} × {Math.round(th)} mm
@@ -254,7 +253,6 @@ function Configurator() {
             )}
           </div>
 
-          {/* toolbar */}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-4 px-1">
             {art.img ? (
               <>
@@ -326,30 +324,44 @@ function Configurator() {
         {/* ---------- CONFIGURATOR RAIL ---------- */}
         <div className="lg:sticky lg:top-24 bg-white rounded-2.5xl border border-ink/10 shadow-soft divide-y divide-ink/10">
           <section className="p-6">
-            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Bag</p>
-            <div className="grid grid-cols-3 gap-2 mb-5">
+            <p className={RAIL_LABEL}>Bag</p>
+            <div className="grid grid-cols-2 gap-2 mb-5">
               {PRODUCTS.map((p) => (
                 <button key={p.slug} onClick={() => setProduct(p)}
                   className={`rounded-xl border p-3 text-left transition-all ${product.slug === p.slug ? "border-ember bg-ember-tint" : "border-ink/10 hover:border-ink/30"}`}>
                   <BagArt variant={p.slug} className={`w-9 h-9 mb-2 ${product.slug === p.slug ? "text-ember" : "text-ink/50"}`} />
                   <span className="block text-[13px] font-semibold text-ink leading-tight">{p.shortName}</span>
+                  <span className="block text-[11px] text-ink-soft mt-0.5">{p.pricing === "modeled" ? "Instant pricing" : "Quoted per project"}</span>
                 </button>
               ))}
             </div>
-            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Size</p>
+
+            <p className={RAIL_LABEL}>Orientation</p>
+            <div className="grid grid-cols-2 gap-1 bg-smoke rounded-2xl p-1.5 mb-5">
+              {ORIENTATIONS.map((o) => (
+                <button key={o.code} onClick={() => setOrientation(o.code)}
+                  title={o.hint}
+                  className={`rounded-xl px-3 py-2.5 text-[13px] text-left transition-all ${orientation === o.code ? "bg-white text-ink shadow-soft font-semibold" : "text-ink-soft hover:text-ink"}`}>
+                  {o.label}
+                  <span className="block text-[11px] opacity-60">{o.code === "landscape" ? "wider than tall" : "taller than wide"}</span>
+                </button>
+              ))}
+            </div>
+
+            <p className={RAIL_LABEL}>Size</p>
             <div className="grid grid-cols-2 gap-1 bg-smoke rounded-2xl p-1.5">
               {product.sizes.map((s) => (
                 <button key={s.code} onClick={() => setSizeCode(s.code)}
                   className={`rounded-xl px-3 py-2.5 text-[13px] text-left transition-all ${sizeCode === s.code ? "bg-white text-ink shadow-soft font-semibold" : "text-ink-soft hover:text-ink"}`}>
                   {s.label}
-                  <span className="block text-[11px] opacity-60">{s.dims}</span>
+                  <span className="block text-[11px] opacity-60">{dims(s, orientation)}</span>
                 </button>
               ))}
             </div>
           </section>
 
           <section className="p-6">
-            <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-3">Quantity</p>
+            <p className={RAIL_LABEL}>Quantity</p>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {QTY_PRESETS.map((q) => (
                 <button key={q} onClick={() => { setQty(q); setCustomQty(""); }}
@@ -362,33 +374,63 @@ function Configurator() {
               type="text" inputMode="numeric" placeholder="Custom quantity"
               value={customQty ? Number(customQty).toLocaleString() : ""}
               onChange={(e) => handleCustomQty(e.target.value)}
-              className={`w-full rounded-xl px-4 py-3 text-base font-semibold text-ink bg-smoke border placeholder:font-normal placeholder:text-ink-soft/50 focus:outline-none ${qtyValid || customQty === "" ? "border-transparent focus:border-ember" : "border-red-400"}`}
+              className={`w-full rounded-xl px-4 py-3 text-base font-semibold text-ink bg-smoke border placeholder:font-normal placeholder:text-ink-soft/50 focus:outline-none mb-5 ${qtyValid || customQty === "" ? "border-transparent focus:border-ember" : "border-red-400"}`}
             />
             {!qtyValid && customQty !== "" && (
-              <p className="text-xs text-red-500 mt-2">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
+              <p className="text-xs text-red-500 -mt-3 mb-4">Minimum run is {MIN_ORDER.toLocaleString()} bags.</p>
+            )}
+
+            {!quoteMode && (
+              <>
+                <p className={RAIL_LABEL}>Print colors</p>
+                <div className="grid grid-cols-6 gap-1 bg-smoke rounded-2xl p-1.5">
+                  {COLOR_OPTIONS.map((n) => (
+                    <button key={n} onClick={() => setColors(n)}
+                      className={`rounded-lg py-2 text-[13px] font-grotesk font-bold transition-all ${colors === n ? "bg-white text-ink shadow-soft" : "text-ink-soft hover:text-ink"}`}>
+                      {n}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[12px] text-ink-soft mt-2">
+                  {colors === 4 ? "Full-color (CMYK) artwork is 4 colors." : `${colors} ink color${colors > 1 ? "s" : ""}.`} One-time setup ${SETUP_PER_COLOR}/color.
+                </p>
+              </>
             )}
           </section>
 
           <section className="p-6 bg-smoke/60">
-            <div className="flex items-end justify-between gap-4">
+            {quoteMode ? (
               <div>
-                <div className="text-[13px] text-ink-soft mb-1">{qty.toLocaleString()} bags × ${unit.toFixed(2)}</div>
-                <div className="font-serif text-[48px] text-ink leading-none tabular-nums">
-                  ${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                <div className="font-serif text-[30px] text-ink leading-none mb-2">Custom quote</div>
+                <p className="text-[13px] text-ink-soft leading-relaxed">
+                  Canvas is priced per project — weight, dye, and handles move the number. Lock in your design and we&apos;ll send pricing within one business day.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-end justify-between gap-4">
+                  <div>
+                    <div className="text-[13px] text-ink-soft mb-1">{qty.toLocaleString()} bags × ${unit!.toFixed(2)}</div>
+                    <div className="font-serif text-[48px] text-ink leading-none tabular-nums">{money(total)}</div>
+                  </div>
+                  <div className="text-right text-[12px] text-ink-soft leading-relaxed pb-1">
+                    {product.shortName} · {size.label}<br />{product.leadTime}
+                  </div>
                 </div>
+                <dl className="mt-4 pt-3 border-t border-ink/10 text-[12px] text-ink-soft space-y-1">
+                  <div className="flex justify-between"><dt>Bags, delivered (freight &amp; duties in)</dt><dd className="tabular-nums">{money(subtotal)}</dd></div>
+                  <div className="flex justify-between"><dt>Print setup · {colors} color{colors > 1 ? "s" : ""}</dt><dd className="tabular-nums">{money(setup)}</dd></div>
+                </dl>
               </div>
-              <div className="text-right text-[12px] text-ink-soft leading-relaxed pb-1">
-                {product.shortName} · {size.label}<br />{product.leadTime}
-              </div>
-            </div>
+            )}
           </section>
 
           <section className="p-6">
             {submitted ? (
               <div className="text-center">
-                <h3 className="font-serif text-2xl text-ink mb-2">Your quote is locked.</h3>
+                <h3 className="font-serif text-2xl text-ink mb-2">{quoteMode ? "Quote request received." : "Your quote is locked."}</h3>
                 <p className="text-ink-soft text-sm leading-relaxed">
-                  Within one business day, a designer on our team will send your photoreal proof, final specs, and a sample plan. Nothing goes to production until you approve it.
+                  Within one business day, a designer on our team will send your photoreal proof{quoteMode ? " and pricing" : ", final specs, and a sample plan"}. Nothing goes to production until you approve it.
                 </p>
                 <Link href="/order/continue" className="btn-ember w-full !py-4 mt-5 text-center">
                   Continue Your Order →
@@ -410,7 +452,7 @@ function Configurator() {
                 </Field>
                 <button onClick={handleSubmit} disabled={!email || !phone || !qtyValid || submitting}
                   className="w-full btn-ember !py-4 mt-2">
-                  {submitting ? "Saving…" : "Lock In My Quote"}
+                  {submitting ? "Saving…" : quoteMode ? "Request My Quote" : "Lock In My Quote"}
                 </button>
                 {submitError && (
                   <p className="text-xs text-red-500 mt-3 text-center leading-relaxed">
@@ -424,7 +466,7 @@ function Configurator() {
                   <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve it</li>
                 </ul>
                 <a href="/samples" className="btn-outline w-full !py-3 !text-[14px] mt-4 text-center">
-                  Hold it first — Sample Kit from $35
+                  Hold it first — Quality Kit, $35
                 </a>
               </>
             )}

@@ -10,7 +10,7 @@ export const metadata = {
 const STATS = [
   { v: "10+", l: "Years building brand programs" },
   { v: "Millions", l: "Of our bags carried home every year" },
-  { v: "4–6 wks", l: "Door to door on most orders" },
+  { v: "5–6 wks", l: "Door to door on most orders" },
   { v: "1,500", l: "Bag minimum, factory-direct" },
 ];
 

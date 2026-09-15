@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
-import BagArt from "@/components/BagArt";
 import ConceptImage from "@/components/ConceptImage";
 import CountUp from "@/components/CountUp";
 import { VERTICALS, getVertical } from "@/lib/verticals";
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS, entryPrice } from "@/lib/products";
 
 export function generateStaticParams() {
   return VERTICALS.map((v) => ({ vertical: v.slug }));
@@ -17,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ vertical:
   if (!v) return {};
   return {
     title: `${v.headline.replace(/\.$/, "")} | KINGBAGS`,
-    description: `${v.sub} Fully custom cut-and-sew, edge-to-edge print, from 1,500 bags, delivered in 4–6 weeks.`,
+    description: `${v.sub} Fully custom cut-and-sew, edge-to-edge print, from 1,500 bags, delivered in 5–6 weeks.`,
   };
 }
 
@@ -92,7 +91,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
           </Reveal>
           <Reveal delay={100}>
             <div>
-              <div className="font-grotesk font-extrabold text-4xl md:text-6xl mb-1 tracking-tight" style={{ color: v.onDark }}>4–6</div>
+              <div className="font-grotesk font-extrabold text-4xl md:text-6xl mb-1 tracking-tight" style={{ color: v.onDark }}>5–6</div>
               <p className="text-white/60 text-sm md:text-[15px]">weeks door to door</p>
             </div>
           </Reveal>
@@ -115,18 +114,19 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
               The right bags for {v.label.toLowerCase()}.
             </h2>
           </Reveal>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {bags.map((p, i) => (
               <Reveal key={p.slug} delay={i * 100}>
                 <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
-                  <div className="aspect-square bg-smoke flex items-center justify-center">
-                    <BagArt variant={p.slug} className="w-3/5 text-ink/30 group-hover:text-ember/60 transition-colors" />
+                  <div className="aspect-square bg-smoke relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.examples[0].src} alt={`${p.name} — concept by ${p.examples[0].brand}`} className="absolute inset-0 w-full h-full object-contain mix-blend-multiply" />
                   </div>
                   <div className="p-6">
                     <h3 className="font-bold text-ink text-lg group-hover:text-ember transition-colors">{p.name}</h3>
                     <p className="text-sm text-ink-soft mt-1 mb-3">{p.material}</p>
                     <p className="text-[15px] font-bold text-ember">
-                      ${p.tiers[0].unitPrice.toFixed(2)}/bag at {p.minOrder.toLocaleString()}
+                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()}` : "Quoted per project"}
                     </p>
                   </div>
                 </Link>
