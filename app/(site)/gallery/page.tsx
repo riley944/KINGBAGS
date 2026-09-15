@@ -20,14 +20,6 @@ const CONCEPTS = [
     bag: "grocery-tote",
   },
   {
-    slug: "the-daily-market",
-    brand: "The Daily Market",
-    vertical: "Retail",
-    construction: "The Canvas Tote · heavyweight cotton",
-    note: "Editorial serif on natural canvas, forest-green trim and webbing.",
-    bag: "canvas-tote",
-  },
-  {
     slug: "good-day-coffee",
     brand: "Good Day Coffee & Bakeshop",
     vertical: "Restaurants",
