@@ -99,7 +99,7 @@ function SamplesInner() {
                     <p className="text-[13px] text-ink-soft border-t border-ink/10 pt-4 mb-5">{k.note}</p>
                     <a
                       href={k.href}
-                      onClick={() => track("sample_checkout", { kit: k.id, value: k.price })}
+                      onClick={() => track("purchase", { kb_action: "sample_checkout", kit: k.id, value: k.price, currency: "USD" })}
                       className="btn-ember w-full !py-4 text-center"
                     >
                       {k.cta}

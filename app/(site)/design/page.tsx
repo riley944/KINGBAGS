@@ -150,7 +150,7 @@ function Configurator() {
     });
     setSubmitting(false);
     if (res.ok) {
-      track("quote_submitted", { product: product.slug, quantity: qty, value: Math.round(total) });
+      track("qualify_lead", { kb_action: "quote_submitted", product: product.slug, quantity: qty, value: Math.round(total), currency: "USD" });
       stashPendingOrder({
         product_slug: product.slug,
         product_name: productName,

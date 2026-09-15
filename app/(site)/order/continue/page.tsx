@@ -155,7 +155,7 @@ export default function ContinueOrderPage() {
     });
     setPlacing(false);
     if (res.ok) {
-      track("order_placed", { product: pending.product_slug, quantity: pending.quantity, value: Math.round(pending.total_price) });
+      track("close_convert_lead", { kb_action: "order_placed", product: pending.product_slug, quantity: pending.quantity, value: Math.round(pending.total_price), currency: "USD" });
       clearPendingOrder();
       if (res.id) {
         // Straight into the payment step — card saved now, charged after
