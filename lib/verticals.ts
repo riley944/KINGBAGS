@@ -28,7 +28,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The pop-up", d: "Nothing moves product at a market stall like a beautiful bag on every arm at the event." },
     ],
     bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
-    concepts: ["sunday-supply-co", "lucky-dog-market"],
+    concepts: ["wild-threads", "the-daily-market"],
   },
   {
     slug: "restaurants",
@@ -43,7 +43,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Catering drops", d: "Show up to every office lunch with your name on the handles." },
     ],
     bestBags: ["grocery-tote", "canvas-tote", "beach-bag"],
-    concepts: ["frankies-pizza", "bubbas-fish-shack"],
+    concepts: ["good-day-coffee", "casa-bonita-mercado"],
   },
   {
     slug: "gyms-studios",
@@ -58,7 +58,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Challenge rewards", d: "Finish the program, earn the bag everyone else asks about." },
     ],
     bestBags: ["canvas-tote", "beach-bag", "grocery-tote"],
-    concepts: ["sunday-supply-co", "hotel-marisol"],
+    concepts: ["wild-threads", "olive-market"],
   },
   {
     slug: "breweries",
@@ -73,7 +73,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Festival season", d: "Your bag on a thousand shoulders at every beer fest you pour at." },
     ],
     bestBags: ["beach-bag", "grocery-tote", "canvas-tote"],
-    concepts: ["bubbas-fish-shack", "frankies-pizza"],
+    concepts: ["good-day-coffee", "olive-market"],
   },
   {
     slug: "retail",
@@ -88,7 +88,7 @@ export const VERTICALS: Vertical[] = [
       { t: "Loyalty tiers", d: "The bag as the visible badge of your best customers." },
     ],
     bestBags: ["grocery-tote", "canvas-tote", "beach-bag"],
-    concepts: ["lucky-dog-market", "hotel-marisol"],
+    concepts: ["casa-bonita-mercado", "the-daily-market"],
   },
   {
     slug: "events",
@@ -103,7 +103,7 @@ export const VERTICALS: Vertical[] = [
       { t: "The after-life", d: "Conference ends; the bag starts its real job at farmers markets everywhere." },
     ],
     bestBags: ["canvas-tote", "grocery-tote", "beach-bag"],
-    concepts: ["paloma-beach-club", "hotel-marisol"],
+    concepts: ["wild-threads", "casa-bonita-mercado"],
   },
 ];
 
