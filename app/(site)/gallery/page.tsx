@@ -20,6 +20,14 @@ const CONCEPTS = [
     bag: "grocery-tote",
   },
   {
+    slug: "parker",
+    brand: "Parker",
+    vertical: "DTC Brands",
+    construction: "The Canvas Tote · heavyweight cotton, dyed",
+    note: "Piece-dyed cobalt canvas with a one-color wordmark and tonal webbing.",
+    bag: "canvas-tote",
+  },
+  {
     slug: "good-day-coffee",
     brand: "Good Day Coffee & Bakeshop",
     vertical: "Restaurants",
@@ -73,14 +81,6 @@ const CONCEPTS = [
     vertical: "Retail",
     construction: "The Canvas Tote · heavyweight cotton",
     note: "Engraving-style illustration and a two-color print on natural canvas.",
-    bag: "canvas-tote",
-  },
-  {
-    slug: "parker",
-    brand: "Parker",
-    vertical: "DTC Brands",
-    construction: "The Canvas Tote · heavyweight cotton, dyed",
-    note: "Piece-dyed cobalt canvas with a one-color wordmark and tonal webbing.",
     bag: "canvas-tote",
   },
 ];
