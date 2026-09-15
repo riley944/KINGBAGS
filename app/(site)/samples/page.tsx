@@ -4,8 +4,9 @@ import { useSearchParams } from "next/navigation";
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 
-// Quality Kit checks out through a live Stripe payment link. The Exact
-// Sample is arranged by email until its $300 payment link is created.
+// Quality Kit checks out through a live Stripe Payment Link. The Exact
+// Sample goes through hosted Stripe Checkout created by our own API route,
+// which also asks which bag and how many they plan to order.
 const KITS = [
   {
     id: "quality-kit",
@@ -34,18 +35,24 @@ const KITS = [
       "Everything in the Quality Kit, included",
     ],
     note: "Ships in 2–3 weeks. Fully credited toward your order — serious buyers pay nothing extra.",
-    cta: "Request the Exact Sample — $300",
-    href: "mailto:hello@kingbags.co?subject=Exact%20Sample%20request&body=Hi%20KINGBAGS%20%E2%80%94%20I%27d%20like%20an%20Exact%20Sample.%20My%20bag%2C%20size%2C%20and%20quantity%3A%20",
-    external: false,
+    cta: "Order the Exact Sample — $300",
+    href: "/api/samples/checkout?kit=exact-sample",
+    external: true,
   },
 ];
 
 function SamplesInner() {
   const params = useSearchParams();
   const paid = params.get("paid") === "1";
+  const error = params.get("error");
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:py-24">
+      {error && (
+        <div className="max-w-2xl mx-auto mb-8 rounded-2.5xl border border-gold/60 bg-gold-tint px-5 py-4 text-[15px] text-ink">
+          {error}
+        </div>
+      )}
       <div className="max-w-2xl mx-auto text-center mb-14">
         <Reveal>
           <p className="section-label mb-5">Samples</p>
@@ -93,15 +100,10 @@ function SamplesInner() {
                     <a
                       href={k.href}
                       onClick={() => track("sample_checkout", { kit: k.id, value: k.price })}
-                      className={`${k.external ? "btn-ember" : "btn-ink"} w-full !py-4 text-center`}
+                      className="btn-ember w-full !py-4 text-center"
                     >
                       {k.cta}
                     </a>
-                    {!k.external && (
-                      <p className="text-[12px] text-ink-soft mt-2.5 text-center">
-                        We scope it with you by email, then send a secure Stripe link to pay.
-                      </p>
-                    )}
                   </div>
                 </div>
               </Reveal>
