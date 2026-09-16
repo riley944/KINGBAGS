@@ -19,7 +19,7 @@ export const CTA = {
   reassurance: "All-in delivered pricing · Free proof · Nothing charged until you approve",
 };
 
-// Programs produced by King Universal, the team behind KINGBAGS. Each logo
+// Client logos shown in the homepage marquee. Each logo
 // lives in public/clients/<file>. Add an entry per brand that has cleared
 // logo use. The marquee renders nothing while this list is empty.
 export type ClientLogo = { name: string; file: string; width?: number };

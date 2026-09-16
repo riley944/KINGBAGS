@@ -6,9 +6,9 @@ export default function LogoMarquee({ dark = false }: { dark?: boolean }) {
   if (CLIENT_LOGOS.length === 0) return null;
   const logos = CLIENT_LOGOS.length < 8 ? [...CLIENT_LOGOS, ...CLIENT_LOGOS] : CLIENT_LOGOS;
   return (
-    <section className={`py-10 border-y ${dark ? "bg-charcoal border-white/10" : "bg-white border-ink/10"}`} aria-label="Brands whose bag programs our team has produced">
+    <section className={`py-10 border-y ${dark ? "bg-charcoal border-white/10" : "bg-white border-ink/10"}`} aria-label="Our clients">
       <p className={`text-center font-grotesk text-[11px] font-bold tracking-[0.2em] uppercase mb-7 ${dark ? "text-white/50" : "text-ink-soft"}`}>
-        Bag programs produced by the KINGBAGS team at King Universal
+        Our clients
       </p>
       <div className="ticker">
         <div className="ticker-track" style={{ animationDuration: `${Math.max(30, logos.length * 4)}s` }}>
