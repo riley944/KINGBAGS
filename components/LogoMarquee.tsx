@@ -22,7 +22,7 @@ export default function LogoMarquee({ dark = false }: { dark?: boolean }) {
                   alt={l.name}
                   title={l.name}
                   style={{ width: l.width ?? 120 }}
-                  className={`h-10 object-contain shrink-0 ${dark ? "brightness-0 invert opacity-80" : "grayscale opacity-70"} hover:opacity-100 hover:grayscale-0 transition`}
+                  className={`h-12 object-contain shrink-0 ${dark ? "brightness-0 invert opacity-80" : "grayscale opacity-80"} hover:opacity-100 hover:grayscale-0 transition`}
                 />
               ))}
             </div>

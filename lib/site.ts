@@ -23,4 +23,19 @@ export const CTA = {
 // lives in public/clients/<file>. Add an entry per brand that has cleared
 // logo use. The marquee renders nothing while this list is empty.
 export type ClientLogo = { name: string; file: string; width?: number };
-export const CLIENT_LOGOS: ClientLogo[] = [];
+export const CLIENT_LOGOS: ClientLogo[] = [
+  { name: "Warner Bros.", file: "warner-bros.svg", width: 73 },
+  { name: "Pepsi", file: "pepsi.svg", width: 62 },
+  { name: "Buc-ee's", file: "bucees.png", width: 78 },
+  { name: "The Ritz-Carlton", file: "ritz-carlton.png", width: 169 },
+  { name: "Marriott International", file: "marriott.svg", width: 195 },
+  { name: "Coca-Cola", file: "coca-cola.svg", width: 195 },
+  { name: "Kohl's", file: "kohls.svg", width: 195 },
+  { name: "LEGO", file: "lego.svg", width: 62 },
+  { name: "Cracker Barrel", file: "cracker-barrel.svg", width: 104 },
+  { name: "SOMOS", file: "somos.svg", width: 195 },
+  { name: "NBCUniversal", file: "nbcuniversal.svg", width: 273 },
+  { name: "Smithsonian", file: "smithsonian.svg", width: 143 },
+  { name: "YMCA", file: "ymca.svg", width: 83 },
+  { name: "johnnie-O", file: "johnnie-o.svg", width: 221 },
+];
