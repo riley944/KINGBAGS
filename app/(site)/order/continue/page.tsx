@@ -226,9 +226,15 @@ export default function ContinueOrderPage() {
               <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
                 Save your order to an account.
               </h1>
-              <p className="text-ink-soft text-lg leading-relaxed mb-7">
+              <p className="text-ink-soft text-lg leading-relaxed mb-4">
                 One click, no password. We&apos;ll email you a sign-in link — your quote,
                 artwork, and order status all live in your account from here on.
+              </p>
+              <p className="text-[14px] text-ink-soft mb-7">
+                Rather review it live first?{" "}
+                <Link href={`/talk?email=${encodeURIComponent(pending.email)}&q=${encodeURIComponent(`${pending.product_name} · ${pending.quantity.toLocaleString()} bags`)}`} className="text-ember font-semibold hover:underline">
+                  Book a fifteen-minute proof review
+                </Link>.
               </p>
               <OrderSummary p={pending} />
               <input

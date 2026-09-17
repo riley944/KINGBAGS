@@ -67,7 +67,7 @@ export default function Header() {
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto px-5">
-            {[{ href: "/", label: "Home" }, ...NAV, { href: "/talk", label: CTA.talk }].map((n) => {
+            {[{ href: "/", label: "Home" }, ...NAV, { href: "/talk", label: CTA.book }].map((n) => {
               const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
               return (
                 <Link key={n.href} href={n.href} onClick={() => setOpen(false)}

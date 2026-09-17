@@ -16,6 +16,7 @@ export const CTA = {
   primaryShort: "Design & Price",
   sample: `Get a $${SAMPLE_PRICE} Sample`,
   talk: "Talk to a Specialist",
+  book: "Book Your Proof Review",
   reassurance: "All-in delivered pricing · Free proof · Nothing charged until you approve",
 };
 

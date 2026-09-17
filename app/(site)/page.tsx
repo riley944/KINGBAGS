@@ -10,7 +10,7 @@ import NextStep from "@/components/NextStep";
 const STEPS = [
   { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
   { n: "2", t: "Price it yourself", d: "Pick your quantity and the number is right there — and it's all-in: bag, air freight, and duties. No quote emails, no freight surprise later." },
-  { n: "3", t: "Approve the proof", d: "You get a free photoreal proof of your exact bag. Nothing is made, and nothing is charged, until you say go." },
+  { n: "3", t: "Review the proof with a person", d: "A specialist puts your photoreal proof on screen for fifteen minutes, or emails it if you prefer. Nothing is made, and nothing is charged, until you say go." },
   { n: "4", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 5–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
 
@@ -91,7 +91,7 @@ export default function Home() {
               Make the bag <span className="text-gold italic">nobody</span><br />throws away.
             </h1>
             <p className="text-ink-soft text-[15px] md:text-[17px] mt-4 max-w-3xl mx-auto leading-snug md:whitespace-nowrap bg-paper/80 backdrop-blur-sm rounded-full px-4 py-1 inline-block">
-              Fully custom cut-and-sew reusable bags. Your artwork, edge to edge. Delivered from {MIN_ORDER.toLocaleString()} pieces.
+              Design it online. Build it with a person. Fully custom cut-and-sew bags from {MIN_ORDER.toLocaleString()} pieces.
             </p>
           </div>
           <div className="pointer-events-auto">

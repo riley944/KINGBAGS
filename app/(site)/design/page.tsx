@@ -14,6 +14,7 @@ import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 import Field, { inputCls } from "@/components/Field";
 import BagArt from "@/components/BagArt";
+import BookCall from "@/components/BookCall";
 
 const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
   pass: { icon: "✓", cls: "text-ember" },
@@ -163,6 +164,12 @@ function Configurator() {
         company: company || undefined,
       });
       setSubmitted(true);
+      // Best effort: "book your proof review" email + internal alert.
+      fetch("/api/quote/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, company: company || undefined, phone, product_name: productName, quantity: qty, total_price: totalRounded, quote_mode: quoteMode }),
+      }).catch(() => {});
     } else {
       setSubmitError(res.error || "Something went wrong saving your quote.");
     }
@@ -431,16 +438,24 @@ function Configurator() {
 
           <section className="p-6">
             {submitted ? (
-              <div className="text-center">
-                <h3 className="font-serif text-2xl text-ink mb-2">{quoteMode ? "Quote request received." : "Your quote is locked."}</h3>
-                <p className="text-ink-soft text-sm leading-relaxed">
-                  Within one business day, a designer on our team will send your photoreal proof{quoteMode ? " and pricing" : ", final specs, and a sample plan"}. Nothing goes to production until you approve it.
-                </p>
-                <Link href="/order/continue" className="btn-ember w-full !py-4 mt-5 text-center">
-                  Continue Your Order →
-                </Link>
-                <p className="text-[12px] text-ink-soft mt-3 leading-relaxed">
-                  Add shipping details and track every step in your account. Still nothing to pay until you approve your proof.
+              <div>
+                <div className="text-center mb-5">
+                  <h3 className="font-serif text-2xl text-ink mb-2">{quoteMode ? "Quote request received." : "Your quote is locked."}</h3>
+                  <p className="text-ink-soft text-sm leading-relaxed">
+                    Next: a fifteen-minute proof review. We put your proof on screen, walk sizes, colors, and timing, and answer anything before you approve. Nothing is made or charged until you do.
+                  </p>
+                </div>
+                <BookCall
+                  compact
+                  email={email}
+                  name={company || undefined}
+                  summary={`${product.name} · ${size.label} · ${orientation} · ${qty.toLocaleString()} bags${quoteMode ? "" : ` · ${money(total)}`}`}
+                  value={Math.round(total)}
+                />
+                <p className="text-center text-[12.5px] text-ink-soft mt-4 leading-relaxed">
+                  Rather keep it online?{" "}
+                  <Link href="/order/continue" className="text-ember font-semibold hover:underline">Continue your order</Link>{" "}
+                  and track every step in your account. We emailed you a copy of this quote.
                 </p>
               </div>
             ) : (

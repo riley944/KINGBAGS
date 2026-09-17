@@ -50,6 +50,34 @@ type OrderLike = {
   total_price: number | string;
 };
 
+// Sent the moment a quote is locked in the studio. The ask is one thing:
+// book the proof review.
+export function quoteLockedEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: string }): { subject: string; html: string } {
+  const body = `<p>${q.quoteMode
+    ? "Your design is in and a specialist is pricing it now."
+    : "Your price is locked and your proof is being built."}
+    The fastest way to get bags on the way is a fifteen-minute proof review: we put your
+    proof on screen, walk sizes, colors, and timing, and answer anything before you approve.</p>
+    <p style="margin:20px 0 0;"><a href="${q.bookUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Book your proof review</a></p>
+    <p style="margin:16px 0 0;font-size:13px;">Prefer to keep it online? Your quote is saved in your account and nothing is charged until you approve your proof.</p>`;
+  return {
+    subject: q.quoteMode ? "Your quote request is in. Book your proof review." : "Your quote is locked. Book your proof review.",
+    html: shell("Next: fifteen minutes with a specialist.", body, q),
+  };
+}
+
+// Internal heads-up so a new quote never sits unseen.
+export function newQuoteAlertEmail(q: OrderLike & { email: string; company?: string; phone?: string; quoteMode?: boolean }): { subject: string; html: string } {
+  return {
+    subject: `New ${q.quoteMode ? "quote request" : "locked quote"}: ${q.company || q.email} · ${q.quantity.toLocaleString()} bags`,
+    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#10140F;">
+      <p><b>${q.company || "No company"}</b> · ${q.email}${q.phone ? ` · ${q.phone}` : ""}</p>
+      <p>${q.product_name}<br/>${q.quantity.toLocaleString()} bags · $${Number(q.total_price).toLocaleString()}${q.quoteMode ? " (custom quote)" : ""}</p>
+      <p><a href="${SITE_URL}/admin">Open the ops panel</a></p>
+    </div>`,
+  };
+}
+
 // Sent when the saved payment method is charged after proof approval.
 export function paymentCapturedEmail(order: OrderLike): { subject: string; html: string } {
   return {
