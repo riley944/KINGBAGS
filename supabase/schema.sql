@@ -219,3 +219,12 @@ create policy "own orders: revise art" on kingbags.orders
 
 revoke update on kingbags.orders from authenticated;
 grant update (art_filename) on kingbags.orders to authenticated;
+
+-- ---------------------------------------------------------------------------
+-- Proof review call: required before an order is final.
+-- ---------------------------------------------------------------------------
+alter table kingbags.orders
+  add column if not exists review_status text not null default 'needed'
+    check (review_status in ('needed','requested','booked','done')),
+  add column if not exists review_booked_at timestamptz;
+grant update (review_status, review_booked_at) on kingbags.orders to authenticated;

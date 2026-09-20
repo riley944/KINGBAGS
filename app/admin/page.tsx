@@ -139,6 +139,22 @@ export default function AdminPage() {
     load(key);
   };
 
+  const setReview = async (order: Order, review_status: Order["review_status"]) => {
+    if (busy) return;
+    setBusy(true);
+    setNotice(null);
+    const res = await fetch(`/api/admin/orders/${order.id}/review`, {
+      method: "POST",
+      headers: { "x-admin-key": key, "Content-Type": "application/json" },
+      body: JSON.stringify({ review_status }),
+    });
+    const body = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) { setError(body.error || `Error ${res.status}`); return; }
+    setNotice(`${order.company} · proof review ${review_status}`);
+    load(key);
+  };
+
   const charge = async (order: Order) => {
     if (busy) return;
     if (!window.confirm(`Charge ${money(order.total_price)} to ${order.company}'s saved payment method now?`)) return;
@@ -328,7 +344,14 @@ export default function AdminPage() {
                         <td className="px-4 py-3.5 text-right font-semibold text-ink text-[14px] tabular-nums">
                           {money(o.total_price)}
                         </td>
-                        <td className="px-4 py-3.5"><Badge status={o.status} /></td>
+                        <td className="px-4 py-3.5">
+                          <Badge status={o.status} />
+                          {o.review_status !== "done" && !["in_production", "shipped"].includes(o.status) && (
+                            <span className={`ml-2 inline-block text-[10px] font-bold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded ${o.review_status === "booked" ? "bg-ember-tint text-ember" : "bg-amber-100 text-amber-800"}`}>
+                              {o.review_status === "booked" ? "call booked" : o.review_status === "requested" ? "call requested" : "no call"}
+                            </span>
+                          )}
+                        </td>
                         <td className="px-4 py-3.5 hidden sm:table-cell text-[13px] text-ink-soft">
                           {dateShort(o.created_at)}
                         </td>
@@ -468,6 +491,38 @@ export default function AdminPage() {
               </div>
 
               <div className="border-t border-ink/10 pt-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Proof review</p>
+                <p className="text-[14px] text-ink mb-3">
+                  {{
+                    needed: "Not booked — order is not final",
+                    requested: "Requested by email — confirm a time",
+                    booked: `Booked${selected.review_booked_at ? ` (${dateShort(selected.review_booked_at)})` : ""}`,
+                    done: "Review done — approved on the call",
+                  }[selected.review_status ?? "needed"]}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selected.review_status !== "booked" && selected.review_status !== "done" && (
+                    <button onClick={() => setReview(selected, "booked")} disabled={busy}
+                      className="text-[13px] font-semibold px-4 py-2.5 rounded-lg bg-smoke text-ink hover:bg-ink/10 transition-colors disabled:opacity-50">
+                      Mark booked
+                    </button>
+                  )}
+                  {selected.review_status !== "done" && (
+                    <button onClick={() => setReview(selected, "done")} disabled={busy}
+                      className="text-[13px] font-semibold px-4 py-2.5 rounded-lg bg-ember text-white hover:bg-ember-dark transition-colors disabled:opacity-50">
+                      Review done
+                    </button>
+                  )}
+                  {selected.review_status === "done" && (
+                    <button onClick={() => setReview(selected, "booked")} disabled={busy}
+                      className="text-[13px] font-semibold px-3 py-2 rounded-lg text-ink-soft hover:text-ink">
+                      Undo
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t border-ink/10 pt-5">
                 <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Payment</p>
                 <p className="text-[14px] text-ink mb-3">
                   {{
@@ -479,6 +534,7 @@ export default function AdminPage() {
                 </p>
                 {(selected.payment_status === "method_saved" || selected.payment_status === "failed") &&
                   ["art_approved", "awaiting_payment"].includes(selected.status) &&
+                  selected.review_status === "done" &&
                   selected.stripe_payment_method_id !== null && (
                     <button
                       onClick={() => charge(selected)}
@@ -489,9 +545,9 @@ export default function AdminPage() {
                     </button>
                   )}
                 {selected.payment_status === "method_saved" &&
-                  !["art_approved", "awaiting_payment"].includes(selected.status) && (
+                  (!["art_approved", "awaiting_payment"].includes(selected.status) || selected.review_status !== "done") && (
                     <p className="text-[12px] text-ink-soft">
-                      Charge unlocks once the order reaches Art approved.
+                      Charge unlocks once the proof review is done and the order is Art approved.
                     </p>
                   )}
               </div>

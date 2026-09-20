@@ -98,7 +98,21 @@ export type Order = {
   payment_status: "none" | "method_saved" | "charged" | "failed";
   paid_at: string | null;
   stripe_payment_method_id: string | null;
+  review_status: ReviewStatus;
+  review_booked_at: string | null;
 };
+
+export type ReviewStatus = "needed" | "requested" | "booked" | "done";
+
+// Customer marks their own order's proof review as requested (email
+// fallback) or booked (Calendly confirmed). RLS limits this to their rows.
+export async function markOrderReview(orderId: string, status: "requested" | "booked") {
+  if (!supabase) return { ok: false, error: "Supabase not configured" };
+  const patch: { review_status: string; review_booked_at?: string } = { review_status: status };
+  if (status === "booked") patch.review_booked_at = new Date().toISOString();
+  const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
 
 export type OrderEvent = {
   id: string;

@@ -112,11 +112,12 @@ export default function PaymentStep({
     return (
       <div>
         <p className="text-ink-soft leading-relaxed mb-6">
-          {error || "The payment form isn't available right now."} Your order is placed —
-          we&apos;ll collect payment details by email instead.
+          {error || "The payment form isn't available right now."} Your order is saved.
+          We&apos;ll send a secure Stripe link by email so a payment method is on file before
+          your proof review.
         </p>
         <button onClick={() => onDone(false)} className="btn-ember !px-8 !py-4">
-          Go to My Order →
+          Continue to book your proof review →
         </button>
       </div>
     );
@@ -126,9 +127,9 @@ export default function PaymentStep({
     <div>
       <div className="bg-smoke rounded-2xl px-5 py-4 mb-6">
         <p className="text-[14px] text-ink leading-relaxed">
-          <span className="font-bold">Nothing is charged today.</span> Your payment method is
-          saved and charged only after you approve your proof — {totalLabel}. Bank payment
-          (ACH) has the lowest fees for orders this size.
+          <span className="font-bold">Nothing is charged today.</span> A payment method on file
+          reserves your production slot. It&apos;s charged only after you approve your proof on
+          your review call — {totalLabel}. Bank payment (ACH) has the lowest fees for orders this size.
         </p>
       </div>
       <div ref={mountRef} className="min-h-[220px]">
@@ -144,12 +145,6 @@ export default function PaymentStep({
         {phase === "saving" ? "Saving…" : "Save Payment Method"}
       </button>
       {error && <p className="text-xs text-red-500 mt-3 text-center">{error}</p>}
-      <button
-        onClick={() => onDone(false)}
-        className="block mx-auto mt-4 text-[13px] font-semibold text-ink-soft hover:text-ink underline underline-offset-4"
-      >
-        Skip for now — we&apos;ll sort payment by email
-      </button>
       <p className="text-[11px] text-ink-soft mt-4 text-center">
         Secured by Stripe. Card details never touch our servers.
       </p>

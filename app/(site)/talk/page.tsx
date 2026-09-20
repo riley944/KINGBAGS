@@ -21,6 +21,7 @@ export default async function TalkPage({ searchParams }: { searchParams: Promise
   const email = sp.email;
   const name = sp.name;
   const summary = sp.q;
+  const orderId = sp.order;
 
   return (
     <section className="py-16 md:py-20">
@@ -59,7 +60,7 @@ export default async function TalkPage({ searchParams }: { searchParams: Promise
           </div>
         </Reveal>
         <Reveal delay={120}>
-          <BookCall email={email} name={name} summary={summary} />
+          <BookCall email={email} name={name} summary={summary} orderId={orderId} />
         </Reveal>
       </div>
     </section>

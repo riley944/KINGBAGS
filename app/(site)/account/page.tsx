@@ -166,9 +166,9 @@ function AccountInner() {
           {justPlaced && (
             <div className="bg-ember text-white rounded-2.5xl px-6 py-5 mb-6 shadow-soft">
               <p className="leading-relaxed">
-                <span className="font-bold">Order placed. 🎉</span> Your artwork is headed into
-                review — we&apos;ll email you at every step, and this page always shows exactly
-                where things stand.
+                <span className="font-bold">Reserved. 🎉</span> Your artwork is headed into
+                review and your slot is held. Your order becomes final on your proof review call;
+                we&apos;ll email you at every step, and this page always shows where things stand.
               </p>
             </div>
           )}

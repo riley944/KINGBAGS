@@ -2,29 +2,36 @@
 import { useEffect } from "react";
 import { CALENDLY_URL, CONTACT_EMAIL } from "@/lib/site";
 import { track } from "@/lib/track";
+import { markOrderReview } from "@/lib/supabase";
 
 // The booking step. Embeds Calendly when NEXT_PUBLIC_CALENDLY_URL is set
 // (prefilled with the visitor's details and quote), otherwise falls back to
-// a prewritten email. Fires the `book_call` conversion when a slot is booked.
+// a prewritten email. Fires the `book_call` conversion when a slot is booked
+// and tells the caller so the order can be marked.
 type Props = {
   email?: string;
   name?: string;
   summary?: string; // e.g. "Grocery Tote · Large · 2,500 bags · $7,950"
   value?: number;
   compact?: boolean;
+  orderId?: string;         // when set, the order's review status is updated
+  onBooked?: () => void;    // Calendly confirmed a slot
+  onRequested?: () => void; // email fallback clicked
 };
 
-export default function BookCall({ email, name, summary, value, compact = false }: Props) {
+export default function BookCall({ email, name, summary, value, compact = false, orderId, onBooked, onRequested }: Props) {
   useEffect(() => {
     if (!CALENDLY_URL) return;
     const onMsg = (e: MessageEvent) => {
       if (typeof e.data === "object" && e.data?.event === "calendly.event_scheduled") {
         track("book_call", { kb_action: "proof_review_booked", value: value ?? 0, currency: "USD" });
+        const done = orderId ? markOrderReview(orderId, "booked") : Promise.resolve();
+        done.then(() => onBooked?.());
       }
     };
     window.addEventListener("message", onMsg);
     return () => window.removeEventListener("message", onMsg);
-  }, [value]);
+  }, [value, onBooked, orderId]);
 
   if (CALENDLY_URL) {
     const u = new URL(CALENDLY_URL);
@@ -56,7 +63,11 @@ export default function BookCall({ email, name, summary, value, compact = false 
       </p>
       <a
         href={href}
-        onClick={() => track("book_call", { kb_action: "proof_review_requested", value: value ?? 0, currency: "USD" })}
+        onClick={() => {
+          track("book_call", { kb_action: "proof_review_requested", value: value ?? 0, currency: "USD" });
+          if (orderId) markOrderReview(orderId, "requested");
+          onRequested?.();
+        }}
         className={`btn-ember w-full text-center ${compact ? "!py-3.5 !text-[14px]" : "!py-4"}`}
       >
         Email to book my proof review

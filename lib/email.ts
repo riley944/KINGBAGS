@@ -56,13 +56,16 @@ export function quoteLockedEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: 
   const body = `<p>${q.quoteMode
     ? "Your design is in and a specialist is pricing it now."
     : "Your price is locked and your proof is being built."}
-    The fastest way to get bags on the way is a fifteen-minute proof review: we put your
-    proof on screen, walk sizes, colors, and timing, and answer anything before you approve.</p>
-    <p style="margin:20px 0 0;"><a href="${q.bookUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Book your proof review</a></p>
-    <p style="margin:16px 0 0;font-size:13px;">Prefer to keep it online? Your quote is saved in your account and nothing is charged until you approve your proof.</p>`;
+    Your order isn't final until a fifteen-minute proof review with a specialist. Two steps, both quick:</p>
+    <ol style="padding-left:20px;margin:12px 0;">
+      <li style="margin-bottom:6px;"><b>Reserve your production slot.</b> Shipping details and a payment method on file. Nothing is charged until you approve your proof.</li>
+      <li><b>Book your proof review.</b> Proof on screen, sizes and colors confirmed, approved live.</li>
+    </ol>
+    <p style="margin:20px 0 0;"><a href="${SITE_URL}/order/continue" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my slot</a>
+    &nbsp; <a href="${q.bookUrl}" style="display:inline-block;color:#14532D;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 8px;text-decoration:underline;">Book the review first</a></p>`;
   return {
-    subject: q.quoteMode ? "Your quote request is in. Book your proof review." : "Your quote is locked. Book your proof review.",
-    html: shell("Next: fifteen minutes with a specialist.", body, q),
+    subject: q.quoteMode ? "Your quote request is in. Reserve your slot." : "Your quote is locked. Reserve your slot.",
+    html: shell("Two steps to a final order.", body, q),
   };
 }
 

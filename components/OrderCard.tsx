@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { Order, OrderEvent, uploadArt, updateOrderArt } from "@/lib/supabase";
 import { STAGES, stageIndex, needsAttention, statusLabel, statusBlurb, OrderStatus } from "@/lib/stages";
@@ -171,6 +172,35 @@ export default function OrderCard({
           </div>
         )}
       </div>
+
+      {/* proof review gate */}
+      {order.review_status !== "done" && !["in_production", "shipped"].includes(order.status) && (
+        <div className="px-6 md:px-8 pb-5 -mt-2">
+          {order.review_status === "booked" ? (
+            <p className="text-[13px] text-ink-soft">
+              <span className="text-ember font-bold">✓</span> Proof review booked
+              {order.review_booked_at ? ` on ${new Date(order.review_booked_at).toLocaleDateString(undefined, { month: "long", day: "numeric" })}` : ""}.
+              You approve your proof on the call.
+            </p>
+          ) : order.review_status === "requested" ? (
+            <p className="text-[13px] text-ink-soft">
+              <span className="text-ember font-bold">✓</span> Proof review requested. We&apos;ll confirm a time by email within one business day.
+            </p>
+          ) : (
+            <div className="rounded-2xl border border-ember/30 bg-ember-tint/60 px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[14px] text-ink leading-snug">
+                <span className="font-bold">Not final yet.</span> Book your fifteen-minute proof review to approve this order.
+              </p>
+              <Link
+                href={`/talk?order=${order.id}&email=${encodeURIComponent(order.email)}&name=${encodeURIComponent(order.company)}&q=${encodeURIComponent(`${order.product_name} · ${order.quantity.toLocaleString()} bags`)}`}
+                className="btn-ember !py-2.5 !px-5 !text-[13px] shrink-0"
+              >
+                Book Your Proof Review
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* payment state */}
       <div className="px-6 md:px-8 pb-5 -mt-2">

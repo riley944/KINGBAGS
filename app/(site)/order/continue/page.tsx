@@ -14,6 +14,7 @@ import {
 import { track } from "@/lib/track";
 import Reveal from "@/components/Reveal";
 import PaymentStep from "@/components/PaymentStep";
+import BookCall from "@/components/BookCall";
 import Field, { inputCls } from "@/components/Field";
 
 function OrderSummary({ p }: { p: PendingOrder }) {
@@ -31,8 +32,8 @@ function OrderSummary({ p }: { p: PendingOrder }) {
         </p>
       </div>
       <p className="text-[12px] text-ink-soft mt-3 border-t border-ink/10 pt-3">
-        Nothing is charged now. Your art goes to review first, and payment only happens after
-        you approve your proof.
+        Nothing is charged now. Your order isn&apos;t final until your proof review call, and
+        payment only happens after you approve the proof on that call.
       </p>
     </div>
   );
@@ -44,7 +45,9 @@ export default function ContinueOrderPage() {
   const [user, setUser] = useState<User | null>(null);
   const [pending, setPending] = useState<PendingOrder | null>(null);
   // Set once the order row exists; the flow then shows the payment step.
-  const [placedOrder, setPlacedOrder] = useState<{ id: string; total: number } | null>(null);
+  const [placedOrder, setPlacedOrder] = useState<{ id: string; total: number; summary: string } | null>(null);
+  // Card saved (or unavailable): the booking step is the last screen.
+  const [cardDone, setCardDone] = useState(false);
 
   // sign-in step
   const [email, setEmail] = useState("");
@@ -95,7 +98,7 @@ export default function ContinueOrderPage() {
           },
           body: JSON.stringify({ order_id: retOrder, setup_intent_id: retSI }),
         }).catch(() => null);
-        router.replace("/account?placed=1");
+        router.replace("/account?placed=1&review=1");
         return;
       }
       setReady(true);
@@ -160,7 +163,7 @@ export default function ContinueOrderPage() {
       if (res.id) {
         // Straight into the payment step — card saved now, charged after
         // proof approval.
-        setPlacedOrder({ id: res.id, total: pending.total_price });
+        setPlacedOrder({ id: res.id, total: pending.total_price, summary: `${pending.product_name} · ${pending.quantity.toLocaleString()} bags · $${pending.total_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}` });
         setPending(null);
       } else {
         router.push("/account?placed=1");
@@ -179,19 +182,43 @@ export default function ContinueOrderPage() {
       <Reveal>
         <p className="section-label mb-4">Your Order</p>
 
-        {placedOrder ? (
+        {placedOrder && cardDone ? (
           <div>
             <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
-              Order placed. One last step.
+              Reserved. Last step: your proof review.
             </h1>
             <p className="text-ink-soft text-lg leading-relaxed mb-7">
-              Save a payment method so that once you approve your proof, nothing slows your
-              bags down.
+              Your order isn&apos;t final until a fifteen-minute review with a specialist. We put
+              your proof on screen, confirm sizes, colors, and timing, and you approve it live.
+              Nothing is charged before that call.
+            </p>
+            <BookCall
+              email={user?.email ?? email}
+              name={company || undefined}
+              summary={placedOrder.summary}
+              value={Math.round(placedOrder.total)}
+              orderId={placedOrder.id}
+              onBooked={() => router.push("/account?placed=1")}
+            />
+            <p className="text-[13px] text-ink-soft mt-5 text-center">
+              Booked or emailed?{" "}
+              <Link href="/account?placed=1" className="text-ember font-semibold hover:underline">Go to your account</Link>.
+              We&apos;ll email you at every step.
+            </p>
+          </div>
+        ) : placedOrder ? (
+          <div>
+            <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
+              Reserve your production slot.
+            </h1>
+            <p className="text-ink-soft text-lg leading-relaxed mb-7">
+              A payment method on file holds your place in the factory queue. Nothing is charged
+              until you approve your proof on your review call.
             </p>
             <PaymentStep
               orderId={placedOrder.id}
               totalLabel={`$${placedOrder.total.toLocaleString(undefined, { maximumFractionDigits: 0 })} when your proof is approved`}
-              onDone={() => router.push("/account?placed=1")}
+              onDone={() => setCardDone(true)}
             />
           </div>
         ) : !pending ? (
@@ -313,12 +340,12 @@ export default function ContinueOrderPage() {
             </div>
 
             <button onClick={handlePlace} disabled={!detailsValid || placing} className="w-full btn-ember !py-4 mt-6">
-              {placing ? "Placing…" : "Place My Order"}
+              {placing ? "Saving…" : "Continue to Payment Method →"}
             </button>
             {error && <p className="text-xs text-red-500 mt-3 text-center">{error}</p>}
             <p className="text-[12px] text-ink-soft mt-4 text-center leading-relaxed">
-              Placing your order starts art review — it does not charge you. Payment happens
-              only after you approve your proof.
+              Next you&apos;ll add a payment method to reserve your slot, then book your proof
+              review. Nothing is charged until you approve the proof on that call.
             </p>
           </div>
         )}

@@ -14,7 +14,6 @@ import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 import Field, { inputCls } from "@/components/Field";
 import BagArt from "@/components/BagArt";
-import BookCall from "@/components/BookCall";
 
 const CHECK_STYLE: Record<PreflightCheck["level"], { icon: string; cls: string }> = {
   pass: { icon: "✓", cls: "text-ember" },
@@ -442,20 +441,31 @@ function Configurator() {
                 <div className="text-center mb-5">
                   <h3 className="font-serif text-2xl text-ink mb-2">{quoteMode ? "Quote request received." : "Your quote is locked."}</h3>
                   <p className="text-ink-soft text-sm leading-relaxed">
-                    Next: a fifteen-minute proof review. We put your proof on screen, walk sizes, colors, and timing, and answer anything before you approve. Nothing is made or charged until you do.
+                    Your order isn&apos;t final until your proof review call. Two steps left, both under five minutes.
                   </p>
                 </div>
-                <BookCall
-                  compact
-                  email={email}
-                  name={company || undefined}
-                  summary={`${product.name} · ${size.label} · ${orientation} · ${qty.toLocaleString()} bags${quoteMode ? "" : ` · ${money(total)}`}`}
-                  value={Math.round(total)}
-                />
-                <p className="text-center text-[12.5px] text-ink-soft mt-4 leading-relaxed">
-                  Rather keep it online?{" "}
-                  <Link href="/order/continue" className="text-ember font-semibold hover:underline">Continue your order</Link>{" "}
-                  and track every step in your account. We emailed you a copy of this quote.
+                <ol className="space-y-3 mb-5">
+                  <li className="flex gap-3 rounded-xl border border-ember/30 bg-ember-tint/50 p-4">
+                    <span className="font-grotesk font-extrabold text-ember">1</span>
+                    <div>
+                      <p className="font-semibold text-ink text-[14px]">Reserve your production slot</p>
+                      <p className="text-[12.5px] text-ink-soft leading-snug">Shipping details and a payment method on file. Nothing is charged until you approve your proof.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-3 rounded-xl border border-ink/10 p-4">
+                    <span className="font-grotesk font-extrabold text-ink-soft">2</span>
+                    <div>
+                      <p className="font-semibold text-ink text-[14px]">Book your fifteen-minute proof review</p>
+                      <p className="text-[12.5px] text-ink-soft leading-snug">Proof on screen with a specialist. You approve it live, and only then does anything get made or charged.</p>
+                    </div>
+                  </li>
+                </ol>
+                <Link href="/order/continue" className="btn-ember w-full !py-4 text-center">
+                  Reserve My Slot →
+                </Link>
+                <p className="text-center text-[12.5px] text-ink-soft mt-3 leading-relaxed">
+                  We emailed you a copy of this quote. Want to talk before reserving?{" "}
+                  <a href={`/talk?email=${encodeURIComponent(email)}${company ? `&name=${encodeURIComponent(company)}` : ""}&q=${encodeURIComponent(`${product.name} · ${size.label} · ${qty.toLocaleString()} bags`)}`} className="text-ember font-semibold hover:underline">Book the review first</a>.
                 </p>
               </div>
             ) : (

@@ -28,6 +28,9 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   if (!order.stripe_customer_id || !order.stripe_payment_method_id) {
     return NextResponse.json({ error: "No payment method on file for this order" }, { status: 400 });
   }
+  if (order.review_status !== "done") {
+    return NextResponse.json({ error: "Proof review not done — mark the review done before charging" }, { status: 400 });
+  }
 
   const amount = Math.round(Number(order.total_price) * 100);
   try {
