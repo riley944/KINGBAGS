@@ -48,7 +48,20 @@ type OrderLike = {
   product_name: string;
   quantity: number;
   total_price: number | string;
+  id?: string;
+  email?: string;
+  company?: string;
+  review_status?: string;
 };
+
+// Booking nudge for orders that don't have a proof review on the calendar.
+function reviewNudge(order: OrderLike): string {
+  if (!order.review_status || order.review_status === "booked" || order.review_status === "done") return "";
+  const url = `${SITE_URL}/talk?order=${order.id ?? ""}&email=${encodeURIComponent(order.email ?? "")}&name=${encodeURIComponent(order.company ?? "")}&q=${encodeURIComponent(`${order.product_name} · ${order.quantity.toLocaleString()} bags`)}`;
+  return `<p style="margin:16px 0 0;padding:14px 16px;background:#E9F2EC;border-radius:12px;"><b>Your order isn't final yet.</b>
+    Book your fifteen-minute proof review and approve it live:
+    <a href="${url}" style="color:#14532D;font-weight:bold;">pick a time</a>.</p>`;
+}
 
 // Sent the moment a quote is locked in the studio. The ask is one thing:
 // book the proof review.
@@ -106,8 +119,8 @@ export function statusEmail(status: OrderStatus, order: OrderLike): { subject: s
         html: shell(
           "Your artwork is in review.",
           `<p>Our team is checking your art against the production template — print resolution,
-           bleed, seams, the works. You'll get your photoreal proof by email, and nothing
-           goes to production until you approve it.</p>`,
+           bleed, seams, the works. Your photoreal proof goes on screen at your review call, and nothing
+           goes to production until you approve it.</p>${reviewNudge(order)}`,
           order
         ),
       };
