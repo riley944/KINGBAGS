@@ -204,6 +204,16 @@ export default function OrderCard({
 
       {/* payment state */}
       <div className="px-6 md:px-8 pb-5 -mt-2">
+        {order.payment_status === "none" && !["in_production", "shipped"].includes(order.status) && (
+          <div className="rounded-2xl border border-gold-deep/25 bg-gold-tint px-5 py-4 flex flex-wrap items-center justify-between gap-3 mb-3">
+            <p className="text-[14px] text-ink leading-snug">
+              <span className="font-bold">No payment method on file.</span> Add one to reserve your production slot. Nothing is charged until you approve your proof.
+            </p>
+            <Link href={`/order/payment?order=${order.id}`} className="btn-ink !py-2.5 !px-5 !text-[13px] shrink-0">
+              Add payment method
+            </Link>
+          </div>
+        )}
         {order.payment_status === "method_saved" && (
           <p className="text-[13px] text-ink-soft">
             <span className="text-ember font-bold">✓</span> Payment method on file — charged
