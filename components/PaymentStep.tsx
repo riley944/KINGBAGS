@@ -163,11 +163,13 @@ export default function PaymentStep({
           your review call — {totalLabel}. Bank payment (ACH) has the lowest fees for orders this size.
         </p>
       </div>
-      <div ref={mountRef} className="min-h-[220px]">
-        {phase === "loading" && (
-          <p className="text-ink-soft text-sm py-16 text-center">Loading secure payment form…</p>
-        )}
-      </div>
+      {/* Stripe owns everything inside mountRef. Keep React out of it: a
+          sibling shows the loading state, otherwise Safari throws
+          NotFoundError when React reconciles around Stripe's iframe. */}
+      {phase === "loading" && (
+        <p className="text-ink-soft text-sm py-16 text-center">Loading secure payment form…</p>
+      )}
+      <div ref={mountRef} className={phase === "loading" ? "min-h-0" : "min-h-[220px]"} />
       <button
         onClick={save}
         disabled={phase !== "ready"}
