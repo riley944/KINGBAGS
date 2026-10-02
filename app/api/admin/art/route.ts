@@ -16,7 +16,8 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Server not configured" }, { status: 503 });
   }
   const filename = new URL(req.url).searchParams.get("file");
-  if (!filename || filename.includes("/") || filename.includes("..")) {
+  const okPath = filename && !filename.includes("..") && (!filename.includes("/") || filename.startsWith("proofs/"));
+  if (!okPath) {
     return NextResponse.json({ error: "Invalid file" }, { status: 400 });
   }
   const storage = createClient(url, key, { auth: { persistSession: false } });

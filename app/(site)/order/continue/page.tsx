@@ -161,6 +161,14 @@ export default function ContinueOrderPage() {
       track("close_convert_lead", { kb_action: "order_placed", product: pending.product_slug, quantity: pending.quantity, value: Math.round(pending.total_price), currency: "USD" });
       clearPendingOrder();
       if (res.id) {
+        // Best effort: customer "saved" email + internal new-order alert.
+        supabase?.auth.getSession().then(({ data }) =>
+          fetch("/api/order/notify", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ order_id: res.id }),
+          }).catch(() => null)
+        );
         // Straight into the payment step — card saved now, charged after
         // proof approval.
         setPlacedOrder({ id: res.id, total: pending.total_price, summary: `${pending.product_name} · ${pending.quantity.toLocaleString()} bags · $${pending.total_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}` });

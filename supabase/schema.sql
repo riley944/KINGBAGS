@@ -228,3 +228,28 @@ alter table kingbags.orders
     check (review_status in ('needed','requested','booked','done')),
   add column if not exists review_booked_at timestamptz;
 grant update (review_status, review_booked_at) on kingbags.orders to authenticated;
+
+-- ---------------------------------------------------------------------------
+-- Ops v3: proof files, internal notes, tracking, quote pipeline status.
+-- ---------------------------------------------------------------------------
+alter table kingbags.orders
+  add column if not exists proof_filename text,
+  add column if not exists proof_uploaded_at timestamptz,
+  add column if not exists internal_notes text,
+  add column if not exists tracking_carrier text,
+  add column if not exists tracking_url text;
+alter table kingbags.quotes
+  add column if not exists status text not null default 'new'
+    check (status in ('new','contacted','won','lost'));
+create index if not exists quotes_status_idx on kingbags.quotes (status, created_at desc);
+
+-- Customers read their own orders, but never the team's internal notes.
+revoke select on kingbags.orders from authenticated;
+grant select (
+  id, created_at, updated_at, user_id, status, product_slug, product_name, quantity,
+  unit_price, total_price, art_filename, email, phone, company,
+  ship_name, ship_address1, ship_address2, ship_city, ship_state, ship_postal, ship_country,
+  billing_name, billing_email, notes, payment_status, paid_at, stripe_payment_method_id,
+  review_status, review_booked_at, proof_filename, proof_uploaded_at,
+  tracking_carrier, tracking_url
+) on kingbags.orders to authenticated;

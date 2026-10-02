@@ -100,7 +100,24 @@ export type Order = {
   stripe_payment_method_id: string | null;
   review_status: ReviewStatus;
   review_booked_at: string | null;
+  proof_filename: string | null;
+  proof_uploaded_at: string | null;
+  internal_notes: string | null;
+  tracking_carrier: string | null;
+  tracking_url: string | null;
 };
+
+// Signed URL for one of the customer's own order files (artwork or proof).
+export async function orderFileUrl(orderId: string, kind: "art" | "proof"): Promise<string | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) return null;
+  const res = await fetch(`/api/orders/${orderId}/file?kind=${kind}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) return null;
+  const body = await res.json().catch(() => ({}));
+  return body.url ?? null;
+}
 
 export type ReviewStatus = "needed" | "requested" | "booked" | "done";
 

@@ -51,7 +51,11 @@ type OrderLike = {
   id?: string;
   email?: string;
   company?: string;
+  phone?: string | null;
   review_status?: string;
+  payment_status?: string;
+  tracking_carrier?: string | null;
+  tracking_url?: string | null;
 };
 
 // Booking nudge for orders that don't have a proof review on the calendar.
@@ -91,6 +95,52 @@ export function newQuoteAlertEmail(q: OrderLike & { email: string; company?: str
       <p>${q.product_name}<br/>${q.quantity.toLocaleString()} bags · $${Number(q.total_price).toLocaleString()}${q.quoteMode ? " (custom quote)" : ""}</p>
       <p><a href="${SITE_URL}/admin">Open the ops panel</a></p>
     </div>`,
+  };
+}
+
+// Sent right after the order row is created (card may or may not be on
+// file yet). One job: get the review on the calendar.
+export function orderReservedEmail(order: OrderLike): { subject: string; html: string } {
+  const card = order.payment_status === "method_saved";
+  return {
+    subject: card ? "Reserved. Book your proof review." : "Order saved. Two steps to make it final.",
+    html: shell(
+      card ? "Your slot is reserved." : "Your order is saved.",
+      `<p>${card
+        ? "Your payment method is on file and nothing is charged until you approve your proof."
+        : `A payment method on file holds your production slot; <a href="${SITE_URL}/order/payment?order=${order.id ?? ""}" style="color:#14532D;font-weight:bold;">add one here</a>. Nothing is charged until you approve your proof.`}
+       Your order becomes final on a fifteen-minute proof review with a specialist.</p>${reviewNudge(order)}`,
+      order
+    ),
+  };
+}
+
+// Internal alert so a new order never sits unseen.
+export function newOrderAlertEmail(order: OrderLike): { subject: string; html: string } {
+  return {
+    subject: `New order: ${order.company || order.email} · ${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}`,
+    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#10140F;">
+      <p><b>${order.company || "No company"}</b> · ${order.email}${order.phone ? ` · ${order.phone}` : ""}</p>
+      <p>${order.product_name}<br/>${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}</p>
+      <p>Card: ${order.payment_status === "method_saved" ? "on file" : "not yet"} · Review: ${order.review_status ?? "needed"}</p>
+      <p><a href="${SITE_URL}/admin?order=${order.id ?? ""}">Open in the ops panel</a></p>
+    </div>`,
+  };
+}
+
+// Sent when the team uploads the photoreal proof.
+export function proofReadyEmail(order: OrderLike): { subject: string; html: string } {
+  const booked = order.review_status === "booked" || order.review_status === "done";
+  return {
+    subject: "Your proof is ready",
+    html: shell(
+      "Your proof is ready.",
+      `<p>Your photoreal proof is in your account. ${booked
+        ? "We'll walk through it together on your review call and you approve it live."
+        : "Book your fifteen-minute review and we'll walk through it together; you approve it live on the call."}
+       Nothing is made or charged until you approve.</p>${reviewNudge(order)}`,
+      order
+    ),
   };
 }
 
@@ -169,9 +219,11 @@ export function statusEmail(status: OrderStatus, order: OrderLike): { subject: s
       return {
         subject: "Your bags are on the way",
         html: shell(
-          "They're coming.",
-          `<p>Your order has shipped. Tracking details follow separately — and when the
-           boxes land, we'd love to see what you do with them.</p>`,
+          "Shipped.",
+          `<p>Your bags left the factory and are in the air. ${order.tracking_url
+            ? `Track them here: <a href="${order.tracking_url}" style="color:#14532D;font-weight:bold;">${order.tracking_carrier ?? "Tracking"} →</a>`
+            : "Tracking details follow shortly."}
+           Most deliveries clear customs and land within 7–10 days of shipping.</p>`,
           order
         ),
       };

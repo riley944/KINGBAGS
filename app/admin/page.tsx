@@ -1,69 +1,27 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Order, OrderEvent } from "@/lib/supabase";
-import { statusLabel, OrderStatus } from "@/lib/stages";
+import { adminFetch, money, nextAction, hasCard, type Quote, type Lead } from "@/components/admin/shared";
+import Queues from "@/components/admin/Queues";
+import OrderDetail from "@/components/admin/OrderDetail";
+import { OrdersTable, QuotesTable, LeadsTable } from "@/components/admin/Tables";
 
-// KINGBAGS Ops — internal back office. Key-gated server-side on every call.
+// KINGBAGS Ops v3. Key-gated server-side on every call. Views: Today
+// (work queues), Orders, Quotes, Samples; an order opens as a full page.
 
-type Quote = {
-  id: string; created_at: string; email: string; company: string | null;
-  product_slug: string; product_name: string; quantity: number;
-  unit_price: number; total_price: number; art_filename: string | null; notes: string | null;
-};
-type Lead = {
-  id: string; created_at: string; email: string; company: string | null;
-  message: string | null; product_slug: string | null;
-};
-
-const FLOW: OrderStatus[] = [
-  "submitted", "art_review", "needs_changes", "art_approved",
-  "awaiting_payment", "in_production", "shipped",
+type View = "today" | "orders" | "quotes" | "leads";
+const NAV: { key: View; label: string }[] = [
+  { key: "today", label: "Today" },
+  { key: "orders", label: "Orders" },
+  { key: "quotes", label: "Quotes" },
+  { key: "leads", label: "Samples" },
 ];
 
-function nextStatuses(s: OrderStatus): OrderStatus[] {
-  switch (s) {
-    case "submitted": return ["art_review"];
-    case "art_review": return ["art_approved", "needs_changes"];
-    case "needs_changes": return ["art_review"];
-    case "art_approved": return ["awaiting_payment"];
-    case "awaiting_payment": return ["in_production"];
-    case "in_production": return ["shipped"];
-    case "shipped": return [];
-  }
-}
-
-const BADGE: Record<OrderStatus, string> = {
-  submitted: "bg-slate-100 text-slate-700",
-  art_review: "bg-blue-50 text-blue-700",
-  needs_changes: "bg-amber-100 text-amber-800",
-  art_approved: "bg-emerald-50 text-emerald-700",
-  awaiting_payment: "bg-violet-50 text-violet-700",
-  in_production: "bg-ember-tint text-ember",
-  shipped: "bg-ink text-white",
-};
-
-const money = (n: number | string) =>
-  "$" + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
-const dateShort = (s: string) =>
-  new Date(s).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-const dateTime = (s: string) =>
-  new Date(s).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-
-function Badge({ status }: { status: OrderStatus }) {
-  return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold whitespace-nowrap ${BADGE[status]}`}>
-      {statusLabel(status)}
-    </span>
-  );
-}
-
-function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div className="bg-white rounded-xl border border-ink/10 px-5 py-4">
-      <p className="text-[12px] font-semibold text-ink-soft mb-1">{label}</p>
-      <p className={`font-serif font-black text-2xl leading-none ${accent ? "text-ember" : "text-ink"}`}>{value}</p>
-    </div>
-  );
+function readUrl(): { view: View; order: string | null } {
+  if (typeof window === "undefined") return { view: "today", order: null };
+  const sp = new URLSearchParams(window.location.search);
+  const v = sp.get("view") as View | null;
+  return { view: v && NAV.some((n) => n.key === v) ? v : "today", order: sp.get("order") };
 }
 
 export default function AdminPage() {
@@ -75,39 +33,57 @@ export default function AdminPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
-  const [tab, setTab] = useState<"orders" | "quotes" | "leads">("orders");
-  const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all");
-  const [query, setQuery] = useState("");
+  const [notice, setNotice] = useState<{ msg: string; err: boolean } | null>(null);
+  const [view, setView] = useState<View>("today");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [query, setQuery] = useState("");
 
   const load = useCallback(async (k: string) => {
     setLoading(true);
     setError(null);
-    const res = await fetch("/api/admin/orders", { headers: { "x-admin-key": k } });
+    const r = await adminFetch(k, "/api/admin/orders");
     setLoading(false);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setError(body.error || `Error ${res.status}`);
-      if (res.status === 401) {
-        setKey("");
-        try { localStorage.removeItem("kb_admin_key"); } catch { /* ignore */ }
-      }
+    if (!r.ok) {
+      setError(r.body.error || `Error ${r.status}`);
+      if (r.status === 401) { setKey(""); try { localStorage.removeItem("kb_admin_key"); } catch { /* ignore */ } }
       return;
     }
-    const body = await res.json();
-    setOrders(body.orders);
-    setEvents(body.events);
-    setQuotes(body.quotes ?? []);
-    setLeads(body.leads ?? []);
+    setOrders(r.body.orders);
+    setEvents(r.body.events);
+    setQuotes(r.body.quotes ?? []);
+    setLeads(r.body.leads ?? []);
   }, []);
 
   useEffect(() => {
+    const { view: v, order } = readUrl();
+    setView(v);
+    setSelectedId(order);
     let stored: string | null = null;
     try { stored = localStorage.getItem("kb_admin_key"); } catch { /* ignore */ }
     if (stored) { setKey(stored); load(stored); }
   }, [load]);
+
+  // Keep the URL in sync so orders can be deep-linked from alert emails.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sp = new URLSearchParams();
+    if (view !== "today") sp.set("view", view);
+    if (selectedId) sp.set("order", selectedId);
+    const qs = sp.toString();
+    window.history.replaceState(null, "", qs ? `/admin?${qs}` : "/admin");
+  }, [view, selectedId]);
+
+  // Auto-refresh every two minutes while the tab is visible.
+  useEffect(() => {
+    if (!key) return;
+    const t = setInterval(() => { if (document.visibilityState === "visible") load(key); }, 120_000);
+    return () => clearInterval(t);
+  }, [key, load]);
+
+  const notify = useCallback((msg: string, err = false) => {
+    setNotice({ msg, err });
+    setTimeout(() => setNotice(null), 6000);
+  }, []);
 
   const unlock = () => {
     if (!keyInput) return;
@@ -120,494 +96,109 @@ export default function AdminPage() {
     try { localStorage.removeItem("kb_admin_key"); } catch { /* ignore */ }
   };
 
-  const advance = async (order: Order, status: OrderStatus) => {
-    if (busy) return;
-    setBusy(true);
-    setNotice(null);
-    const res = await fetch(`/api/admin/orders/${order.id}/status`, {
-      method: "POST",
-      headers: { "x-admin-key": key, "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    const body = await res.json().catch(() => ({}));
-    setBusy(false);
-    if (!res.ok) { setError(body.error || `Error ${res.status}`); return; }
-    const emailNote = body.email
-      ? body.email.ok ? " · customer emailed ✓" : ` · email failed: ${body.email.error}`
-      : "";
-    setNotice(`${order.company} → ${statusLabel(status)}${emailNote}`);
-    load(key);
-  };
+  const selected = useMemo(() => orders.find((o) => o.id === selectedId) ?? null, [orders, selectedId]);
+  const stats = useMemo(() => {
+    const open = orders.filter((o) => o.status !== "shipped");
+    const pipeline = open.reduce((s, o) => s + Number(o.total_price), 0);
+    const readyToCharge = orders.filter((o) => nextAction(o).key === "charge");
+    const chargeable = readyToCharge.reduce((s, o) => s + Number(o.total_price), 0);
+    const month = new Date(); month.setDate(1); month.setHours(0, 0, 0, 0);
+    const charged = orders.filter((o) => o.payment_status === "charged" && o.paid_at && new Date(o.paid_at) >= month).reduce((s, o) => s + Number(o.total_price), 0);
+    const yourMove = orders.filter((o) => ["proof", "review", "approve", "charge", "track"].includes(nextAction(o).key) && (o.status !== "shipped" || !o.tracking_url)).length;
+    const noCard = open.filter((o) => !hasCard(o) && !["in_production"].includes(o.status)).length;
+    const newQuotes = quotes.filter((q) => (q.status ?? "new") === "new").length;
+    return { open: open.length, pipeline, chargeable, charged, yourMove, noCard, newQuotes };
+  }, [orders, quotes]);
 
-  const setReview = async (order: Order, review_status: Order["review_status"]) => {
-    if (busy) return;
-    setBusy(true);
-    setNotice(null);
-    const res = await fetch(`/api/admin/orders/${order.id}/review`, {
-      method: "POST",
-      headers: { "x-admin-key": key, "Content-Type": "application/json" },
-      body: JSON.stringify({ review_status }),
-    });
-    const body = await res.json().catch(() => ({}));
-    setBusy(false);
-    if (!res.ok) { setError(body.error || `Error ${res.status}`); return; }
-    setNotice(`${order.company} · proof review ${review_status}`);
-    load(key);
-  };
-
-  const charge = async (order: Order) => {
-    if (busy) return;
-    if (!window.confirm(`Charge ${money(order.total_price)} to ${order.company}'s saved payment method now?`)) return;
-    setBusy(true);
-    setNotice(null);
-    setError(null);
-    const res = await fetch(`/api/admin/orders/${order.id}/charge`, {
-      method: "POST",
-      headers: { "x-admin-key": key },
-    });
-    const body = await res.json().catch(() => ({}));
-    setBusy(false);
-    if (res.ok && body.ok) {
-      setNotice(`${order.company} charged ${money(order.total_price)} (${body.payment_status}) — order moved to In production, customer emailed.`);
-    } else {
-      setError(body.error ? `Charge failed: ${body.error}` : `Charge did not complete (${body.payment_status ?? res.status}).`);
-    }
-    load(key);
-  };
-
-  const viewArt = async (filename: string) => {
-    const res = await fetch(`/api/admin/art?file=${encodeURIComponent(filename)}`, {
-      headers: { "x-admin-key": key },
-    });
-    const body = await res.json().catch(() => ({}));
-    if (res.ok && body.url) window.open(body.url, "_blank");
-    else setError(body.error || "Couldn't open artwork.");
-  };
-
-  const q = query.trim().toLowerCase();
-  const match = (...fields: (string | null | undefined)[]) =>
-    !q || fields.some((f) => f && f.toLowerCase().includes(q));
-
-  const visibleOrders = orders.filter(
-    (o) => (statusFilter === "all" || o.status === statusFilter) && match(o.email, o.company, o.product_name)
-  );
-  const visibleQuotes = quotes.filter((x) => match(x.email, x.company, x.product_name));
-  const visibleLeads = leads.filter((x) => match(x.email, x.company, x.message));
-
-  const open = orders.filter((o) => o.status !== "shipped");
-  const attention = orders.filter((o) => ["submitted", "art_review", "needs_changes"].includes(o.status));
-  const pipeline = open.reduce((s, o) => s + Number(o.total_price), 0);
-  const shippedTotal = orders.filter((o) => o.status === "shipped").reduce((s, o) => s + Number(o.total_price), 0);
-
-  const statusCounts = useMemo(() => {
-    const c: Partial<Record<OrderStatus, number>> = {};
-    for (const o of orders) c[o.status] = (c[o.status] ?? 0) + 1;
-    return c;
-  }, [orders]);
-
-  const selected = orders.find((o) => o.id === selectedId) ?? null;
-
-  /* ---------- lock screen ---------- */
   if (!key) {
     return (
-      <div className="min-h-screen bg-[#F6F7F5] flex items-center justify-center px-5">
-        <div className="w-full max-w-sm bg-white rounded-2xl border border-ink/10 shadow-lift p-8">
-          <p className="font-hero font-extrabold text-[20px] tracking-[0.04em] mb-1">
-            <span className="text-ink">KING</span><span className="text-ember">BAGS</span>
-          </p>
-          <p className="text-[13px] text-ink-soft mb-6">Operations</p>
-          <input
-            type="password" placeholder="Admin key" value={keyInput}
-            onChange={(e) => setKeyInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && unlock()}
-            className="w-full rounded-xl px-4 py-3 mb-3 bg-smoke text-ink border border-transparent focus:border-ember focus:outline-none text-[15px]"
-          />
-          <button onClick={unlock} disabled={!keyInput} className="w-full btn-ember !py-3 !text-[15px]">
-            Unlock
-          </button>
+      <div className="min-h-screen bg-smoke flex items-center justify-center px-5">
+        <div className="w-full max-w-sm bg-white rounded-2xl border border-ink/10 shadow-soft p-8">
+          <p className="font-grotesk font-extrabold text-[22px] mb-1"><span className="text-ink">KING</span><span className="text-ember">BAGS</span> <span className="text-[12px] text-ink-soft tracking-[0.2em] ml-1">OPS</span></p>
+          <p className="text-[14px] text-ink-soft mb-6">Enter the admin key to open the back office.</p>
+          <input type="password" value={keyInput} onChange={(e) => setKeyInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && unlock()} placeholder="Admin key"
+            className="w-full rounded-xl px-4 py-3.5 bg-smoke text-ink border border-transparent focus:border-ember focus:bg-white focus:outline-none mb-3" />
+          <button onClick={unlock} disabled={!keyInput} className="w-full btn-ember !py-3.5">Unlock</button>
           {error && <p className="text-xs text-red-500 mt-3">{error}</p>}
         </div>
       </div>
     );
   }
 
-  /* ---------- app ---------- */
   return (
-    <div className="min-h-screen bg-[#F6F7F5]">
+    <div className="min-h-screen bg-smoke text-ink">
       {/* top bar */}
-      <header className="sticky top-0 z-40 bg-white border-b border-ink/10">
-        <div className="mx-auto max-w-6xl px-5 py-2.5 sm:py-0 sm:h-14 flex flex-wrap sm:flex-nowrap items-center gap-x-4 gap-y-2">
-          <p className="font-hero font-extrabold text-[17px] tracking-[0.04em] shrink-0">
-            <span className="text-ink">KING</span><span className="text-ember">BAGS</span>
-            <span className="ml-2 text-[11px] font-sans font-bold tracking-[0.14em] text-ink-soft align-middle">OPS</span>
-          </p>
-          <input
-            type="search" placeholder="Search email, company…" value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="order-last basis-full sm:order-none sm:basis-auto sm:flex-1 min-w-0 max-w-md rounded-lg px-3.5 py-2 bg-smoke text-[14px] text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:outline-none"
-          />
-          <div className="ml-auto flex items-center gap-2 shrink-0">
-            <button onClick={() => load(key)}
-              className="text-[13px] font-semibold text-ink-soft hover:text-ink px-3 py-2 rounded-lg hover:bg-smoke transition-colors">
-              {loading ? "Loading…" : "Refresh"}
-            </button>
-            <button onClick={lock}
-              className="text-[13px] font-semibold text-ink-soft hover:text-ink px-3 py-2 rounded-lg hover:bg-smoke transition-colors">
-              Lock
-            </button>
-          </div>
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-ink/10">
+        <div className="mx-auto max-w-[1400px] px-5 h-14 flex items-center gap-4">
+          <button onClick={() => { setSelectedId(null); setView("today"); }} className="font-grotesk font-extrabold text-[18px] shrink-0">
+            <span className="text-ink">KING</span><span className="text-ember">BAGS</span> <span className="text-[11px] text-ink-soft tracking-[0.2em] ml-1">OPS</span>
+          </button>
+          <nav className="hidden md:flex items-center gap-1 ml-4">
+            {NAV.map((n) => {
+              const count = n.key === "today" ? stats.yourMove : n.key === "quotes" ? stats.newQuotes : 0;
+              return (
+                <button key={n.key} onClick={() => { setSelectedId(null); setView(n.key); }}
+                  className={`text-[14px] font-semibold px-3.5 py-2 rounded-lg transition-colors ${view === n.key && !selectedId ? "bg-ink text-white" : "text-ink-soft hover:text-ink hover:bg-smoke"}`}>
+                  {n.label}{count > 0 && <span className={`ml-1.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${view === n.key && !selectedId ? "bg-white/20" : "bg-amber-100 text-amber-800"}`}>{count}</span>}
+                </button>
+              );
+            })}
+          </nav>
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search company, email, product…"
+            className="ml-auto w-full max-w-xs rounded-lg px-3.5 py-2 bg-smoke text-[14px] text-ink placeholder:text-ink-soft/60 border border-transparent focus:border-ember focus:bg-white focus:outline-none" />
+          <button onClick={() => load(key)} disabled={loading} className="text-[13px] font-semibold text-ink-soft hover:text-ink disabled:opacity-50 shrink-0">{loading ? "…" : "Refresh"}</button>
+          <button onClick={lock} className="text-[13px] font-semibold text-ink-soft hover:text-ink shrink-0">Lock</button>
         </div>
+        <nav className="md:hidden flex gap-1 px-5 pb-2 overflow-x-auto">
+          {NAV.map((n) => (
+            <button key={n.key} onClick={() => { setSelectedId(null); setView(n.key); }}
+              className={`text-[13px] font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap ${view === n.key && !selectedId ? "bg-ink text-white" : "text-ink-soft"}`}>{n.label}</button>
+          ))}
+        </nav>
       </header>
 
-      <div className="mx-auto max-w-6xl px-5 py-6">
-        {/* stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          <Stat label="Open orders" value={String(open.length)} />
-          <Stat label="Needs action" value={String(attention.length)} accent={attention.length > 0} />
-          <Stat label="Open pipeline" value={money(pipeline)} />
-          <Stat label="Shipped (lifetime)" value={money(shippedTotal)} />
+      {/* toasts */}
+      {(notice || error) && (
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[calc(100%-2rem)]">
+          <div className={`rounded-xl px-5 py-3.5 shadow-lift text-[14px] ${notice?.err || error ? "bg-red-600 text-white" : "bg-ink text-white"}`}>
+            {notice?.msg ?? error}
+            {error && <button onClick={() => setError(null)} className="ml-3 underline">dismiss</button>}
+          </div>
         </div>
-
-        {(notice || error) && (
-          <div className={`rounded-xl px-4 py-3 mb-4 text-[14px] ${error ? "bg-red-50 text-red-700" : "bg-ember-tint text-ink"}`}>
-            {error || notice}
-          </div>
-        )}
-
-        {/* tabs */}
-        <div className="flex items-center gap-1 border-b border-ink/10 mb-4">
-          {([
-            ["orders", `Orders (${orders.length})`],
-            ["quotes", `Quotes (${quotes.length})`],
-            ["leads", `Sample requests (${leads.length})`],
-          ] as const).map(([id, label]) => (
-            <button key={id} onClick={() => setTab(id)}
-              className={`px-4 py-2.5 text-[14px] font-semibold border-b-2 -mb-px transition-colors ${
-                tab === id ? "border-ember text-ember" : "border-transparent text-ink-soft hover:text-ink"
-              }`}>
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {/* status filter */}
-        {tab === "orders" && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            <button onClick={() => setStatusFilter("all")}
-              className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors ${
-                statusFilter === "all" ? "bg-ink text-white" : "bg-white border border-ink/10 text-ink-soft hover:text-ink"
-              }`}>
-              All ({orders.length})
-            </button>
-            {FLOW.filter((s) => statusCounts[s]).map((s) => (
-              <button key={s} onClick={() => setStatusFilter(statusFilter === s ? "all" : s)}
-                className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors ${
-                  statusFilter === s ? "bg-ink text-white" : "bg-white border border-ink/10 text-ink-soft hover:text-ink"
-                }`}>
-                {statusLabel(s)} ({statusCounts[s]})
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* ORDERS */}
-        {tab === "orders" && (
-          <div className="bg-white rounded-xl border border-ink/10 overflow-hidden">
-            {visibleOrders.length === 0 ? (
-              <p className="p-10 text-center text-ink-soft text-[14px]">
-                {orders.length === 0 ? "No orders yet. They'll appear here the moment one is placed." : "Nothing matches."}
-              </p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="border-b border-ink/10 text-[11px] uppercase tracking-[0.1em] text-ink-soft">
-                      <th className="px-4 py-3 font-bold">Customer</th>
-                      <th className="px-4 py-3 font-bold hidden md:table-cell">Product</th>
-                      <th className="px-4 py-3 font-bold text-right">Total</th>
-                      <th className="px-4 py-3 font-bold">Status</th>
-                      <th className="px-4 py-3 font-bold hidden sm:table-cell">Placed</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleOrders.map((o) => (
-                      <tr key={o.id} onClick={() => setSelectedId(o.id)}
-                        className="border-b border-ink/5 last:border-0 hover:bg-smoke/60 cursor-pointer transition-colors">
-                        <td className="px-4 py-3.5">
-                          <p className="font-semibold text-ink text-[14px]">{o.company}</p>
-                          <p className="text-[12px] text-ink-soft">{o.email}</p>
-                        </td>
-                        <td className="px-4 py-3.5 hidden md:table-cell">
-                          <p className="text-[13px] text-ink">{o.product_name}</p>
-                          <p className="text-[12px] text-ink-soft">{o.quantity.toLocaleString()} bags</p>
-                        </td>
-                        <td className="px-4 py-3.5 text-right font-semibold text-ink text-[14px] tabular-nums">
-                          {money(o.total_price)}
-                        </td>
-                        <td className="px-4 py-3.5">
-                          <Badge status={o.status} />
-                          {o.review_status !== "done" && !["in_production", "shipped"].includes(o.status) && (
-                            <span className={`ml-2 inline-block text-[10px] font-bold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded ${o.review_status === "booked" ? "bg-ember-tint text-ember" : "bg-amber-100 text-amber-800"}`}>
-                              {o.review_status === "booked" ? "call booked" : o.review_status === "requested" ? "call requested" : "no call"}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3.5 hidden sm:table-cell text-[13px] text-ink-soft">
-                          {dateShort(o.created_at)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* QUOTES */}
-        {tab === "quotes" && (
-          <div className="bg-white rounded-xl border border-ink/10 overflow-hidden">
-            {visibleQuotes.length === 0 ? (
-              <p className="p-10 text-center text-ink-soft text-[14px]">No quotes yet.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="border-b border-ink/10 text-[11px] uppercase tracking-[0.1em] text-ink-soft">
-                      <th className="px-4 py-3 font-bold">Contact</th>
-                      <th className="px-4 py-3 font-bold hidden md:table-cell">Product</th>
-                      <th className="px-4 py-3 font-bold text-right">Quote</th>
-                      <th className="px-4 py-3 font-bold hidden lg:table-cell">Notes</th>
-                      <th className="px-4 py-3 font-bold hidden sm:table-cell">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleQuotes.map((x) => (
-                      <tr key={x.id} className="border-b border-ink/5 last:border-0">
-                        <td className="px-4 py-3.5">
-                          <p className="font-semibold text-ink text-[14px]">{x.company || "—"}</p>
-                          <p className="text-[12px] text-ink-soft">{x.email}</p>
-                        </td>
-                        <td className="px-4 py-3.5 hidden md:table-cell">
-                          <p className="text-[13px] text-ink">{x.product_name}</p>
-                          <p className="text-[12px] text-ink-soft">{x.quantity.toLocaleString()} bags</p>
-                        </td>
-                        <td className="px-4 py-3.5 text-right font-semibold text-ink text-[14px] tabular-nums">
-                          {money(x.total_price)}
-                        </td>
-                        <td className="px-4 py-3.5 hidden lg:table-cell text-[12px] text-ink-soft max-w-[260px] truncate">
-                          {x.notes || "—"}
-                        </td>
-                        <td className="px-4 py-3.5 hidden sm:table-cell text-[13px] text-ink-soft">
-                          {dateShort(x.created_at)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* LEADS */}
-        {tab === "leads" && (
-          <div className="bg-white rounded-xl border border-ink/10 overflow-hidden">
-            {visibleLeads.length === 0 ? (
-              <p className="p-10 text-center text-ink-soft text-[14px]">No sample requests yet.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="border-b border-ink/10 text-[11px] uppercase tracking-[0.1em] text-ink-soft">
-                      <th className="px-4 py-3 font-bold">Contact</th>
-                      <th className="px-4 py-3 font-bold">Request</th>
-                      <th className="px-4 py-3 font-bold hidden sm:table-cell">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleLeads.map((x) => (
-                      <tr key={x.id} className="border-b border-ink/5 last:border-0">
-                        <td className="px-4 py-3.5">
-                          <p className="font-semibold text-ink text-[14px]">{x.company || "—"}</p>
-                          <p className="text-[12px] text-ink-soft">{x.email}</p>
-                        </td>
-                        <td className="px-4 py-3.5 text-[13px] text-ink-soft">{x.message || x.product_slug || "—"}</td>
-                        <td className="px-4 py-3.5 hidden sm:table-cell text-[13px] text-ink-soft">
-                          {dateShort(x.created_at)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* DETAIL DRAWER */}
-      {selected && (
-        <>
-          <div className="fixed inset-0 bg-ink/30 z-40" onClick={() => setSelectedId(null)} />
-          <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-lift overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-ink/10 px-6 py-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="font-serif font-bold text-lg text-ink leading-tight">{selected.company}</p>
-                <p className="text-[13px] text-ink-soft">{money(selected.total_price)} · placed {dateShort(selected.created_at)}</p>
-              </div>
-              <button onClick={() => setSelectedId(null)}
-                className="text-ink-soft hover:text-ink text-xl w-9 h-9 rounded-lg hover:bg-smoke flex items-center justify-center shrink-0">
-                ✕
-              </button>
-            </div>
-
-            <div className="px-6 py-5 space-y-6">
-              <div>
-                <Badge status={selected.status} />
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {nextStatuses(selected.status).map((s) => (
-                    <button key={s} onClick={() => advance(selected, s)} disabled={busy}
-                      className={`text-[13px] font-semibold px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 ${
-                        s === "needs_changes"
-                          ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
-                          : "bg-ember text-white hover:bg-ember-dark"
-                      }`}>
-                      {busy ? "…" : `Move to ${statusLabel(s)}`}
-                    </button>
-                  ))}
-                  <select value=""
-                    onChange={(e) => e.target.value && advance(selected, e.target.value as OrderStatus)}
-                    className="text-[13px] font-semibold rounded-lg px-3 py-2.5 bg-smoke text-ink-soft border-none focus:outline-none">
-                    <option value="">Set any status…</option>
-                    {FLOW.filter((s) => s !== selected.status).map((s) => (
-                      <option key={s} value={s}>{statusLabel(s)}</option>
-                    ))}
-                  </select>
-                </div>
-                <p className="text-[12px] text-ink-soft mt-2">
-                  Status changes email the customer automatically.
-                </p>
-              </div>
-
-              <div className="border-t border-ink/10 pt-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Proof review</p>
-                <p className="text-[14px] text-ink mb-3">
-                  {{
-                    needed: "Not booked — order is not final",
-                    requested: "Requested by email — confirm a time",
-                    booked: `Booked${selected.review_booked_at ? ` (${dateShort(selected.review_booked_at)})` : ""}`,
-                    done: "Review done — approved on the call",
-                  }[selected.review_status ?? "needed"]}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {selected.review_status !== "booked" && selected.review_status !== "done" && (
-                    <button onClick={() => setReview(selected, "booked")} disabled={busy}
-                      className="text-[13px] font-semibold px-4 py-2.5 rounded-lg bg-smoke text-ink hover:bg-ink/10 transition-colors disabled:opacity-50">
-                      Mark booked
-                    </button>
-                  )}
-                  {selected.review_status !== "done" && (
-                    <button onClick={() => setReview(selected, "done")} disabled={busy}
-                      className="text-[13px] font-semibold px-4 py-2.5 rounded-lg bg-ember text-white hover:bg-ember-dark transition-colors disabled:opacity-50">
-                      Review done
-                    </button>
-                  )}
-                  {selected.review_status === "done" && (
-                    <button onClick={() => setReview(selected, "booked")} disabled={busy}
-                      className="text-[13px] font-semibold px-3 py-2 rounded-lg text-ink-soft hover:text-ink">
-                      Undo
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="border-t border-ink/10 pt-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Payment</p>
-                <p className="text-[14px] text-ink mb-3">
-                  {{
-                    none: "No payment method on file",
-                    method_saved: "Payment method saved — ready to charge after approval",
-                    charged: `Paid${selected.paid_at ? ` on ${dateShort(selected.paid_at)}` : ""}`,
-                    failed: "Last charge attempt failed — see history",
-                  }[selected.payment_status] ?? "Unknown"}
-                </p>
-                {(selected.payment_status === "method_saved" || selected.payment_status === "failed") &&
-                  ["art_approved", "awaiting_payment"].includes(selected.status) &&
-                  selected.review_status === "done" &&
-                  selected.stripe_payment_method_id !== null && (
-                    <button
-                      onClick={() => charge(selected)}
-                      disabled={busy}
-                      className="text-[14px] font-bold px-5 py-3 rounded-lg bg-ink text-white hover:bg-charcoal transition-colors disabled:opacity-50"
-                    >
-                      {busy ? "…" : `Charge ${money(selected.total_price)} now`}
-                    </button>
-                  )}
-                {selected.payment_status === "method_saved" &&
-                  (!["art_approved", "awaiting_payment"].includes(selected.status) || selected.review_status !== "done") && (
-                    <p className="text-[12px] text-ink-soft">
-                      Charge unlocks once the proof review is done and the order is Art approved.
-                    </p>
-                  )}
-              </div>
-
-              <div className="border-t border-ink/10 pt-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Order</p>
-                <p className="text-[14px] text-ink font-semibold">{selected.product_name}</p>
-                <p className="text-[13px] text-ink-soft">
-                  {selected.quantity.toLocaleString()} bags × ${Number(selected.unit_price).toFixed(2)}
-                </p>
-                {selected.art_filename ? (
-                  <button onClick={() => viewArt(selected.art_filename!)}
-                    className="mt-2.5 text-[13px] font-semibold text-ember hover:underline">
-                    View uploaded artwork ↗
-                  </button>
-                ) : (
-                  <p className="mt-2.5 text-[13px] text-amber-700">No artwork file on this order.</p>
-                )}
-              </div>
-
-              <div className="border-t border-ink/10 pt-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Contact</p>
-                <p className="text-[14px] text-ink">{selected.email}</p>
-                {selected.phone && <p className="text-[14px] text-ink">{selected.phone}</p>}
-                {selected.billing_email && (
-                  <p className="text-[13px] text-ink-soft mt-1.5">
-                    Billing: {selected.billing_name} · {selected.billing_email}
-                  </p>
-                )}
-              </div>
-
-              <div className="border-t border-ink/10 pt-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-2.5">Ship to</p>
-                <p className="text-[14px] text-ink leading-relaxed">
-                  {selected.ship_name}<br />
-                  {selected.ship_address1}{selected.ship_address2 ? <><br />{selected.ship_address2}</> : null}<br />
-                  {selected.ship_city}, {selected.ship_state} {selected.ship_postal}
-                </p>
-              </div>
-
-              <div className="border-t border-ink/10 pt-5 pb-6">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-3">History</p>
-                <ul className="space-y-3">
-                  {events.filter((e) => e.order_id === selected.id).map((e) => (
-                    <li key={e.id} className="flex gap-3 text-[13px]">
-                      <span className="w-2 h-2 rounded-full bg-ember mt-1.5 shrink-0" />
-                      <div>
-                        <p className="text-ink font-semibold">
-                          {e.status ? statusLabel(e.status) : e.event.replace(/_/g, " ")}
-                        </p>
-                        <p className="text-ink-soft">{dateTime(e.created_at)}{e.note ? ` — ${e.note}` : ""}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </aside>
-        </>
       )}
+
+      <main className="mx-auto max-w-[1400px] px-5 py-6">
+        {selected ? (
+          <OrderDetail order={selected} events={events.filter((e) => e.order_id === selected.id)} adminKey={key} onBack={() => setSelectedId(null)} onChanged={() => load(key)} notify={notify} />
+        ) : (
+          <>
+            {view === "today" && (
+              <>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                  <Stat label="Open orders" value={String(stats.open)} sub={`${money(stats.pipeline)} in pipeline`} />
+                  <Stat label="Your move" value={String(stats.yourMove)} sub="proofs, calls, approvals, charges" accent={stats.yourMove > 0} />
+                  <Stat label="Ready to charge" value={money(stats.chargeable)} sub="approved on a call" accent={stats.chargeable > 0} />
+                  <Stat label="Charged this month" value={money(stats.charged)} sub={`${stats.noCard} order${stats.noCard === 1 ? "" : "s"} still need a card`} />
+                </div>
+                <Queues orders={orders} onOpen={setSelectedId} />
+              </>
+            )}
+            {view === "orders" && <OrdersTable orders={orders} onOpen={setSelectedId} query={query} />}
+            {view === "quotes" && <QuotesTable quotes={quotes} orders={orders} adminKey={key} query={query} onChanged={() => load(key)} notify={notify} />}
+            {view === "leads" && <LeadsTable leads={leads} query={query} />}
+          </>
+        )}
+      </main>
+    </div>
+  );
+}
+
+function Stat({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: boolean }) {
+  return (
+    <div className="bg-white rounded-xl border border-ink/10 px-5 py-4">
+      <p className="text-[12px] font-semibold text-ink-soft mb-1">{label}</p>
+      <p className={`font-serif font-black text-2xl leading-none ${accent ? "text-ember" : "text-ink"}`}>{value}</p>
+      {sub && <p className="text-[12px] text-ink-soft mt-1.5">{sub}</p>}
     </div>
   );
 }
