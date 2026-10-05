@@ -167,14 +167,24 @@ export async function createOrder(o: {
   return { ok: !error, id: data?.id ?? null, error: error?.message };
 }
 
+const CUSTOMER_ORDER_COLUMNS = [
+  "id", "created_at", "status", "product_slug", "product_name", "quantity", "unit_price", "total_price",
+  "art_filename", "email", "phone", "company", "ship_name", "ship_address1", "ship_address2", "ship_city",
+  "ship_state", "ship_postal", "ship_country", "billing_name", "billing_email", "notes", "payment_status",
+  "paid_at", "stripe_payment_method_id", "review_status", "review_booked_at", "proof_filename",
+  "proof_uploaded_at", "tracking_carrier", "tracking_url",
+].join(",");
+
 export async function fetchOrders(): Promise<{ ok: boolean; orders: Order[]; error?: string }> {
   if (!supabase) return { ok: false, orders: [], error: "Supabase not configured" };
+  // Explicit columns: customers have column-level SELECT (no internal_notes),
+  // and Postgres rejects `*` outright when any column is off-limits.
   const { data, error } = await supabase
     .from("orders")
-    .select("*")
+    .select(CUSTOMER_ORDER_COLUMNS)
     .order("created_at", { ascending: false });
   if (error) return { ok: false, orders: [], error: error.message };
-  return { ok: true, orders: (data ?? []) as Order[] };
+  return { ok: true, orders: (data ?? []) as unknown as Order[] };
 }
 
 // Customers may replace the artwork on their own orders (needs_changes
