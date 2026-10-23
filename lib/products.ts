@@ -124,10 +124,14 @@ export const PRODUCTS: Product[] = [
     minOrder: MIN_ORDER,
     leadTime: "5–6 weeks",
     pricing: "modeled",
+    // Size cards use the landscape renders only, so the four sizes read as
+    // one shape stepping up. Portrait examples stay for the product page.
     examples: [
       { src: "/lookbook/lucky-dog/front.webp", brand: "Lucky Dog", orientation: "landscape" },
-      { src: "/lookbook/olive-market/front.webp", brand: "Market", orientation: "portrait" },
+      { src: "/lookbook/good-day-coffee/front.webp", brand: "Good Day Coffee", orientation: "landscape" },
       { src: "/lookbook/casa-bonita-mercado/front.webp", brand: "Casa Bonita Mercado", orientation: "landscape" },
+      { src: "/lookbook/wild-threads/front.webp", brand: "Wild Threads", orientation: "landscape" },
+      { src: "/lookbook/olive-market/front.webp", brand: "Market", orientation: "portrait" },
       { src: "/lookbook/pine-and-salt/front.webp", brand: "Pine & Salt", orientation: "portrait" },
     ],
   },

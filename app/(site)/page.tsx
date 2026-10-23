@@ -148,7 +148,8 @@ export default function Home() {
           </Reveal>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
             {grocery.sizes.map((sz, i) => {
-              const ex = grocery.examples[i % grocery.examples.length];
+              const landscape = grocery.examples.filter((e) => e.orientation === "landscape");
+              const ex = landscape[i % landscape.length];
               const price = unitPrice(grocery, sz.code, MIN_ORDER)!;
               return (
                 <Reveal key={sz.code} delay={i * 90}>
@@ -160,7 +161,7 @@ export default function Home() {
                     </div>
                     <div className="p-5">
                       <p className="font-bold text-ink text-[17px] leading-tight">{dims(sz, "landscape")}</p>
-                      <p className="text-[12.5px] text-ink-soft mt-1">or {dims(sz, "portrait")} portrait</p>
+                      <p className="text-[12.5px] text-ink-soft mt-1">landscape, shown · {dims(sz, "portrait")} portrait</p>
                       <p className="text-[14px] font-bold text-ink mt-3">${price.toFixed(2)}/bag <span className="font-medium text-ink-soft">at {MIN_ORDER.toLocaleString()}, delivered</span></p>
                     </div>
                   </Link>
@@ -169,6 +170,7 @@ export default function Home() {
             })}
           </div>
           <div className="text-center">
+            <p className="text-[13px] text-ink-soft mb-6">All four shown in landscape (wider than tall). Every size is also made in portrait, same construction, same price.</p>
             <Link href="/products/grocery-tote" className="btn-ink">See the full size chart</Link>
           </div>
         </div>

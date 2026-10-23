@@ -21,7 +21,8 @@ export default function ProductsPage() {
       </Reveal>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         {p.sizes.map((sz, i) => {
-          const ex = p.examples[i % p.examples.length];
+          const landscape = p.examples.filter((e) => e.orientation === "landscape");
+          const ex = landscape[i % landscape.length];
           return (
             <Reveal key={sz.code} delay={i * 90}>
               <Link href={`/custom-bags?size=${sz.code}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ink/40 hover:shadow-lift transition-all h-full">
@@ -32,7 +33,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="p-5">
                   <p className="font-bold text-ink text-[17px] leading-tight">{dims(sz, "landscape")}</p>
-                  <p className="text-[12.5px] text-ink-soft mt-1">or {dims(sz, "portrait")} portrait</p>
+                  <p className="text-[12.5px] text-ink-soft mt-1">landscape, shown · {dims(sz, "portrait")} portrait</p>
                   <p className="text-[14px] font-bold text-ink mt-3">${unitPrice(p, sz.code, MIN_ORDER)!.toFixed(2)}/bag <span className="font-medium text-ink-soft">at {MIN_ORDER.toLocaleString()}, delivered</span></p>
                 </div>
               </Link>
@@ -40,7 +41,8 @@ export default function ProductsPage() {
           );
         })}
       </div>
-      <div className="mt-10 flex flex-wrap gap-3">
+      <p className="text-[13px] text-ink-soft mt-6">All four shown in landscape (wider than tall). Every size is also made in portrait, same construction, same price.</p>
+      <div className="mt-6 flex flex-wrap gap-3">
         <Link href="/products/grocery-tote" className="btn-ink !py-3 !px-7 !text-sm">Full spec and price chart</Link>
         <Link href="/custom-bags" className="btn-outline !py-3 !px-7 !text-sm">Get Your Price</Link>
       </div>

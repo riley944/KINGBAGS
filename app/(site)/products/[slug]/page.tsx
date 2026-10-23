@@ -33,7 +33,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         {/* GALLERY: one example per orientation */}
         <div className="md:sticky md:top-24">
           <div className="grid grid-cols-2 gap-3">
-            {p.examples.map((ex) => (
+            {(["landscape", "portrait"] as const).map((o) => p.examples.find((e) => e.orientation === o)!).map((ex) => (
               <figure key={ex.src} className="bg-smoke rounded-2.5xl overflow-hidden">
                 <div className="aspect-square relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
