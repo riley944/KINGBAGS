@@ -49,8 +49,8 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
               <Link href={`/custom-bags?bag=${v.bestBags[0]}`} className="btn-light text-lg !px-10 !py-4">
                 Get Your Price →
               </Link>
-              <Link href="/samples" className="text-white font-semibold underline underline-offset-4 hover:no-underline">
-                Or hold a sample first — $35
+              <Link href="/talk" className="text-white font-semibold underline underline-offset-4 hover:no-underline">
+                Or talk to a specialist first
               </Link>
             </div>
             <p className="text-white/60 text-[13px] mt-5">All-in delivered pricing · Free proof · Nothing charged until you approve</p>

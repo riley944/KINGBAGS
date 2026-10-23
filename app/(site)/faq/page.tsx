@@ -2,12 +2,11 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import NextStep from "@/components/NextStep";
 import { MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
-import { SAMPLE_PRICE } from "@/lib/site";
 
 export const metadata = {
   title: "Buyer FAQ | KINGBAGS",
   description:
-    "Print method, artwork requirements, color matching, samples, lead times, shipping, payment, and quality control for fully custom cut-and-sew bags from KINGBAGS.",
+    "Print method, artwork requirements, color matching, lead times, shipping, payment, and quality control for fully custom cut-and-sew bags from KINGBAGS.",
 };
 
 type QA = { q: string; a: string };
@@ -61,21 +60,12 @@ const GROUPS: Group[] = [
     ],
   },
   {
-    title: "Samples",
-    items: [
-      {
-        q: "Can I hold one before I order?",
-        a: `Yes, and you should. The $${SAMPLE_PRICE} Quality Kit ships in days with a finished bag from a past program, a printed rendering of your design, and a spec sheet. The $300 Exact Sample is a pre-production copy of your actual bag, made at your factory with your plates. Both are credited in full toward your order.`,
-      },
-      {
-        q: "Do I get a pre-production sample on every order?",
-        a: "You get a free photoreal proof on every order. A physical pre-production sample is the Exact Sample, which we recommend on first orders and any new artwork. It adds about two to three weeks before the run starts.",
-      },
-    ],
-  },
-  {
     title: "Ordering, timing, and delivery",
     items: [
+      {
+        q: "Can I see a bag before I commit?",
+        a: "Yes. Ask on your call and we'll ship a finished bag from a past program so you can hold the material and construction. For first orders and new artwork we can also make a pre-production sample of your exact bag before the run starts; it adds about two to three weeks. Every order gets a free photoreal proof regardless.",
+      },
       {
         q: "What is the minimum?",
         a: `${MIN_ORDER.toLocaleString()} bags of one design. Sizes and orientations can't be mixed inside a single run, but two designs at ${MIN_ORDER.toLocaleString()} each is fine.`,
@@ -141,7 +131,7 @@ export default function FaqPage() {
               The questions a serious buyer asks.
             </h1>
             <p className="text-lg text-ink-soft leading-relaxed">
-              Straight answers on print, artwork, samples, timing, payment, and quality. If yours isn&apos;t here,{" "}
+              Straight answers on print, artwork, timing, payment, and quality. If yours isn&apos;t here,{" "}
               <Link href="/talk" className="text-ember font-semibold hover:underline">talk to a specialist</Link>.
             </p>
           </Reveal>

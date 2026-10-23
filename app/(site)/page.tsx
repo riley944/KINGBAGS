@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PRODUCTS, unitPrice, dims, MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
-import { CTA, SAMPLE_PRICE } from "@/lib/site";
+import { CTA } from "@/lib/site";
 import SpinHero from "@/components/SpinHero";
 import Reveal from "@/components/Reveal";
 import CountUp from "@/components/CountUp";
@@ -39,7 +39,7 @@ const TRUST = [
 
 const FAQ_TEASER = [
   { q: "Is the price really all-in?", a: "Yes. Bag, air freight, and customs duties, delivered. The only line on top is a one-time print setup of $" + SETUP_PER_COLOR + " per ink color." },
-  { q: "Can I hold one before I order?", a: `The $${SAMPLE_PRICE} Quality Kit ships in days. The $300 Exact Sample is a pre-production copy of your actual bag. Both are credited in full.` },
+  { q: "Can I see one before I commit?", a: "Yes. Your specialist brings a finished bag from a past program to your call on request, and a pre-production sample of your own bag can be made before the run starts. You approve a free photoreal proof either way." },
   { q: "What if the proof isn't right?", a: "You don't approve it, and nothing is charged. We revise until it is." },
 ];
 
@@ -101,12 +101,9 @@ export default function Home() {
                 {CTA.primary}
                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
               </Link>
-              <Link href="/samples" className="btn-outline bg-paper/70 backdrop-blur-sm !py-4">{CTA.sample}</Link>
+              <Link href="/talk" className="btn-outline bg-paper/70 backdrop-blur-sm !py-4">{CTA.talk}</Link>
             </div>
-            <p className="text-[12.5px] md:text-[13px] text-ink-soft mt-4 font-medium">
-              {CTA.reassurance} ·{" "}
-              <Link href="/talk" className="text-ember font-semibold hover:underline">or talk to a specialist</Link>
-            </p>
+            <p className="text-[12.5px] md:text-[13px] text-ink-soft mt-4 font-medium">{CTA.reassurance}</p>
           </div>
         </div>
       </section>
@@ -234,7 +231,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SAMPLE + SPECIALIST */}
+      {/* SPECIALIST */}
       <NextStep tone="tint" />
 
       {/* CREDIBILITY */}

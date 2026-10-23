@@ -151,7 +151,7 @@ H1 to position 1. Use the same descriptions in all three groups.
 **Sitelinks** (Assets → Sitelinks, campaign level)
 - Get Your Price → /custom-bags
 - See Pricing Tiers → /pricing
-- $35 Sample Kit → /samples
+- Talk to a Specialist → /talk
 - Buyer FAQ → /faq
 
 **Callouts**: All-In Delivered Pricing · Free Proof · From 1,500 Bags ·

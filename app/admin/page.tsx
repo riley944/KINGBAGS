@@ -7,14 +7,13 @@ import OrderDetail from "@/components/admin/OrderDetail";
 import { OrdersTable, QuotesTable, LeadsTable } from "@/components/admin/Tables";
 
 // KINGBAGS Ops v3. Key-gated server-side on every call. Views: Today
-// (work queues), Orders, Quotes, Samples; an order opens as a full page.
+// (work queues), Orders, Quotes; an order opens as a full page.
 
 type View = "today" | "orders" | "quotes" | "leads";
 const NAV: { key: View; label: string }[] = [
   { key: "today", label: "Today" },
   { key: "orders", label: "Orders" },
   { key: "quotes", label: "Quotes" },
-  { key: "leads", label: "Samples" },
 ];
 
 function readUrl(): { view: View; order: string | null } {

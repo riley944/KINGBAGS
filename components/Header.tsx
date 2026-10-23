@@ -8,7 +8,6 @@ import { CTA } from "@/lib/site";
 const NAV = [
   { href: "/products", label: "Bags" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/samples", label: "Samples" },
   { href: "/gallery", label: "Lookbook" },
   { href: "/faq", label: "FAQ" },
   { href: "/about", label: "About" },

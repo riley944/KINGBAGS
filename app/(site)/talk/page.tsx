@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import BookCall from "@/components/BookCall";
-import { CTA, SAMPLE_PRICE } from "@/lib/site";
+import { CTA } from "@/lib/site";
 
 export const metadata = {
   title: "Book Your Proof Review | KINGBAGS",
@@ -13,7 +13,7 @@ const COVER = [
   "Your proof on screen, and any change you want made to it",
   "Which bag and size fits what you're carrying",
   "Quantity, price, and the real delivered date",
-  "Samples, artwork, and how payment works",
+  "Artwork, pre-production samples, and how payment works",
 ];
 
 export default async function TalkPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
@@ -54,7 +54,6 @@ export default async function TalkPage({ searchParams }: { searchParams: Promise
               <p className="text-[14px] text-ink-soft mb-4">Two minutes in the studio gets you a locked all-in price and a better call.</p>
               <div className="flex flex-wrap gap-2.5">
                 <Link href="/custom-bags" className="btn-ink !py-3 !px-6 !text-sm">{CTA.primary}</Link>
-                <Link href="/samples" className="btn-outline !py-3 !px-6 !text-sm">Hold one first, ${SAMPLE_PRICE}</Link>
               </div>
             </div>
           </div>

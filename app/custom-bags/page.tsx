@@ -3,7 +3,6 @@ import Link from "next/link";
 import LogoMarquee from "@/components/LogoMarquee";
 import PriceAndBook from "@/components/PriceAndBook";
 import { MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
-import { SAMPLE_PRICE } from "@/lib/site";
 
 // The ad landing page. Price in thirty seconds, book the call, done.
 
@@ -22,7 +21,7 @@ const STEPS = [
 const FAQ = [
   { q: "Is the price really all-in?", a: `Yes. Bag, full-color print, air freight, and customs duties, delivered to your door. The only line on top is a one-time print setup of $${SETUP_PER_COLOR} per ink color.` },
   { q: "What's the minimum?", a: `${MIN_ORDER.toLocaleString()} bags. Below that, fully custom cut-and-sew doesn't make sense for you or us; we'll tell you honestly on the call.` },
-  { q: "Can I see one before I commit?", a: `The $${SAMPLE_PRICE} Quality Kit ships in days. A $300 Exact Sample is a pre-production copy of your actual bag. Both are credited in full against your run.` },
+  { q: "Can I see one before I commit?", a: "Yes. Ask on the call and we'll send a finished bag from a past program, and a pre-production sample of your own bag can be made before the run starts. You approve a free photoreal proof either way." },
   { q: "What if the proof isn't right?", a: "You don't approve it, and nothing is charged. We revise until it is." },
   { q: "Who are you?", a: "KINGBAGS is the direct channel of King Universal Inc., the Raleigh team that produces bag programs for some of America's biggest brands. Same factories, same spec, simpler to buy." },
 ];

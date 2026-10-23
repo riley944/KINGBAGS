@@ -65,9 +65,9 @@ export default function TermsPage() {
 
       <h2>Samples</h2>
       <p>
-        Sample kit fees are credited in full toward the order they precede. Samples are
-        representative of construction and materials; minor variation between a sample and a
-        production run is normal.
+        Pre-production samples, when provided, are representative of construction and
+        materials; minor variation between a sample and a production run is normal. Any
+        sample fee is credited in full toward the order it precedes.
       </p>
 
       <h2>Cancellations, changes, and issues</h2>

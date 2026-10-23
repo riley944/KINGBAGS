@@ -9,8 +9,6 @@ export const CONTACT_EMAIL = "hello@kingbags.co";
 // Talk page falls back to email.
 export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "";
 
-export const SAMPLE_PRICE = 35;
-
 // Phone shown in the header/footer and on the ad landing page. Set
 // NEXT_PUBLIC_PHONE in Vercel (e.g. "(919) 555-0100"); hidden until set.
 export const PHONE = process.env.NEXT_PUBLIC_PHONE || "";
@@ -25,7 +23,6 @@ export const CTA = {
   primary: "Get Your Price",
   primaryShort: "Get a Price",
   studio: "Design It Yourself",
-  sample: `Get a $${SAMPLE_PRICE} Sample`,
   talk: "Talk to a Specialist",
   book: "Book Your Proof Review",
   reassurance: "All-in delivered pricing · Free proof · Nothing charged until you approve",

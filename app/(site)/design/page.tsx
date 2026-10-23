@@ -494,9 +494,6 @@ function Configurator() {
                   <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> Unlimited proof revisions</li>
                   <li className="flex gap-2.5"><span className="text-ember font-bold">✓</span> No payment until you approve it</li>
                 </ul>
-                <a href="/samples" className="btn-outline w-full !py-3 !text-[14px] mt-4 text-center">
-                  Hold it first — Quality Kit, $35
-                </a>
                 <p className="text-center text-[12.5px] text-ink-soft mt-3">
                   Rather talk it through?{" "}
                   <a href="/talk" className="text-ember font-semibold hover:underline">Book fifteen minutes with a specialist</a>
