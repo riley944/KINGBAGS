@@ -105,6 +105,7 @@ export type Order = {
   internal_notes: string | null;
   tracking_carrier: string | null;
   tracking_url: string | null;
+  terms_accepted_at: string | null;
 };
 
 // Signed URL for one of the customer's own order files (artwork or proof).
@@ -161,6 +162,7 @@ export async function createOrder(o: {
   billing_name?: string;
   billing_email?: string;
   notes?: string;
+  terms_accepted_at?: string;
 }) {
   if (!supabase) return { ok: false, id: null, error: "Supabase not configured" };
   const { data, error } = await supabase.from("orders").insert(o).select("id").single();
@@ -172,7 +174,7 @@ const CUSTOMER_ORDER_COLUMNS = [
   "art_filename", "email", "phone", "company", "ship_name", "ship_address1", "ship_address2", "ship_city",
   "ship_state", "ship_postal", "ship_country", "billing_name", "billing_email", "notes", "payment_status",
   "paid_at", "stripe_payment_method_id", "review_status", "review_booked_at", "proof_filename",
-  "proof_uploaded_at", "tracking_carrier", "tracking_url",
+  "proof_uploaded_at", "tracking_carrier", "tracking_url", "terms_accepted_at",
 ].join(",");
 
 export async function fetchOrders(): Promise<{ ok: boolean; orders: Order[]; error?: string }> {

@@ -91,7 +91,14 @@ export function QuotesTable({ quotes, orders, adminKey, query, onChanged, notify
     const r = await adminFetch(adminKey, `/api/admin/quotes/${x.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
     if (r.ok) { notify(`${x.company || x.email} · ${status}`); onChanged(); } else notify(r.body.error || "Couldn't update quote", true);
   };
-  const followUp = (x: Quote) => `mailto:${x.email}?subject=${encodeURIComponent(`Your KINGBAGS quote · ${x.quantity.toLocaleString()} bags`)}&body=${encodeURIComponent(`Hi${x.company ? ` ${x.company}` : ""},\n\nYour quote is saved: ${x.product_name}, ${x.quantity.toLocaleString()} bags at $${Number(x.total_price).toLocaleString()} all-in. Two steps to make it an order:\n\n1. Reserve your slot: ${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/order/continue\n2. Book your fifteen-minute proof review: ${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/talk?email=${encodeURIComponent(x.email)}\n\nHappy to answer anything first.\n\nKINGBAGS`)}`;
+  // After the call: email the reserve link (shipping, terms, card). Marks the quote won.
+  const sendReserve = async (x: Quote) => {
+    if (!confirm(`Email ${x.email} the reserve link for ${x.quantity.toLocaleString()} bags at ${money(x.total_price)}?`)) return;
+    const r = await adminFetch(adminKey, `/api/admin/quotes/${x.id}/reserve`, { method: "POST" });
+    if (r.ok && r.body.ok) { notify(`Reserve link sent to ${x.email}`); onChanged(); }
+    else notify(r.body.error || "Couldn't send the reserve link", true);
+  };
+  const followUp = (x: Quote) => `mailto:${x.email}?subject=${encodeURIComponent(`Your KINGBAGS quote · ${x.quantity.toLocaleString()} bags`)}&body=${encodeURIComponent(`Hi${x.company ? ` ${x.company}` : ""},\n\nYour quote is saved: ${x.product_name}, ${x.quantity.toLocaleString()} bags at $${Number(x.total_price).toLocaleString()} all-in. Next step is a fifteen-minute call: we confirm size, art, and timing, then build your proof. Pick a time here: ${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/talk?email=${encodeURIComponent(x.email)}\n\nHappy to answer anything by email first.\n\nKINGBAGS`)}`;
   return (
     <div>
       <div className="flex gap-2 mb-4">
@@ -131,6 +138,7 @@ export function QuotesTable({ quotes, orders, adminKey, query, onChanged, notify
                       <td className="px-4 py-3.5"><Chip tone={QUOTE_TONE[x.status ?? "new"]}>{x.status ?? "new"}</Chip></td>
                       <td className="px-4 py-3.5 hidden sm:table-cell text-[13px] text-ink-soft">{dateShort(x.created_at)}</td>
                       <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                        {!hasOrder && <button onClick={() => sendReserve(x)} className="text-[12px] font-bold text-white bg-ink rounded-md px-2.5 py-1 mr-3 hover:bg-ember">Send reserve link</button>}
                         <a href={followUp(x)} onClick={() => x.status === "new" && setStatus(x, "contacted")} className="text-[12px] font-semibold text-ember hover:underline mr-3">Follow up</a>
                         <select value="" onChange={(e) => e.target.value && setStatus(x, e.target.value as Quote["status"])} className="text-[12px] font-semibold rounded-md px-2 py-1 bg-smoke text-ink-soft border-none">
                           <option value="">Mark…</option>

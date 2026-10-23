@@ -8,8 +8,8 @@ import LogoMarquee from "@/components/LogoMarquee";
 import NextStep from "@/components/NextStep";
 
 const STEPS = [
-  { n: "1", t: "Design it", d: "Choose your bag, download the real production template, and place your art edge to edge — every panel, every side." },
-  { n: "2", t: "Price it yourself", d: "Pick your quantity and the number is right there — and it's all-in: bag, air freight, and duties. No quote emails, no freight surprise later." },
+  { n: "1", t: "Get your price", d: "Pick the bag, size, and quantity and the number is right there, all-in: bag, full-color print, air freight, and duties. No quote emails, no freight surprise later." },
+  { n: "2", t: "Fifteen minutes with a specialist", d: "We confirm size, art, and timing on a short call, then build your photoreal proof from your file. Want to see your art on a bag first? The studio is one click away." },
   { n: "3", t: "Review the proof with a person", d: "A specialist puts your photoreal proof on screen for fifteen minutes, or emails it if you prefer. Nothing is made, and nothing is charged, until you say go." },
   { n: "4", t: "Carry it within weeks", d: "Cut and sewn at the factories behind our national brand programs, then air freighted straight to you. Most orders land in 5–6 weeks; the industry norm for bags like these is closer to three months." },
 ];
@@ -91,12 +91,12 @@ export default function Home() {
               Make the bag <span className="text-gold italic">nobody</span><br />throws away.
             </h1>
             <p className="text-ink-soft text-[15px] md:text-[17px] mt-4 max-w-3xl mx-auto leading-snug md:whitespace-nowrap bg-paper/80 backdrop-blur-sm rounded-full px-4 py-1 inline-block">
-              Design it online. Build it with a person. Fully custom cut-and-sew bags from {MIN_ORDER.toLocaleString()} pieces.
+              A real price in thirty seconds. Built with a person. Fully custom cut-and-sew bags from {MIN_ORDER.toLocaleString()} pieces.
             </p>
           </div>
           <div className="pointer-events-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-              <Link href="/design" className="btn-ember group text-lg !px-10 !py-4">
+              <Link href="/custom-bags" className="btn-ember group text-lg !px-10 !py-4">
                 {CTA.primary}
                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
               </Link>
@@ -204,12 +204,12 @@ export default function Home() {
           <Reveal>
             <div className="md:sticky md:top-28">
               <h2 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-6">
-                Design it.<br />Price it.<br />Carry it.
+                Price it.<br />Prove it.<br />Carry it.
               </h2>
               <p className="text-ink-soft text-lg leading-relaxed max-w-sm mb-8">
                 Fully custom bags, built from scratch for your brand — your art covers every inch of fabric before the bag is even sewn.
               </p>
-              <Link href="/design" className="btn-ember">{CTA.primary} →</Link>
+              <Link href="/custom-bags" className="btn-ember">{CTA.primary} →</Link>
             </div>
           </Reveal>
           <div>
@@ -416,7 +416,7 @@ export default function Home() {
               {CTA.reassurance}.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-              <Link href="/design" className="btn-light text-lg !px-10 !py-4">{CTA.primary}</Link>
+              <Link href="/custom-bags" className="btn-light text-lg !px-10 !py-4">{CTA.primary}</Link>
               <Link href="/talk" className="text-white font-semibold underline underline-offset-4 hover:no-underline">{CTA.talk}</Link>
             </div>
           </Reveal>

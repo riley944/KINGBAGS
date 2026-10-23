@@ -138,8 +138,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           )}
 
-          <Link href={`/design?style=${p.slug}`} className="btn-ember w-full text-center !py-4">
-            {p.pricing === "modeled" ? "Design & Price This Bag" : "Design & Request a Quote"}
+          <Link href={`/custom-bags?bag=${p.slug}`} className="btn-ember w-full text-center !py-4">
+            {p.pricing === "modeled" ? "Get Your Price" : "Get a Quote"}
           </Link>
           <p className="text-center text-[12.5px] text-ink-soft mt-3">Free proof · Nothing charged until you approve</p>
         </div>

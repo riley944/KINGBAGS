@@ -86,6 +86,31 @@ export function quoteLockedEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: 
   };
 }
 
+// Sent from the ad landing page the moment someone asks for a price. One
+// ask: get on the calendar. No reserve step yet; that comes after the call.
+export function priceEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: string; unit_price?: number }): { subject: string; html: string } {
+  const per = q.unit_price ? ` ($${Number(q.unit_price).toFixed(2)} per bag, delivered)` : "";
+  const body = `<p>${q.quoteMode
+    ? "A specialist is pricing your canvas bag now and will bring the number to your call."
+    : `Your delivered price is <b>$${Number(q.total_price).toLocaleString()}</b>${per}. That includes the bag, full-color print on every panel, air freight, and duties.`}</p>
+    <p>Next is a fifteen-minute call with someone who has shipped millions of bags: we confirm size, art, and timing, then build your photoreal proof. Nothing is made or charged until you approve it.</p>
+    <p style="margin:20px 0 0;"><a href="${q.bookUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Book my fifteen-minute call</a></p>`;
+  return {
+    subject: q.quoteMode ? "Your KINGBAGS quote is in" : `Your KINGBAGS price: $${Number(q.total_price).toLocaleString()} delivered`,
+    html: shell(q.quoteMode ? "We're pricing your bag." : "Here's your price.", body, q),
+  };
+}
+
+// Sent by the team after the call. One link: reserve the slot (shipping,
+// terms, card). The order it creates is already marked reviewed.
+export function reserveLinkEmail(q: OrderLike & { reserveUrl: string }): { subject: string; html: string } {
+  const body = `<p>Great talking with you. Here's the link to reserve your production slot. It takes two minutes: where the bags ship, a quick terms acceptance, and a payment method on file.</p>
+    <p>Nothing is charged now. We charge the card on file only after you approve your proof, and then your bags go straight into production.</p>
+    <p style="margin:20px 0 0;"><a href="${q.reserveUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my production slot</a></p>
+    <p style="margin:16px 0 0;font-size:13px;">Link not working? Copy this into your browser:<br/>${q.reserveUrl}</p>`;
+  return { subject: "Your KINGBAGS reserve link", html: shell("Reserve your production slot.", body, q) };
+}
+
 // Internal heads-up so a new quote never sits unseen.
 export function newQuoteAlertEmail(q: OrderLike & { email: string; company?: string; phone?: string; quoteMode?: boolean }): { subject: string; html: string } {
   return {

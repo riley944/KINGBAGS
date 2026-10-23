@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendEmail, quoteLockedEmail, newQuoteAlertEmail } from "@/lib/email";
+import { sendEmail, quoteLockedEmail, priceEmail, newQuoteAlertEmail } from "@/lib/email";
 import { CONTACT_EMAIL, SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -16,13 +16,16 @@ export async function POST(req: Request) {
     quantity?: number;
     total_price?: number;
     quote_mode?: boolean;
+    unit_price?: number;
+    flow?: "studio" | "call"; // "call": landing page, no reserve step yet
+    timeline?: string;
   };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
-  const { email, company, phone, product_name, quantity, total_price, quote_mode } = body;
+  const { email, company, phone, product_name, quantity, total_price, quote_mode, unit_price, flow, timeline } = body;
   if (!email || !product_name || !quantity || typeof total_price !== "number") {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -34,8 +37,8 @@ export async function POST(req: Request) {
   const bookUrl = `${SITE_URL}/talk?email=${encodeURIComponent(email)}${company ? `&name=${encodeURIComponent(company)}` : ""}&q=${encodeURIComponent(`${product_name} · ${quantity.toLocaleString()} bags`)}`;
 
   const [customer, internal] = await Promise.all([
-    sendEmail({ to: email, ...quoteLockedEmail({ ...q, bookUrl }) }),
-    sendEmail({ to: CONTACT_EMAIL, ...newQuoteAlertEmail({ ...q, email, company, phone }) }),
+    sendEmail({ to: email, ...(flow === "call" ? priceEmail({ ...q, bookUrl, unit_price }) : quoteLockedEmail({ ...q, bookUrl })) }),
+    sendEmail({ to: CONTACT_EMAIL, ...newQuoteAlertEmail({ ...q, email, company, phone: [phone, timeline ? `needs by ${timeline}` : ""].filter(Boolean).join(" · ") || undefined }) }),
   ]);
   return NextResponse.json({ ok: customer.ok, internal: internal.ok });
 }

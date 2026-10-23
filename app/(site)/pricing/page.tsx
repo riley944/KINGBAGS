@@ -101,7 +101,7 @@ export default function PricingPage() {
                   <li>Quantities between columns price in between. Over 50,000 — talk to us.</li>
                   <li>These are our proven constructions. Custom dimensions or constructions outside this ladder are quoted as a custom program.</li>
                 </ul>
-                <Link href="/design?style=grocery-tote" className="btn-ink !py-3 !px-7 !text-sm">
+                <Link href="/custom-bags?bag=grocery-tote" className="btn-ink !py-3 !px-7 !text-sm">
                   Price mine live
                 </Link>
               </div>
@@ -123,8 +123,8 @@ export default function PricingPage() {
                   Design it in the studio and we&apos;ll price it within one business day.
                 </p>
               </div>
-              <Link href="/design?style=canvas-tote" className="btn-ink !py-3 !px-7 !text-sm shrink-0">
-                Design &amp; request a quote
+              <Link href="/custom-bags?bag=canvas-tote" className="btn-ink !py-3 !px-7 !text-sm shrink-0">
+                Get a quote
               </Link>
             </div>
           </Reveal>

@@ -53,7 +53,7 @@ export default async function TalkPage({ searchParams }: { searchParams: Promise
               <p className="font-semibold text-ink mb-1">Haven&apos;t priced a bag yet?</p>
               <p className="text-[14px] text-ink-soft mb-4">Two minutes in the studio gets you a locked all-in price and a better call.</p>
               <div className="flex flex-wrap gap-2.5">
-                <Link href="/design" className="btn-ink !py-3 !px-6 !text-sm">{CTA.primary}</Link>
+                <Link href="/custom-bags" className="btn-ink !py-3 !px-6 !text-sm">{CTA.primary}</Link>
                 <Link href="/samples" className="btn-outline !py-3 !px-6 !text-sm">Hold one first, ${SAMPLE_PRICE}</Link>
               </div>
             </div>

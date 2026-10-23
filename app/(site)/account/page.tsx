@@ -144,7 +144,7 @@ function AccountInner() {
               )}
             </div>
             <p className="text-sm text-ink-soft mt-6 text-center">
-              No orders yet? <Link href="/design" className="text-ember font-semibold hover:underline">Price your bag in the studio</Link>
+              No orders yet? <Link href="/custom-bags" className="text-ember font-semibold hover:underline">Price your bag in the studio</Link>
             </p>
           </Reveal>
         </div>
@@ -214,7 +214,7 @@ function AccountInner() {
               <p className="text-ink-soft leading-relaxed mb-8 max-w-sm mx-auto">
                 Price your bag in the studio. It takes about two minutes, and your quote saves right here.
               </p>
-              <Link href="/design" className="btn-ember !px-9 !py-4">{CTA.primary} →</Link>
+              <Link href="/custom-bags" className="btn-ember !px-9 !py-4">{CTA.primary} →</Link>
             </div>
           ) : (
             <div className="space-y-5">

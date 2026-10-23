@@ -46,8 +46,8 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
               {v.sub}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href={`/design?style=${v.bestBags[0]}`} className="btn-light text-lg !px-10 !py-4">
-                Design &amp; Price Your Bag →
+              <Link href={`/custom-bags?bag=${v.bestBags[0]}`} className="btn-light text-lg !px-10 !py-4">
+                Get Your Price →
               </Link>
               <Link href="/samples" className="text-white font-semibold underline underline-offset-4 hover:no-underline">
                 Or hold a sample first — $35
@@ -174,8 +174,8 @@ export default async function VerticalPage({ params }: { params: Promise<{ verti
             <p className="text-ink-soft text-lg mb-9">
               Instant all-in pricing — bag, air freight, and duties — in the studio. Free proof before production. Nothing to pay until you approve it.
             </p>
-            <Link href={`/design?style=${v.bestBags[0]}`} className="btn-ember text-lg !px-12 !py-5">
-              Design &amp; Price Your Bag →
+            <Link href={`/custom-bags?bag=${v.bestBags[0]}`} className="btn-ember text-lg !px-12 !py-5">
+              Get Your Price →
             </Link>
           </Reveal>
         </div>

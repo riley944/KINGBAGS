@@ -11,9 +11,20 @@ export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "";
 
 export const SAMPLE_PRICE = 35;
 
+// Phone shown in the header/footer and on the ad landing page. Set
+// NEXT_PUBLIC_PHONE in Vercel (e.g. "(919) 555-0100"); hidden until set.
+export const PHONE = process.env.NEXT_PUBLIC_PHONE || "";
+export const PHONE_HREF = `tel:${PHONE.replace(/[^\d+]/g, "")}`;
+
+// The money path: price in thirty seconds, then book the call. Every
+// primary button on the site lands here. The studio stays reachable for
+// people who want to see their art on a bag.
+export const PRICE_PATH = "/custom-bags";
+
 export const CTA = {
-  primary: "Design & Price Your Bag",
-  primaryShort: "Design & Price",
+  primary: "Get Your Price",
+  primaryShort: "Get a Price",
+  studio: "Design It Yourself",
   sample: `Get a $${SAMPLE_PRICE} Sample`,
   talk: "Talk to a Specialist",
   book: "Book Your Proof Review",

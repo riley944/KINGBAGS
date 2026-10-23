@@ -253,3 +253,7 @@ grant select (
   review_status, review_booked_at, proof_filename, proof_uploaded_at,
   tracking_carrier, tracking_url
 ) on kingbags.orders to authenticated;
+
+-- Terms acceptance at the reserve step (timestamp = customer ticked the box).
+alter table kingbags.orders add column if not exists terms_accepted_at timestamptz;
+grant select (terms_accepted_at) on kingbags.orders to authenticated;

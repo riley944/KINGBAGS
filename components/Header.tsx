@@ -47,7 +47,7 @@ export default function Header() {
             </svg>
             {CTA.talk}
           </Link>
-          <Link href="/design" className="group bg-ember text-white text-[14px] font-bold font-grotesk px-5 py-2.5 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
+          <Link href="/custom-bags" className="group bg-ember text-white text-[14px] font-bold font-grotesk px-5 py-2.5 rounded-full hover:bg-ember-dark transition-all hover:scale-[1.03] inline-flex items-center gap-2">
             {CTA.primary}
             <span className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
           </Link>
@@ -83,7 +83,7 @@ export default function Header() {
               className="block text-center font-semibold text-ink py-3 mb-2 rounded-full border border-ink/15 hover:border-ember hover:text-ember transition-colors">
               Your Account
             </Link>
-            <Link href="/design" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
+            <Link href="/custom-bags" className="btn-ember w-full !py-4 text-center" onClick={() => setOpen(false)}>
               {CTA.primary} →
             </Link>
             <p className="text-center text-[12px] text-ink-soft mt-3">{CTA.reassurance}</p>

@@ -8,6 +8,7 @@ import {
   sendMagicLink,
   createOrder,
   readPendingOrder,
+  stashPendingOrder,
   clearPendingOrder,
   PendingOrder,
 } from "@/lib/supabase";
@@ -48,6 +49,11 @@ export default function ContinueOrderPage() {
   const [placedOrder, setPlacedOrder] = useState<{ id: string; total: number; summary: string } | null>(null);
   // Card saved (or unavailable): the booking step is the last screen.
   const [cardDone, setCardDone] = useState(false);
+  // Reserve link sent after the call: /order/continue?quote=<id>. The quote
+  // seeds the form, and if it was marked won the review already happened.
+  const [quoteId, setQuoteId] = useState<string | null>(null);
+  const [reviewed, setReviewed] = useState(false);
+  const [terms, setTerms] = useState(false);
 
   // sign-in step
   const [email, setEmail] = useState("");
@@ -70,12 +76,35 @@ export default function ContinueOrderPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const p = readPendingOrder();
-    setPending(p);
-    if (p) {
-      setEmail(p.email);
-      setCompany(p.company ?? "");
-      setPhone(p.phone ?? "");
+    const sp0 = new URLSearchParams(window.location.search);
+    const q = sp0.get("quote");
+    const seed = (p: PendingOrder | null) => {
+      setPending(p);
+      if (p) {
+        setEmail(p.email);
+        setCompany(p.company ?? "");
+        setPhone(p.phone ?? "");
+      }
+    };
+    if (q) {
+      setQuoteId(q);
+      fetch(`/api/quote/${q}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((body) => {
+          const qu = body?.quote;
+          if (!qu) { seed(readPendingOrder()); return; }
+          const p: PendingOrder = {
+            product_slug: qu.product_slug, product_name: qu.product_name, quantity: qu.quantity,
+            unit_price: qu.unit_price, total_price: qu.total_price, art_filename: qu.art_filename ?? undefined,
+            email: qu.email, phone: qu.phone ?? undefined, company: qu.company ?? undefined,
+          };
+          stashPendingOrder(p);
+          setReviewed(Boolean(qu.reviewed));
+          seed(p);
+        })
+        .catch(() => seed(readPendingOrder()));
+    } else {
+      seed(readPendingOrder());
     }
     if (!supabase) {
       setReady(true);
@@ -121,7 +150,7 @@ export default function ContinueOrderPage() {
     if (!email || sending) return;
     setSending(true);
     setError(null);
-    const res = await sendMagicLink(email, "/order/continue");
+    const res = await sendMagicLink(email, quoteId ? `/order/continue?quote=${quoteId}` : "/order/continue");
     setSending(false);
     if (res.ok) setLinkSent(true);
     else setError(res.error || "Couldn't send the sign-in link.");
@@ -129,7 +158,7 @@ export default function ContinueOrderPage() {
 
   const detailsValid =
     company.trim() && shipName.trim() && address1.trim() && city.trim() &&
-    stateCode.trim() && postal.trim() &&
+    stateCode.trim() && postal.trim() && terms &&
     (billingSame || (billingName.trim() && billingEmail.trim()));
 
   const handlePlace = async () => {
@@ -155,6 +184,7 @@ export default function ContinueOrderPage() {
       ship_postal: postal.trim(),
       billing_name: billingSame ? undefined : billingName.trim(),
       billing_email: billingSame ? undefined : billingEmail.trim(),
+      terms_accepted_at: new Date().toISOString(),
     });
     setPlacing(false);
     if (res.ok) {
@@ -166,7 +196,7 @@ export default function ContinueOrderPage() {
           fetch("/api/order/notify", {
             method: "POST",
             headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}`, "Content-Type": "application/json" },
-            body: JSON.stringify({ order_id: res.id }),
+            body: JSON.stringify({ order_id: res.id, quote_id: quoteId ?? undefined }),
           }).catch(() => null)
         );
         // Straight into the payment step — card saved now, charged after
@@ -190,7 +220,18 @@ export default function ContinueOrderPage() {
       <Reveal>
         <p className="section-label mb-4">Your Order</p>
 
-        {placedOrder && cardDone ? (
+        {placedOrder && cardDone && reviewed ? (
+          <div>
+            <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
+              Reserved. Your proof is next.
+            </h1>
+            <p className="text-ink-soft text-lg leading-relaxed mb-7">
+              Your slot is held and your payment method is on file. We&apos;re building your photoreal
+              proof now and will email it to you. Nothing is charged until you approve it.
+            </p>
+            <Link href="/account?placed=1&review=1" className="btn-ember !px-8 !py-4">Go to your account →</Link>
+          </div>
+        ) : placedOrder && cardDone ? (
           <div>
             <h1 className="font-serif font-black text-4xl md:text-5xl text-ink leading-[1.05] mb-5">
               Reserved. Last step: your proof review.
@@ -235,9 +276,9 @@ export default function ContinueOrderPage() {
               Start with a quote.
             </h1>
             <p className="text-ink-soft text-lg leading-relaxed mb-8">
-              Price your bag in the studio first — then continue here to place the order.
+              Get your price first. Then a specialist sends you the link to reserve your slot.
             </p>
-            <Link href="/design" className="btn-ember !px-8 !py-4">Open the Studio →</Link>
+            <Link href="/custom-bags" className="btn-ember !px-8 !py-4">Get Your Price →</Link>
           </div>
         ) : !user ? (
           linkSent ? (
@@ -347,13 +388,22 @@ export default function ContinueOrderPage() {
               )}
             </div>
 
-            <button onClick={handlePlace} disabled={!detailsValid || placing} className="w-full btn-ember !py-4 mt-6">
+            <label className="flex items-start gap-3 mt-6 p-4 rounded-xl bg-smoke text-[14px] text-ink leading-snug cursor-pointer">
+              <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="w-4 h-4 mt-0.5 accent-ember shrink-0" />
+              <span>
+                I agree to the <Link href="/terms" target="_blank" className="text-ember font-semibold hover:underline">Terms of Sale</Link> and
+                authorize KINGBAGS to charge the payment method I add next, for the amount above, once I approve my proof.
+              </span>
+            </label>
+
+            <button onClick={handlePlace} disabled={!detailsValid || placing} className="w-full btn-ember !py-4 mt-4">
               {placing ? "Saving…" : "Continue to Payment Method →"}
             </button>
             {error && <p className="text-xs text-red-500 mt-3 text-center">{error}</p>}
             <p className="text-[12px] text-ink-soft mt-4 text-center leading-relaxed">
-              Next you&apos;ll add a payment method to reserve your slot, then book your proof
-              review. Nothing is charged until you approve the proof on that call.
+              {reviewed
+                ? "Next you'll add a payment method to reserve your slot. Nothing is charged until you approve your proof."
+                : "Next you'll add a payment method to reserve your slot, then book your proof review. Nothing is charged until you approve the proof on that call."}
             </p>
           </div>
         )}
