@@ -6,15 +6,15 @@ html { scroll-behavior: smooth; }
 
 body {
   background-color: #FFFFFF;
-  color: #10140F;
+  color: #111111;
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background-color: #E9F2EC; color: #0C3D20; }
+::selection { background-color: #EFEFEF; color: #000000; }
 
 :focus-visible {
-  outline: 2px solid #14532D;
+  outline: 2px solid #111111;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -26,45 +26,45 @@ table { font-variant-numeric: tabular-nums; }
 /* Buttons — every variant guaranteed visible on every background used in the site */
 .btn-ember {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-  background-color: #14532D; color: #FFFFFF;
+  background-color: #111111; color: #FFFFFF;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
-  box-shadow: 0 6px 20px rgba(20, 83, 45, 0.28);
+  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.22);
   transition: all 0.15s ease;
 }
-.btn-ember:hover { background-color: #0C3D20; transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 28px rgba(20, 83, 45, 0.35); }
+.btn-ember:hover { background-color: #333333; transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 28px rgba(17, 17, 17, 0.28); }
 .btn-ember:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 .btn-ink {
   display: inline-flex; align-items: center; justify-content: center;
-  background-color: #10140F; color: #FFFFFF;
+  background-color: #111111; color: #FFFFFF;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-ink:hover { background-color: #14532D; color: #FFFFFF; transform: scale(1.02); }
+.btn-ink:hover { background-color: #333333; color: #FFFFFF; transform: scale(1.02); }
 .btn-ink:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
 /* On dark sections use btn-light */
 .btn-light {
   display: inline-flex; align-items: center; justify-content: center;
-  background-color: #FFFFFF; color: #10140F;
+  background-color: #FFFFFF; color: #111111;
   font-weight: 600; font-size: 1rem; padding: 1rem 2.3rem; border-radius: 9999px;
   transition: all 0.15s ease;
 }
-.btn-light:hover { background-color: #14532D; color: #FFFFFF; transform: scale(1.02); }
+.btn-light:hover { background-color: #EFEFEF; color: #111111; transform: scale(1.02); }
 
 .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
-  color: #10140F; background-color: transparent;
+  color: #111111; background-color: transparent;
   font-weight: 600; font-size: 1rem; padding: 1rem 1.8rem; border-radius: 9999px;
-  border: 1.5px solid #10140F;
+  border: 1.5px solid #111111;
   transition: all 0.15s ease;
 }
-.btn-outline:hover { background-color: #10140F; color: #FFFFFF; }
+.btn-outline:hover { background-color: #111111; color: #FFFFFF; }
 
 .section-label {
   font-family: var(--font-grotesk), var(--font-body), sans-serif;
   font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
-  text-transform: uppercase; color: #14532D;
+  text-transform: uppercase; color: #111111;
 }
 
 /* DM Serif Display ships one weight: never let the browser fake-bold it. */

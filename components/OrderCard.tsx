@@ -10,11 +10,11 @@ import { CONTACT_EMAIL } from "@/lib/site";
 // once it exists, and details/history tucked away.
 
 const BADGE: Record<OrderStatus, string> = {
-  submitted: "bg-slate-100 text-slate-700",
-  art_review: "bg-blue-50 text-blue-700",
-  needs_changes: "bg-amber-100 text-amber-800",
-  art_approved: "bg-emerald-50 text-emerald-700",
-  awaiting_payment: "bg-violet-50 text-violet-700",
+  submitted: "bg-smoke text-ink-soft",
+  art_review: "bg-smoke text-ink",
+  needs_changes: "bg-ink text-white",
+  art_approved: "bg-smoke text-ink",
+  awaiting_payment: "bg-smoke text-ink",
   in_production: "bg-ember-tint text-ember",
   shipped: "bg-ink text-white",
 };

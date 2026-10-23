@@ -5,11 +5,11 @@ module.exports = {
     extend: {
       colors: {
         paper: "#FFFFFF",
-        smoke: "#F3F5F2",
-        ink: { DEFAULT: "#10140F", soft: "#5C635B" },
-        ember: { DEFAULT: "#14532D", dark: "#0C3D20", tint: "#E9F2EC" },
-        charcoal: "#101410",
-        gold: { DEFAULT: "#E9A13B", deep: "#B67716", tint: "#FBF4E3" },
+        smoke: "#F5F5F5",
+        ink: { DEFAULT: "#111111", soft: "#6A6A6A" },
+        ember: { DEFAULT: "#111111", dark: "#000000", tint: "#EFEFEF" },
+        charcoal: "#121212",
+        gold: { DEFAULT: "#6B6B6B", deep: "#444444", tint: "#F4F4F4" },
       },
       fontFamily: {
         serif: ["var(--font-display)", "Georgia", "serif"],
@@ -18,8 +18,8 @@ module.exports = {
         grotesk: ["var(--font-grotesk)", "var(--font-body)", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 1px 2px rgba(16,20,15,0.05), 0 4px 16px rgba(16,20,15,0.05)",
-        lift: "0 2px 4px rgba(16,20,15,0.05), 0 18px 40px rgba(16,20,15,0.10)",
+        soft: "0 1px 2px rgba(17,17,17,0.05), 0 4px 16px rgba(17,17,17,0.05)",
+        lift: "0 2px 4px rgba(17,17,17,0.05), 0 18px 40px rgba(17,17,17,0.10)",
       },
       borderRadius: { "2.5xl": "0.875rem", "4xl": "1.125rem" },
     },

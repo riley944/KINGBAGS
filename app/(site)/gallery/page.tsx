@@ -5,7 +5,7 @@ import ConceptImage from "@/components/ConceptImage";
 export const metadata = {
   title: "The Lookbook | KINGBAGS",
   description:
-    "A concept collection showing what fully custom cut-and-sew can do: edge-to-edge print, contrasting gussets, photographic art, and premium construction across our bag lineup.",
+    "A concept collection showing what a fully custom cut-and-sew Grocery Tote can do: edge-to-edge print, contrasting gussets, and photographic art on every panel.",
 };
 
 // Concept collection: fictional brands, real constructions. Drop imagery into
@@ -18,14 +18,6 @@ const CONCEPTS = [
     construction: "The Grocery Tote · laminated non-woven",
     note: "Abstract shapes wrapping every panel, with contrast lilac gussets and handles.",
     bag: "grocery-tote",
-  },
-  {
-    slug: "parker",
-    brand: "Parker",
-    vertical: "DTC Brands",
-    construction: "The Canvas Tote · heavyweight cotton, dyed",
-    note: "Piece-dyed cobalt canvas with a one-color wordmark and tonal webbing.",
-    bag: "canvas-tote",
   },
   {
     slug: "good-day-coffee",
@@ -66,22 +58,6 @@ const CONCEPTS = [
     construction: "The Grocery Tote · laminated non-woven, tall",
     note: "Camo pattern printed edge to edge under a clean two-color mark.",
     bag: "grocery-tote",
-  },
-  {
-    slug: "hotel-marisol",
-    brand: "Hotel Marisol",
-    vertical: "Hospitality",
-    construction: "The Canvas Tote · heavyweight cotton",
-    note: "Quiet luxury: a single-color monogram and keyline on natural canvas.",
-    bag: "canvas-tote",
-  },
-  {
-    slug: "sunday-supply-co",
-    brand: "Sunday Supply Co.",
-    vertical: "Retail",
-    construction: "The Canvas Tote · heavyweight cotton",
-    note: "Engraving-style illustration and a two-color print on natural canvas.",
-    bag: "canvas-tote",
   },
 ];
 

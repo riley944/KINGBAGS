@@ -69,8 +69,8 @@ export default function PaymentStep({
           clientSecret: body.client_secret,
           appearance: {
             variables: {
-              colorPrimary: "#14532D",
-              colorText: "#10140F",
+              colorPrimary: "#111111",
+              colorText: "#111111",
               borderRadius: "12px",
               fontFamily: "system-ui, sans-serif",
             },

@@ -25,18 +25,18 @@ function shell(headline: string, body: string, order: OrderLike) {
 <html><body style="margin:0;padding:0;background:#F3F5F2;font-family:Georgia,serif;">
   <div style="max-width:560px;margin:0 auto;padding:32px 20px;">
     <p style="font-family:Arial,sans-serif;font-weight:800;font-size:20px;letter-spacing:0.04em;margin:0 0 28px;">
-      <span style="color:#10140F;">KING</span><span style="color:#14532D;">BAGS</span>
+      <span style="color:#111111;">KING</span><span style="color:#111111;">BAGS</span>
     </p>
     <div style="background:#FFFFFF;border-radius:16px;padding:36px 32px;">
-      <h1 style="font-size:28px;line-height:1.15;color:#10140F;margin:0 0 16px;">${headline}</h1>
-      <div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#5C635B;">${body}</div>
+      <h1 style="font-size:28px;line-height:1.15;color:#111111;margin:0 0 16px;">${headline}</h1>
+      <div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#6A6A6A;">${body}</div>
       <div style="background:#F3F5F2;border-radius:12px;padding:16px 20px;margin:24px 0;font-family:Arial,sans-serif;">
-        <p style="margin:0;font-size:14px;color:#10140F;font-weight:bold;">${order.product_name}</p>
-        <p style="margin:4px 0 0;font-size:13px;color:#5C635B;">${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}</p>
+        <p style="margin:0;font-size:14px;color:#111111;font-weight:bold;">${order.product_name}</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#6A6A6A;">${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}</p>
       </div>
-      <a href="${SITE_URL}/account" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Track your order</a>
+      <a href="${SITE_URL}/account" style="display:inline-block;background:#111111;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Track your order</a>
     </div>
-    <p style="font-family:Arial,sans-serif;font-size:12px;color:#5C635B;text-align:center;margin:24px 0 0;">
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:#6A6A6A;text-align:center;margin:24px 0 0;">
       KINGBAGS · A King Universal Inc. Company · Raleigh, NC<br/>
       Questions? Just reply to this email.
     </p>
@@ -62,9 +62,9 @@ type OrderLike = {
 function reviewNudge(order: OrderLike): string {
   if (!order.review_status || order.review_status === "booked" || order.review_status === "done") return "";
   const url = `${SITE_URL}/talk?order=${order.id ?? ""}&email=${encodeURIComponent(order.email ?? "")}&name=${encodeURIComponent(order.company ?? "")}&q=${encodeURIComponent(`${order.product_name} · ${order.quantity.toLocaleString()} bags`)}`;
-  return `<p style="margin:16px 0 0;padding:14px 16px;background:#E9F2EC;border-radius:12px;"><b>Your order isn't final yet.</b>
+  return `<p style="margin:16px 0 0;padding:14px 16px;background:#EFEFEF;border-radius:12px;"><b>Your order isn't final yet.</b>
     Book your fifteen-minute proof review and approve it live:
-    <a href="${url}" style="color:#14532D;font-weight:bold;">pick a time</a>.</p>`;
+    <a href="${url}" style="color:#111111;font-weight:bold;">pick a time</a>.</p>`;
 }
 
 // Sent the moment a quote is locked in the studio. The ask is one thing:
@@ -78,8 +78,8 @@ export function quoteLockedEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: 
       <li style="margin-bottom:6px;"><b>Reserve your production slot.</b> Shipping details and a payment method on file. Nothing is charged until you approve your proof.</li>
       <li><b>Book your proof review.</b> Proof on screen, sizes and colors confirmed, approved live.</li>
     </ol>
-    <p style="margin:20px 0 0;"><a href="${SITE_URL}/order/continue" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my slot</a>
-    &nbsp; <a href="${q.bookUrl}" style="display:inline-block;color:#14532D;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 8px;text-decoration:underline;">Book the review first</a></p>`;
+    <p style="margin:20px 0 0;"><a href="${SITE_URL}/order/continue" style="display:inline-block;background:#111111;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my slot</a>
+    &nbsp; <a href="${q.bookUrl}" style="display:inline-block;color:#111111;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 8px;text-decoration:underline;">Book the review first</a></p>`;
   return {
     subject: q.quoteMode ? "Your quote request is in. Reserve your slot." : "Your quote is locked. Reserve your slot.",
     html: shell("Two steps to a final order.", body, q),
@@ -91,10 +91,10 @@ export function quoteLockedEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: 
 export function priceEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: string; unit_price?: number }): { subject: string; html: string } {
   const per = q.unit_price ? ` ($${Number(q.unit_price).toFixed(2)} per bag, delivered)` : "";
   const body = `<p>${q.quoteMode
-    ? "A specialist is pricing your canvas bag now and will bring the number to your call."
+    ? "A specialist is pricing your bag now and will bring the number to your call."
     : `Your delivered price is <b>$${Number(q.total_price).toLocaleString()}</b>${per}. That includes the bag, full-color print on every panel, air freight, and duties.`}</p>
     <p>Next is a fifteen-minute call with someone who has shipped millions of bags: we confirm size, art, and timing, then build your photoreal proof. Nothing is made or charged until you approve it.</p>
-    <p style="margin:20px 0 0;"><a href="${q.bookUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Book my fifteen-minute call</a></p>`;
+    <p style="margin:20px 0 0;"><a href="${q.bookUrl}" style="display:inline-block;background:#111111;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Book my fifteen-minute call</a></p>`;
   return {
     subject: q.quoteMode ? "Your KINGBAGS quote is in" : `Your KINGBAGS price: $${Number(q.total_price).toLocaleString()} delivered`,
     html: shell(q.quoteMode ? "We're pricing your bag." : "Here's your price.", body, q),
@@ -106,7 +106,7 @@ export function priceEmail(q: OrderLike & { quoteMode?: boolean; bookUrl: string
 export function reserveLinkEmail(q: OrderLike & { reserveUrl: string }): { subject: string; html: string } {
   const body = `<p>Great talking with you. Here's the link to reserve your production slot. It takes two minutes: where the bags ship, a quick terms acceptance, and a payment method on file.</p>
     <p>Nothing is charged now. We charge the card on file only after you approve your proof, and then your bags go straight into production.</p>
-    <p style="margin:20px 0 0;"><a href="${q.reserveUrl}" style="display:inline-block;background:#14532D;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my production slot</a></p>
+    <p style="margin:20px 0 0;"><a href="${q.reserveUrl}" style="display:inline-block;background:#111111;color:#FFFFFF;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;">Reserve my production slot</a></p>
     <p style="margin:16px 0 0;font-size:13px;">Link not working? Copy this into your browser:<br/>${q.reserveUrl}</p>`;
   return { subject: "Your KINGBAGS reserve link", html: shell("Reserve your production slot.", body, q) };
 }
@@ -115,7 +115,7 @@ export function reserveLinkEmail(q: OrderLike & { reserveUrl: string }): { subje
 export function newQuoteAlertEmail(q: OrderLike & { email: string; company?: string; phone?: string; quoteMode?: boolean }): { subject: string; html: string } {
   return {
     subject: `New ${q.quoteMode ? "quote request" : "locked quote"}: ${q.company || q.email} · ${q.quantity.toLocaleString()} bags`,
-    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#10140F;">
+    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#111111;">
       <p><b>${q.company || "No company"}</b> · ${q.email}${q.phone ? ` · ${q.phone}` : ""}</p>
       <p>${q.product_name}<br/>${q.quantity.toLocaleString()} bags · $${Number(q.total_price).toLocaleString()}${q.quoteMode ? " (custom quote)" : ""}</p>
       <p><a href="${SITE_URL}/admin">Open the ops panel</a></p>
@@ -133,7 +133,7 @@ export function orderReservedEmail(order: OrderLike): { subject: string; html: s
       card ? "Your slot is reserved." : "Your order is saved.",
       `<p>${card
         ? "Your payment method is on file and nothing is charged until you approve your proof."
-        : `A payment method on file holds your production slot; <a href="${SITE_URL}/order/payment?order=${order.id ?? ""}" style="color:#14532D;font-weight:bold;">add one here</a>. Nothing is charged until you approve your proof.`}
+        : `A payment method on file holds your production slot; <a href="${SITE_URL}/order/payment?order=${order.id ?? ""}" style="color:#111111;font-weight:bold;">add one here</a>. Nothing is charged until you approve your proof.`}
        Your order becomes final on a fifteen-minute proof review with a specialist.</p>${reviewNudge(order)}`,
       order
     ),
@@ -144,7 +144,7 @@ export function orderReservedEmail(order: OrderLike): { subject: string; html: s
 export function newOrderAlertEmail(order: OrderLike): { subject: string; html: string } {
   return {
     subject: `New order: ${order.company || order.email} · ${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}`,
-    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#10140F;">
+    html: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#111111;">
       <p><b>${order.company || "No company"}</b> · ${order.email}${order.phone ? ` · ${order.phone}` : ""}</p>
       <p>${order.product_name}<br/>${order.quantity.toLocaleString()} bags · $${Number(order.total_price).toLocaleString()}</p>
       <p>Card: ${order.payment_status === "method_saved" ? "on file" : "not yet"} · Review: ${order.review_status ?? "needed"}</p>
@@ -246,7 +246,7 @@ export function statusEmail(status: OrderStatus, order: OrderLike): { subject: s
         html: shell(
           "Shipped.",
           `<p>Your bags left the factory and are in the air. ${order.tracking_url
-            ? `Track them here: <a href="${order.tracking_url}" style="color:#14532D;font-weight:bold;">${order.tracking_carrier ?? "Tracking"} →</a>`
+            ? `Track them here: <a href="${order.tracking_url}" style="color:#111111;font-weight:bold;">${order.tracking_carrier ?? "Tracking"} →</a>`
             : "Tracking details follow shortly."}
            Most deliveries clear customs and land within 7–10 days of shipping.</p>`,
           order

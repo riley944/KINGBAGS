@@ -27,7 +27,7 @@ const GROUPS: Group[] = [
       },
       {
         q: "What is the material?",
-        a: "The Grocery Tote is 140 GSM laminated non-woven polypropylene with a glossy finish, the same spec the national programs we run use. It wipes clean and holds full-color print. The Canvas Tote is premium cotton canvas, natural or piece-dyed.",
+        a: "The Grocery Tote is 140 GSM laminated non-woven polypropylene with a glossy finish, the same spec the national programs we run use. It wipes clean and holds full-color print.",
       },
       {
         q: "How much can it carry?",
@@ -40,7 +40,7 @@ const GROUPS: Group[] = [
     items: [
       {
         q: "What print method do you use?",
-        a: "Full-color print laminated under gloss for the Grocery Tote, so it doesn't crack, peel, or fade with use. Canvas programs are quoted with the method that suits the art, typically screen print or full-surface dye-sublimation.",
+        a: "Full-color print laminated under gloss for the Grocery Tote, so it doesn't crack, peel, or fade with use.",
       },
       {
         q: "What files do you need?",
@@ -82,7 +82,7 @@ const GROUPS: Group[] = [
       },
       {
         q: "How long does it take?",
-        a: "Most Grocery Tote orders land in five to six weeks from proof approval: about thirty days in production, then air freight and customs. Canvas runs six to eight weeks. If you have a hard date, tell us before you approve the proof and we'll confirm it can be met.",
+        a: "Most Grocery Tote orders land in five to six weeks from proof approval: about thirty days in production, then air freight and customs. If you have a hard date, tell us before you approve the proof and we'll confirm it can be met.",
       },
       {
         q: "Is the price really all-in?",

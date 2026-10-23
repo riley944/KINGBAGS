@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PRODUCTS, entryPrice, MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
+import { PRODUCTS, unitPrice, dims, MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
 import { CTA, SAMPLE_PRICE } from "@/lib/site";
 import SpinHero from "@/components/SpinHero";
 import Reveal from "@/components/Reveal";
@@ -22,12 +22,12 @@ const BUILT = [
 ];
 
 const VERTICALS = [
-  { slug: "dtc-brands", label: "DTC Brands", color: "#14532D" },
-  { slug: "restaurants", label: "Restaurants", color: "#B45309" },
-  { slug: "gyms-studios", label: "Gyms & Studios", color: "#1E40AF" },
-  { slug: "breweries", label: "Breweries", color: "#7C2231" },
-  { slug: "retail", label: "Retail", color: "#0F766E" },
-  { slug: "events", label: "Events", color: "#6B21A8" },
+  { slug: "dtc-brands", label: "DTC Brands", color: "#111111" },
+  { slug: "restaurants", label: "Restaurants", color: "#2A2A2A" },
+  { slug: "gyms-studios", label: "Gyms & Studios", color: "#3A3A3A" },
+  { slug: "breweries", label: "Breweries", color: "#1F1F1F" },
+  { slug: "retail", label: "Retail", color: "#303030" },
+  { slug: "events", label: "Events", color: "#262626" },
 ];
 
 const TRUST = [
@@ -71,13 +71,14 @@ function TrustIcon({ name }: { name: string }) {
     ),
   };
   return (
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" stroke="#E9A13B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" stroke="#BBBBBB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       {paths[name]}
     </svg>
   );
 }
 
 export default function Home() {
+  const grocery = PRODUCTS[0];
   return (
     <>
       {/* HERO — full-viewport spin with the headline imposed over the bag */}
@@ -136,36 +137,39 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5">
           <Reveal>
             <div className="text-center mb-16">
-              <p className="section-label mb-4">The Bags</p>
+              <p className="section-label mb-4">The Bag</p>
               <h2 className="font-serif font-black text-4xl md:text-[50px] text-ink leading-tight">
-                Two bags. Every size. Both orientations.
+                One bag. Four sizes. Both orientations.
               </h2>
               <p className="text-ink-soft text-lg mt-4 max-w-2xl mx-auto">
-                Proven constructions that price instantly in the studio. Need dimensions outside the ladder? We quote custom programs on the same factories.
+                The Grocery Tote: {grocery.material}. Your art on every panel, sealed under gloss. Pick the size, and the price is right there.
               </p>
             </div>
           </Reveal>
-          <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
-            {PRODUCTS.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 120}>
-                <Link href={`/products/${p.slug}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ember/50 hover:shadow-lift transition-all h-full">
-                  <div className="aspect-square bg-smoke relative">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.examples[0].src} alt={`${p.name} — concept by ${p.examples[0].brand}`} className="absolute inset-0 w-full h-full object-contain mix-blend-multiply" />
-                  </div>
-                  <div className="p-7">
-                    <h3 className="font-bold text-ink text-xl group-hover:text-ember transition-colors">{p.name}</h3>
-                    <p className="text-[15px] text-ink-soft mt-1.5 mb-4">{p.tagline}</p>
-                    <p className="text-[15px] font-bold text-ember">
-                      {entryPrice(p) ? `From $${entryPrice(p)!.toFixed(2)}/bag at ${p.minOrder.toLocaleString()} · freight & duties in` : "Quoted per project"}
-                    </p>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
+            {grocery.sizes.map((sz, i) => {
+              const ex = grocery.examples[i % grocery.examples.length];
+              const price = unitPrice(grocery, sz.code, MIN_ORDER)!;
+              return (
+                <Reveal key={sz.code} delay={i * 90}>
+                  <Link href={`/custom-bags?size=${sz.code}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ink/40 hover:shadow-lift transition-all h-full">
+                    <div className="aspect-square bg-smoke relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={ex.src} alt={`${grocery.name}, ${sz.label}, concept by ${ex.brand}`} className="absolute inset-0 w-full h-full object-contain mix-blend-multiply p-4" />
+                      <span className="absolute top-3 left-3 bg-ink text-white text-[11px] font-grotesk font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full">{sz.label}</span>
+                    </div>
+                    <div className="p-5">
+                      <p className="font-bold text-ink text-[17px] leading-tight">{dims(sz, "landscape")}</p>
+                      <p className="text-[12.5px] text-ink-soft mt-1">or {dims(sz, "portrait")} portrait</p>
+                      <p className="text-[14px] font-bold text-ink mt-3">${price.toFixed(2)}/bag <span className="font-medium text-ink-soft">at {MIN_ORDER.toLocaleString()}, delivered</span></p>
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
           <div className="text-center">
-            <Link href="/products" className="btn-ink">Compare both bags</Link>
+            <Link href="/products/grocery-tote" className="btn-ink">See the full size chart</Link>
           </div>
         </div>
       </section>
@@ -175,7 +179,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5">
           <Reveal>
             <div className="max-w-3xl mb-14">
-              <p className="section-label mb-4" style={{ color: "#4CA173" }}>This isn&apos;t a mockup business</p>
+              <p className="section-label mb-4" style={{ color: "#9A9A9A" }}>This isn&apos;t a mockup business</p>
               <h2 className="font-serif font-black text-4xl md:text-[50px] leading-tight mb-5">
                 Not a stock tote with a logo. A bag built around your art.
               </h2>
@@ -188,7 +192,7 @@ export default function Home() {
             {BUILT.map((b, i) => (
               <Reveal key={b.t} delay={i * 90}>
                 <div className="bg-white/[0.06] border border-white/10 rounded-2.5xl p-6 h-full">
-                  <div className="w-8 h-1 rounded-full bg-gold mb-5" />
+                  <div className="w-8 h-1 rounded-full bg-white/40 mb-5" />
                   <h3 className="font-bold text-[17px] mb-2">{b.t}</h3>
                   <p className="text-white/60 text-[15px] leading-relaxed">{b.d}</p>
                 </div>
@@ -296,7 +300,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5">
           <Reveal>
             <div className="text-center mb-16">
-              <p className="section-label mb-4" style={{ color: "#E9A13B" }}>The Math</p>
+              <p className="section-label mb-4" style={{ color: "#9A9A9A" }}>The Math</p>
               <h2 className="font-serif font-black text-4xl md:text-[54px] leading-tight max-w-3xl mx-auto">
                 The hardest-working ad you&apos;ll ever buy.
               </h2>
@@ -305,7 +309,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-12 md:gap-8 text-center">
             <Reveal delay={0}>
               <div>
-                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tabular-nums tracking-tight">
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-white mb-3 tabular-nums tracking-tight">
                   <CountUp to={3300} />
                 </div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
@@ -315,7 +319,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={120}>
               <div>
-                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tracking-tight">⅒¢</div>
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-white mb-3 tracking-tight">⅒¢</div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">
                   cost per impression — the cheapest ad medium measured
                 </p>
@@ -323,7 +327,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={240}>
               <div>
-                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-gold mb-3 tabular-nums tracking-tight">
+                <div className="font-grotesk font-extrabold text-7xl md:text-8xl text-white mb-3 tabular-nums tracking-tight">
                   <CountUp to={5} suffix="M" />
                 </div>
                 <p className="text-white/75 text-lg leading-snug max-w-[240px] mx-auto">

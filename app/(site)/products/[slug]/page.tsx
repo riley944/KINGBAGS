@@ -133,7 +133,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="bg-smoke rounded-2.5xl p-6 mb-9">
               <p className="font-semibold text-ink mb-1">Quoted per project.</p>
               <p className="text-[14px] text-ink-soft leading-relaxed">
-                Canvas weight, dye, and handle style move the number. Design it in the studio and we&apos;ll price it within one business day.
+                Custom dimensions and constructions are priced by a specialist within one business day.
               </p>
             </div>
           )}

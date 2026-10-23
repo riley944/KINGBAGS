@@ -82,7 +82,7 @@ function Configurator() {
     c.height = Math.round((1100 * dh) / dw);
     const x = c.getContext("2d");
     if (!x) return;
-    x.fillStyle = "#14532D";
+    x.fillStyle = "#111111";
     x.fillRect(0, 0, c.width, c.height);
     x.fillStyle = "rgba(250, 248, 240, 0.16)";
     for (let i = 0; i < 160; i++) {
@@ -95,7 +95,7 @@ function Configurator() {
     const bandY = c.height * 0.30;
     x.fillStyle = "#FAF8F0";
     x.fillRect(0, bandY, c.width, bandH);
-    x.fillStyle = "#14532D";
+    x.fillStyle = "#111111";
     x.textAlign = "center";
     x.textBaseline = "middle";
     x.font = `italic 900 ${Math.round(bandH * 0.5)}px Georgia, serif`;
@@ -409,7 +409,7 @@ function Configurator() {
               <div>
                 <div className="font-serif text-[30px] text-ink leading-none mb-2">Custom quote</div>
                 <p className="text-[13px] text-ink-soft leading-relaxed">
-                  Canvas is priced per project — weight, dye, and handles move the number. Lock in your design and we&apos;ll send pricing within one business day.
+                  This construction is priced per project. Lock in your design and we&apos;ll send pricing within one business day.
                 </p>
               </div>
             ) : (

@@ -13,7 +13,6 @@ const QTYS = [1500, 2500, 5000, 10000, 25000, 50000];
 
 export default function PricingPage() {
   const grocery = PRODUCTS.find((p) => p.slug === "grocery-tote")!;
-  const canvas = PRODUCTS.find((p) => p.slug === "canvas-tote")!;
 
   return (
     <>
@@ -105,27 +104,6 @@ export default function PricingPage() {
                   Price mine live
                 </Link>
               </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CANVAS */}
-      <section className="pb-24">
-        <div className="mx-auto max-w-5xl px-5">
-          <Reveal>
-            <div className="bg-white rounded-2.5xl border border-ink/10 p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div>
-                <h2 className="font-serif text-3xl md:text-4xl text-ink mb-1">{canvas.name}</h2>
-                <p className="text-ink-soft mb-2">{canvas.material} · natural or piece-dyed · landscape or portrait</p>
-                <p className="text-[15px] text-ink-soft">
-                  Quoted per project — canvas weight, dye, and handle style move the number.
-                  Design it in the studio and we&apos;ll price it within one business day.
-                </p>
-              </div>
-              <Link href="/custom-bags?bag=canvas-tote" className="btn-ink !py-3 !px-7 !text-sm shrink-0">
-                Get a quote
-              </Link>
             </div>
           </Reveal>
         </div>

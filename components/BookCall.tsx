@@ -36,7 +36,7 @@ export default function BookCall({ email, name, summary, value, compact = false,
   if (CALENDLY_URL) {
     const u = new URL(CALENDLY_URL);
     u.searchParams.set("hide_gdpr_banner", "1");
-    u.searchParams.set("primary_color", "14532d");
+    u.searchParams.set("primary_color", "111111");
     if (email) u.searchParams.set("email", email);
     if (name) u.searchParams.set("name", name);
     if (summary) u.searchParams.set("a1", summary);

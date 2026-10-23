@@ -23,11 +23,6 @@ export const DIELINES: Record<string, Record<string, Dieline>> = {
     L:  { bodyW: 400, panelH: 350, baseD: 150, gussetW: 150, hem: 30 },
     XL: { bodyW: 440, panelH: 385, baseD: 165, gussetW: 165, hem: 30 },
   },
-  "canvas-tote": {
-    S: { bodyW: 330, panelH: 330, baseD: 127, gussetW: 127, hem: 25 },
-    M: { bodyW: 381, panelH: 381, baseD: 152, gussetW: 152, hem: 25 },
-    L: { bodyW: 457, panelH: 406, baseD: 178, gussetW: 178, hem: 25 },
-  },
 };
 
 export function dielineFor(slug: string, sizeCode: string, orientation: Orientation): Dieline {

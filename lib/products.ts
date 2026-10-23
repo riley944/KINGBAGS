@@ -127,33 +127,8 @@ export const PRODUCTS: Product[] = [
     examples: [
       { src: "/lookbook/lucky-dog/front.webp", brand: "Lucky Dog", orientation: "landscape" },
       { src: "/lookbook/olive-market/front.webp", brand: "Market", orientation: "portrait" },
-    ],
-  },
-  {
-    slug: "canvas-tote",
-    name: "The Canvas Tote",
-    shortName: "Canvas Tote",
-    tagline: "Premium canvas, cut and sewn to your design.",
-    description:
-      "Real canvas construction — your dimensions, your handles, your art across the full surface. Natural or piece-dyed, landscape or portrait. The tote people keep for years, built at the quality level of the best retail brands.",
-    sizes: [
-      { code: "S", label: "Small", w: 13, h: 13, d: 5 },
-      { code: "M", label: "Medium", w: 15, h: 15, d: 6 },
-      { code: "L", label: "Large", w: 18, h: 16, d: 7 },
-    ],
-    material: "Premium cotton canvas",
-    construction: [
-      "Edge-to-edge print or dyed body, cut and sewn to your design",
-      "Long self-fabric straps, bar-tacked",
-      "Interior seams bound and finished",
-      "Landscape or portrait",
-    ],
-    minOrder: MIN_ORDER,
-    leadTime: "6–8 weeks",
-    pricing: "quote",
-    examples: [
-      { src: "/lookbook/parker/front.webp", brand: "Parker", orientation: "landscape" },
-      { src: "/lookbook/sunday-supply-co/front.webp", brand: "Sunday Supply Co.", orientation: "portrait" },
+      { src: "/lookbook/casa-bonita-mercado/front.webp", brand: "Casa Bonita Mercado", orientation: "landscape" },
+      { src: "/lookbook/pine-and-salt/front.webp", brand: "Pine & Salt", orientation: "portrait" },
     ],
   },
 ];

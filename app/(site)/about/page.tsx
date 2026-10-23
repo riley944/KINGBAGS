@@ -69,7 +69,7 @@ export default function AboutPage() {
       <section className="py-24 bg-charcoal text-white">
         <div className="mx-auto max-w-3xl px-5">
           <Reveal>
-            <p className="section-label mb-5" style={{ color: "#4CA173" }}>The Story</p>
+            <p className="section-label mb-5" style={{ color: "#9A9A9A" }}>The Story</p>
             <h2 className="font-serif font-black text-3xl md:text-5xl leading-tight mb-8">
               Built in the rooms where the biggest bag programs get made.
             </h2>

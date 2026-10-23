@@ -18,23 +18,23 @@ export default function OpenGraphImage() {
           justifyContent: "space-between",
           padding: 72,
           background: "#FFFFFF",
-          color: "#10140F",
+          color: "#111111",
           fontFamily: "Georgia, serif",
         }}
       >
         <div style={{ display: "flex", fontSize: 40, fontWeight: 800, letterSpacing: -1, fontFamily: "Arial, sans-serif" }}>
           <span>KING</span>
-          <span style={{ color: "#14532D" }}>BAGS</span>
+          <span style={{ color: "#111111" }}>BAGS</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 88, lineHeight: 1.02, letterSpacing: -2, maxWidth: 1000 }}>
             Make the bag nobody throws away.
           </div>
-          <div style={{ fontSize: 30, color: "#5C635B", marginTop: 28, fontFamily: "Arial, sans-serif" }}>
+          <div style={{ fontSize: 30, color: "#6A6A6A", marginTop: 28, fontFamily: "Arial, sans-serif" }}>
             Fully custom cut-and-sew bags. Your art, edge to edge. All-in pricing from 1,500.
           </div>
         </div>
-        <div style={{ display: "flex", gap: 36, fontSize: 22, fontFamily: "Arial, sans-serif", color: "#14532D", fontWeight: 700, letterSpacing: 2 }}>
+        <div style={{ display: "flex", gap: 36, fontSize: 22, fontFamily: "Arial, sans-serif", color: "#111111", fontWeight: 700, letterSpacing: 2 }}>
           <span>FREIGHT & DUTIES INCLUDED</span>
           <span>FREE PROOF</span>
           <span>5–6 WEEKS</span>

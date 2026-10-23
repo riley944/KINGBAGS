@@ -72,7 +72,7 @@ Keywords (phrase match unless noted):
 - "custom tote bags wholesale"
 - "branded tote bags bulk"
 - "custom logo tote bags"
-- "custom canvas tote bags bulk"
+- "custom laminated tote bags"
 - [custom tote bags] (exact)
 - [custom printed tote bags] (exact)
 

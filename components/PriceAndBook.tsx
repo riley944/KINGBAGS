@@ -18,9 +18,9 @@ const money = (n: number) => "$" + n.toLocaleString(undefined, { maximumFraction
 
 export default function PriceAndBook() {
   const params = useSearchParams();
-  const initial = PRODUCTS.find((p) => p.slug === params.get("bag")) ?? PRODUCTS[0];
-  const [product, setProduct] = useState<Product>(initial);
-  const [sizeCode, setSizeCode] = useState(initial.sizes[Math.min(2, initial.sizes.length - 1)].code);
+  const product: Product = PRODUCTS.find((p) => p.slug === params.get("bag")) ?? PRODUCTS[0];
+  const wanted = params.get("size")?.toUpperCase();
+  const [sizeCode, setSizeCode] = useState(product.sizes.some((s) => s.code === wanted) ? wanted! : product.sizes[Math.min(2, product.sizes.length - 1)].code);
   const [qty, setQty] = useState(2500);
   const [customQty, setCustomQty] = useState("");
 
@@ -39,10 +39,6 @@ export default function PriceAndBook() {
   const total = unit != null ? unit * qty + setup : null;
   const quoteMode = unit == null;
 
-  const chooseProduct = (p: Product) => {
-    setProduct(p);
-    setSizeCode(p.sizes[Math.min(2, p.sizes.length - 1)].code);
-  };
   const applyCustom = () => {
     const n = parseInt(customQty.replace(/[^\d]/g, ""), 10);
     if (!Number.isNaN(n)) setQty(Math.max(MIN_ORDER, Math.min(50000, n)));
@@ -97,20 +93,8 @@ export default function PriceAndBook() {
 
   return (
     <div className="bg-white rounded-2.5xl border border-ink/10 shadow-soft p-6 md:p-8">
-      {/* bag */}
-      <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-2.5">Bag</p>
-      <div className="grid grid-cols-2 gap-2 mb-5">
-        {PRODUCTS.map((p) => (
-          <button key={p.slug} onClick={() => chooseProduct(p)}
-            className={`text-left rounded-xl px-4 py-3 border transition-colors ${product.slug === p.slug ? "border-ember bg-ember-tint" : "border-ink/10 hover:border-ink/30"}`}>
-            <p className="font-semibold text-ink text-[14px]">{p.shortName}</p>
-            <p className="text-[12px] text-ink-soft leading-snug">{p.pricing === "modeled" ? "Laminated, glossy, wipes clean" : "Priced on the call"}</p>
-          </button>
-        ))}
-      </div>
-
       {/* size */}
-      <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-2.5">Size</p>
+      <p className="text-[11px] font-grotesk font-bold tracking-[0.18em] uppercase text-ink-soft mb-2.5">{product.name} · size</p>
       <div className="flex flex-wrap gap-2 mb-5">
         {product.sizes.map((s) => (
           <button key={s.code} onClick={() => setSizeCode(s.code)}
@@ -146,7 +130,7 @@ export default function PriceAndBook() {
           ) : (
             <>
               <p className="font-serif font-black text-[26px] text-ink leading-none">Priced on the call</p>
-              <p className="text-[13px] text-ink-soft mt-1.5">Canvas is cut to your spec. A specialist brings the number.</p>
+              <p className="text-[13px] text-ink-soft mt-1.5">A specialist brings the number.</p>
             </>
           )}
         </div>

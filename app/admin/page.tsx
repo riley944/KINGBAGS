@@ -139,7 +139,7 @@ export default function AdminPage() {
               return (
                 <button key={n.key} onClick={() => { setSelectedId(null); setView(n.key); }}
                   className={`text-[14px] font-semibold px-3.5 py-2 rounded-lg transition-colors ${view === n.key && !selectedId ? "bg-ink text-white" : "text-ink-soft hover:text-ink hover:bg-smoke"}`}>
-                  {n.label}{count > 0 && <span className={`ml-1.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${view === n.key && !selectedId ? "bg-white/20" : "bg-amber-100 text-amber-800"}`}>{count}</span>}
+                  {n.label}{count > 0 && <span className={`ml-1.5 text-[11px] font-bold px-1.5 py-0.5 rounded-full ${view === n.key && !selectedId ? "bg-white/20" : "bg-[#E6E6E6] text-ink"}`}>{count}</span>}
                 </button>
               );
             })}
