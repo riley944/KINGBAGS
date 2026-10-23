@@ -13,7 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
   return [
     page("/", 1),
-    page("/design", 0.9),
+    page("/custom-bags", 0.95),
+    page("/design", 0.6),
     page("/pricing", 0.9),
     page("/products", 0.8),
     ...PRODUCTS.map((p) => page(`/products/${p.slug}`, 0.8)),

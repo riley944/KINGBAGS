@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { PRODUCTS, unitPrice, dims, MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
+import { PRODUCTS, MIN_ORDER, SETUP_PER_COLOR } from "@/lib/products";
 import { CTA } from "@/lib/site";
 import SpinHero from "@/components/SpinHero";
 import Reveal from "@/components/Reveal";
 import CountUp from "@/components/CountUp";
 import LogoMarquee from "@/components/LogoMarquee";
 import NextStep from "@/components/NextStep";
+import SizeCards from "@/components/SizeCards";
 
 const STEPS = [
   { n: "1", t: "Get your price", d: "Pick the bag, size, and quantity and the number is right there, all-in: bag, full-color print, air freight, and duties. No quote emails, no freight surprise later." },
@@ -143,31 +144,8 @@ export default function Home() {
               </p>
             </div>
           </Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
-            {grocery.sizes.map((sz, i) => {
-              const landscape = grocery.examples.filter((e) => e.orientation === "landscape");
-              const ex = landscape[i % landscape.length];
-              const price = unitPrice(grocery, sz.code, MIN_ORDER)!;
-              return (
-                <Reveal key={sz.code} delay={i * 90}>
-                  <Link href={`/custom-bags?size=${sz.code}`} className="group block bg-white rounded-2.5xl overflow-hidden border border-ink/10 hover:border-ink/40 hover:shadow-lift transition-all h-full">
-                    <div className="aspect-square bg-smoke relative">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={ex.src} alt={`${grocery.name}, ${sz.label}, concept by ${ex.brand}`} className="absolute inset-0 w-full h-full object-contain mix-blend-multiply p-4" />
-                      <span className="absolute top-3 left-3 bg-ink text-white text-[11px] font-grotesk font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full">{sz.label}</span>
-                    </div>
-                    <div className="p-5">
-                      <p className="font-bold text-ink text-[17px] leading-tight">{dims(sz, "landscape")}</p>
-                      <p className="text-[12.5px] text-ink-soft mt-1">landscape, shown · {dims(sz, "portrait")} portrait</p>
-                      <p className="text-[14px] font-bold text-ink mt-3">${price.toFixed(2)}/bag <span className="font-medium text-ink-soft">at {MIN_ORDER.toLocaleString()}, delivered</span></p>
-                    </div>
-                  </Link>
-                </Reveal>
-              );
-            })}
-          </div>
-          <div className="text-center">
-            <p className="text-[13px] text-ink-soft mb-6">All four shown in landscape (wider than tall). Every size is also made in portrait, same construction, same price.</p>
+          <SizeCards />
+          <div className="text-center mt-10">
             <Link href="/products/grocery-tote" className="btn-ink">See the full size chart</Link>
           </div>
         </div>
